@@ -1,0 +1,8 @@
+# Parts
+
+| Function                               | Title and description                                        | Purchase price *(without tax)* | Purchased? | Purchase date | Amazon link                                                  |
+| -------------------------------------- | ------------------------------------------------------------ | ------------------------------ | ---------- | ------------- | ------------------------------------------------------------ |
+| Cellular communication / GPS           | 4G / 3G / GNSS HAT Module for Raspberry Pi Zero/Zero W/Zero WH/2B/3B/3B+/4B/Jetson Nano, Based on SIM7600A-H , 4G Communication and GNSS Positioning Module Support LTE CAT4 up to 150Mbps | $67.73                         | Yes        | 8/10/2023     | https://www.amazon.com/gp/product/B07PLTP3M6                 |
+| Computer                               | Element14 Raspberry Pi 3 B+ Motherboard                      | $0                             | No         | N/A           | https://www.amazon.com/ELEMENT-Element14-Raspberry-Pi-Motherboard/dp/B07BDR5PDW |
+| Battery                                | Pisugar 3 Plus Portable 5000 mAh UPS Lithium Battery Power Module Platform for Every Raspberry Pi 3B/3B+/4B Model Accessories handhold(Not Include Raspberry Pi) | $49.99                         | Yes        | 8/11/2023     | https://www.amazon.com/gp/product/B09MJ876FW                 |
+| Temperature, pressure, humidity sensor | BME280 3.3V Pre-Soldered High Precision Altimeter Atmospheric Pressure, Temperature, and Humidity GY-BME280-3.3 Sensor Module for Raspberry Pi, Arduino, and Other MicroControllers | $9.99                          | Yes        | 8/11/2023     | https://www.amazon.com/gp/product/B0BQFV883T                 |
