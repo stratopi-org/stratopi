@@ -1,0 +1,9 @@
+**/__pycache__
+.dockerignore
+.DS_Store
+.env
+.gitignore
+database-schema.sql
+docker-compose.yaml
+dockerbuild.sh
+Dockerfile
