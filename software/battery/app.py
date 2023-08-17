@@ -1,5 +1,28 @@
+import argparse
 import socket
 import sys
+from lib import log
+from lib import common
+from action.pricesd import pricesd
+
+NAME = 'battery'
+
+try:
+    with open('.version', 'r', encoding='UTF-8') as f:
+        VERSION = f.read().strip()
+except FileNotFoundError as err:
+    log.error(err, exit_code=3)
+
+
+parser = argparse.ArgumentParser(prog=NAME)
+parser.add_argument('--version',
+                    action='version',
+                    version=f'{NAME} v{VERSION} ({common.python_version()})',
+                    help='show version and exit')
+
+parser.parse_args()
+
+log.info(f'{NAME} v{VERSION} ({common.python_version()})')
 
 unix_socket_path = '/tmp/pisugar-server.sock'
 

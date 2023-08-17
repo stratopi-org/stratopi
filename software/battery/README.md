@@ -26,7 +26,7 @@ options:
 - Create a PostgreSQL `pg_dump` backup:
 
 ```shell
-python -m utils.backup
+python -m util.backup
 ```
 
 ## Pip
