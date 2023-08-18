@@ -1,5 +1,11 @@
 # battery
 
+## Install
+
+```shell
+pip install --user -r requirements.txt
+```
+
 ## Usage
 
 ```shell
