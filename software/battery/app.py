@@ -32,11 +32,11 @@ try:
     client_socket.send(b'get battery')
     received_data = client_socket.recv(256)
     log.debug(f'received: {sys.getsizeof(received_data)} bytes')
-    log.info(received_data.decode('utf-8'))
+    log.info(common.strip_newlines(received_data.decode('utf-8')))
 
     client_socket.send(b'get temperature')
     received_data = client_socket.recv(256)
     log.debug(f'received: {sys.getsizeof(received_data)} bytes')
-    log.info(received_data.decode('utf-8'))
+    log.info(common.strip_newlines(received_data.decode('utf-8')))
 finally:
     client_socket.close()
