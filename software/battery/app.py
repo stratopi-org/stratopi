@@ -33,5 +33,10 @@ try:
     received_data = client_socket.recv(256)
     print(f'received bytes: {sys.getsizeof(received_data)}')
     print(received_data.decode('utf-8'))
+
+    client_socket.send(b'get temperature')
+    received_data = client_socket.recv(256)
+    print(f'received bytes: {sys.getsizeof(received_data)}')
+    print(received_data.decode('utf-8'))
 finally:
     client_socket.close()
