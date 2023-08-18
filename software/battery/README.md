@@ -1,16 +1,9 @@
 # battery
 
-## Docker Compose
-
-```shell
-docker-compose build
-docker-compose up
-```
-
 ## Usage
 
 ```shell
-usage: battery [-h] [--version]
+usage: python app.py [-h] [--version]
 
 options:
   -h, --help  show this help message and exit
