@@ -3,7 +3,6 @@ import socket
 import sys
 from lib import log
 from lib import common
-from action.pricesd import pricesd
 
 NAME = 'battery'
 
