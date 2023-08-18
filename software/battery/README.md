@@ -3,7 +3,6 @@
 ## Install
 
 ```shell
-sudo apt-get -y install python3-dev
 pip install --user -r requirements.txt
 ```
 
