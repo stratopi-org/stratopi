@@ -1,4 +1,4 @@
-import sy
+import sys
 
 
 def python_version():
