@@ -30,13 +30,13 @@ client_socket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
 try:
     client_socket.connect(unix_socket_path)
     client_socket.send(b'get battery')
-    received_data = client_socket.recv(128)
-    log.debug(f'received {sys.getsizeof(received_data)} bytes')
+    received_data = client_socket.recv(256)
+    log.debug(f'received: {sys.getsizeof(received_data)} bytes')
     log.info(received_data.decode('utf-8'))
 
     client_socket.send(b'get temperature')
-    received_data = client_socket.recv(128)
-    log.debug(f'received {sys.getsizeof(received_data)} bytes')
+    received_data = client_socket.recv(256)
+    log.debug(f'received: {sys.getsizeof(received_data)} bytes')
     log.info(received_data.decode('utf-8'))
 finally:
     client_socket.close()
