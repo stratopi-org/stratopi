@@ -1,5 +1,6 @@
 import socket
 import os
+import stat
 import sys
 from lib import log
 
