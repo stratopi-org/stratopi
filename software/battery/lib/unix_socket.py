@@ -24,6 +24,7 @@ def connect(_unix_socket_path):
 def send(_command, receive_buffer=256):
     try:
         client_socket.send(_command.encode('utf-8'))
+        received_data = client_socket.recv(receive_buffer)
         received_bytes = sys.getsizeof(received_data)
         log.debug(f'received: {received_bytes} bytes')
 
@@ -34,7 +35,6 @@ def send(_command, receive_buffer=256):
                 f"{receive_buffer} bytes"
             )
 
-        received_data = client_socket.recv(receive_buffer)
         return received_data.decode('utf-8').strip()
     except socket.error as err:
         raise err
