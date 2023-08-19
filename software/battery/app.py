@@ -24,8 +24,12 @@ parser.add_argument('--version',
 parser.parse_args()
 
 log.info(f'{NAME} v{VERSION} ({common.python_version()})')
-log.info(f'refreshing prices every {common.sec_to_min(SLEEP_TIME)} minute(s)')
-asyncio.run(loop_fn())
+init()
+
+
+def init():
+    log.info(f'refreshing battery metrics every {common.sec_to_min(SLEEP_TIME)} minute(s)')
+    asyncio.run(loop_fn())
 
 
 async def loop_fn():
