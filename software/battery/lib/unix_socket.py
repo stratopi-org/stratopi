@@ -27,13 +27,13 @@ def send(_socket_client, _command, receive_buffer=256):
         _socket_client.send(_command.encode('utf-8'))
         received_data = _socket_client.recv(receive_buffer)
         received_bytes = sys.getsizeof(received_data)
-        log.debug(f'received {received_bytes} bytes via unix socket')
+        log.debug(f'received {received_bytes} bytes from unix socket')
 
         if received_bytes >= receive_buffer:
             log.warning(
                 f"received {received_bytes} bytes which is the limit of the "
                 f"unix socket receive buffer. consider increasing "
-                f"'receive_buffer' from {receive_buffer} bytes "
+                f"'receive_buffer' from {receive_buffer} bytes"
             )
 
         return received_data.decode('utf-8').strip()
