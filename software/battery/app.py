@@ -24,12 +24,7 @@ parser.add_argument('--version',
 parser.parse_args()
 
 log.info(f'{NAME} v{VERSION} ({common.python_version()})')
-init()
-
-
-def init():
-    log.info(f'refreshing battery metrics every {common.sec_to_min(SLEEP_TIME)} minute(s)')
-    asyncio.run(loop_fn())
+log.info(f'refreshing battery metrics every {common.sec_to_min(SLEEP_TIME)} minute(s)')
 
 
 async def loop_fn():
@@ -43,3 +38,5 @@ async def loop_fn():
             unix_socket.close()
 
         await asyncio.sleep(SLEEP_TIME)
+
+asyncio.run(loop_fn())
