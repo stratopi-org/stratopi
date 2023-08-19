@@ -4,6 +4,7 @@ import stat
 import sys
 from lib import log
 
+
 def is_socket(_input):
     try:
         file_stat = os.stat(_input)
@@ -17,6 +18,7 @@ def connect(_unix_socket_path):
         raise IOError(f"path '{_unix_socket_path}' is not a unix socket")
     socket_client = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
     socket_client.connect(_unix_socket_path)
+    log.debug(f"connected to unix socket '{_unix_socket_path}'")
     return socket_client
 
 
