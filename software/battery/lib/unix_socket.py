@@ -4,6 +4,8 @@ import stat
 import sys
 from lib import log
 
+client_socket = None
+
 
 def is_socket(_input):
     try:
