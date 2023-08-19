@@ -15,7 +15,7 @@ def is_socket(_input):
 
 def connect(_unix_socket_path):
     if not is_socket(_unix_socket_path):
-        raise IOError(f"path '{_unix_socket_path}' is not a unix socket")
+        raise IOError(f"'{_unix_socket_path}' is not a unix socket")
     socket_client = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
     socket_client.connect(_unix_socket_path)
     log.debug(f"connected to unix socket '{_unix_socket_path}'")
@@ -32,8 +32,8 @@ def send(_socket_client, _command, receive_buffer=256):
         if received_bytes >= receive_buffer:
             log.warning(
                 f"received {received_bytes} bytes which is the limit of the "
-                f"unix socket buffer. consider increasing 'receive_buffer' from "
-                f"{receive_buffer} bytes"
+                f"unix socket receive buffer. consider increasing "
+                f"'receive_buffer' from {receive_buffer} bytes "
             )
 
         return received_data.decode('utf-8').strip()
