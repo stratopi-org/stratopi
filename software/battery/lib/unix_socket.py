@@ -26,12 +26,12 @@ def send(_command, receive_buffer=256):
         client_socket.send(_command.encode('utf-8'))
         received_data = client_socket.recv(receive_buffer)
         received_bytes = sys.getsizeof(received_data)
-        log.debug(f'received: {received_bytes} bytes')
+        log.debug(f'received {received_bytes} bytes via unix socket')
 
         if received_bytes >= receive_buffer:
             log.warning(
                 f"received {received_bytes} bytes which is the limit of the "
-                f"buffer. consider increasing 'receive_buffer' from "
+                f"unix socket buffer. consider increasing 'receive_buffer' from "
                 f"{receive_buffer} bytes"
             )
 
@@ -42,3 +42,4 @@ def send(_command, receive_buffer=256):
 
 def close():
     client_socket.close()
+    log.debug('closed unix socket connection')

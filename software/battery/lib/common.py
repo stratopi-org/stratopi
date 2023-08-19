@@ -8,6 +8,10 @@ def python_version():
     return f'Python {sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}'
 
 
+def sec_to_min(_input):
+    return int(_input / 60)
+
+
 def mask_postgres_url_password(_input):
     scheme = _input.split('//')[0]
     url_parts = _input.split('//')[1].split('@')
