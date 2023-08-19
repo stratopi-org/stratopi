@@ -1,10 +1,10 @@
 import argparse
-import socket
-import sys
 from lib import log
 from lib import common
+from lib import unix_socket
 
 NAME = 'battery'
+UNIX_SOCKET_PATH = '/tmp/pisugar-server.sock'
 
 try:
     with open('.version', 'r', encoding='UTF-8') as f:
@@ -23,20 +23,10 @@ parser.parse_args()
 
 log.info(f'{NAME} v{VERSION} ({common.python_version()})')
 
-unix_socket_path = '/tmp/pisugar-server.sock'
-
-client_socket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-
 try:
-    client_socket.connect(unix_socket_path)
-    client_socket.send(b'get battery')
-    received_data = client_socket.recv(256)
-    log.debug(f'received: {sys.getsizeof(received_data)} bytes')
-    log.info(common.strip_newlines(received_data.decode('utf-8')))
-
-    client_socket.send(b'get temperature')
-    received_data = client_socket.recv(256)
-    log.debug(f'received: {sys.getsizeof(received_data)} bytes')
-    log.info(common.strip_newlines(received_data.decode('utf-8')))
+    unix_socket.connect(UNIX_SOCKET_PATH)
+    log.info(unix_socket.send(f'get battery'))
+except Exception as err:
+    log.error(err)
 finally:
-    client_socket.close()
+    unix_socket.close()
