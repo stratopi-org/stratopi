@@ -29,14 +29,15 @@ log.info(f'refreshing battery metrics every {common.sec_to_min(SLEEP_TIME)} minu
 
 async def loop_fn():
     while True:
+        socket_client = None
+
         try:
             socket_client = unix_socket.connect(UNIX_SOCKET_PATH)
             log.info(unix_socket.send(socket_client, f'get battery'))
         except Exception as err:
             log.error(err)
         finally:
-            if socket_client:
-                unix_socket.close(socket_client)
+            unix_socket.close(socket_client)
 
         await asyncio.sleep(SLEEP_TIME)
 
