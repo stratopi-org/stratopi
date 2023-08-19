@@ -35,7 +35,8 @@ async def loop_fn():
         except Exception as err:
             log.error(err)
         finally:
-            unix_socket.close(socket_client)
+            if socket_client:
+                unix_socket.close(socket_client)
 
         await asyncio.sleep(SLEEP_TIME)
 
