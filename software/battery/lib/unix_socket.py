@@ -15,10 +15,10 @@ def is_socket(_input):
 
 def connect(_unix_socket_path):
     if not is_socket(_unix_socket_path):
-        raise IOError(f"'{_unix_socket_path}' is not a unix socket")
+        raise IOError(f"'{_unix_socket_path}' is not a Unix socket")
     socket_client = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
     socket_client.connect(_unix_socket_path)
-    log.debug(f"connected to unix socket '{_unix_socket_path}'")
+    log.debug(f"connected to Unix socket '{_unix_socket_path}'")
     return socket_client
 
 
@@ -27,12 +27,12 @@ def send(_socket_client, _command, receive_buffer=256):
         _socket_client.send(_command.encode('utf-8'))
         received_data = _socket_client.recv(receive_buffer)
         received_bytes = sys.getsizeof(received_data)
-        log.debug(f'received {received_bytes} bytes from unix socket')
+        log.debug(f'received {received_bytes} bytes from Unix socket')
 
         if received_bytes >= receive_buffer:
             log.warning(
                 f"received {received_bytes} bytes which is the limit of the "
-                f"unix socket receive buffer. consider increasing "
+                f"Unix socket receive buffer. Consider increasing "
                 f"'receive_buffer' from {receive_buffer} bytes"
             )
 
@@ -44,4 +44,4 @@ def send(_socket_client, _command, receive_buffer=256):
 def close(_socket_client):
     if _socket_client:
         _socket_client.close()
-        log.debug('closed unix socket connection')
+        log.debug('closed Unix socket connection')

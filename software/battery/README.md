@@ -6,12 +6,6 @@
 pip install --user -r requirements.txt
 ```
 
-## Import Environment Variables
-
-```shell
-source .env
-```
-
 ## Usage
 
 ```shell
