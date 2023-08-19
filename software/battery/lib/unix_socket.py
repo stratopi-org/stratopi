@@ -4,8 +4,6 @@ import stat
 import sys
 from lib import log
 
-client_socket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-
 
 def is_socket(_input):
     try:
@@ -18,6 +16,7 @@ def is_socket(_input):
 def connect(_unix_socket_path):
     if not is_socket(_unix_socket_path):
         raise IOError(f"path '{_unix_socket_path}' is not a unix socket")
+    client_socket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
     client_socket.connect(_unix_socket_path)
 
 
