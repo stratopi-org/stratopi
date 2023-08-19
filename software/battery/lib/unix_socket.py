@@ -4,9 +4,6 @@ import stat
 import sys
 from lib import log
 
-client_socket = None
-
-
 def is_socket(_input):
     try:
         file_stat = os.stat(_input)
@@ -18,14 +15,15 @@ def is_socket(_input):
 def connect(_unix_socket_path):
     if not is_socket(_unix_socket_path):
         raise IOError(f"path '{_unix_socket_path}' is not a unix socket")
-    client_socket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-    client_socket.connect(_unix_socket_path)
+    socket_client = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    socket_client.connect(_unix_socket_path)
+    return socket_client
 
 
-def send(_command, receive_buffer=256):
+def send(_socket_client, _command, receive_buffer=256):
     try:
-        client_socket.send(_command.encode('utf-8'))
-        received_data = client_socket.recv(receive_buffer)
+        _socket_client.send(_command.encode('utf-8'))
+        received_data = _socket_client.recv(receive_buffer)
         received_bytes = sys.getsizeof(received_data)
         log.debug(f'received {received_bytes} bytes via unix socket')
 
@@ -41,6 +39,7 @@ def send(_command, receive_buffer=256):
         raise err
 
 
-def close():
-    client_socket.close()
-    log.debug('closed unix socket connection')
+def close(_socket_client):
+    if _socket_client:
+        _socket_client.close()
+        log.debug('closed unix socket connection')
