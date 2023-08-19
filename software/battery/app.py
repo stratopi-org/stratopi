@@ -1,12 +1,14 @@
 import argparse
+import os
 import asyncio
+import psycopg2
 from lib import log
 from lib import common
 from lib import unix_socket
 
 NAME = 'battery'
 UNIX_SOCKET_PATH = '/tmp/pisugar-server.sock'
-SLEEP_TIME = 60
+SLEEP_TIME = 60 * 2
 
 try:
     with open('.version', 'r', encoding='UTF-8') as f:
@@ -29,15 +31,26 @@ log.info(f'refreshing battery metrics every {common.sec_to_min(SLEEP_TIME)} minu
 
 async def loop_fn():
     while True:
+        conn = psycopg2.connect(os.environ['POSTGRES_URL'])
+        masked_postgres_url = common.mask_postgres_url_password(
+            os.environ['POSTGRES_URL'])
+        log.debug(f'connected to PostgreSQL ({masked_postgres_url})')
+
         socket_client = None
+        cursor = conn.cursor()
 
         try:
             socket_client = unix_socket.connect(UNIX_SOCKET_PATH)
-            log.info(unix_socket.send(socket_client, f'get battery'))
+            battery_percent = unix_socket.send(socket_client, f'get battery')
+            log.info(battery_percent)
         except Exception as err:
             log.error(err)
+            conn.rollback()
         finally:
             unix_socket.close(socket_client)
+            cursor.close()
+            conn.close()
+            log.debug('closed PostgreSQL connection')
 
         await asyncio.sleep(SLEEP_TIME)
 
