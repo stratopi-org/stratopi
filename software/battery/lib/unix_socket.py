@@ -11,8 +11,8 @@ def is_socket(_input):
     try:
         file_stat = os.stat(_input)
         return stat.S_ISSOCK(file_stat.st_mode)
-    except OSError:
-        return False
+    except OSError as err:
+        raise err
 
 
 def connect(_unix_socket_path):
