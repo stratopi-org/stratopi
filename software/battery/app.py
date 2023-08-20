@@ -44,7 +44,7 @@ async def loop_fn():
             battery_percent = unix_socket.send(socket_client, f'get battery')
             battery_temperature = unix_socket.send(socket_client, f'get temperature')
 
-            cursor.execute('INSERT INTO stratopi.battery (percent, temperature) VALUES (%s, %s)',
+            cursor.execute('INSERT INTO battery (percent, temperature) VALUES (%s, %s)',
                            (battery_percent, battery_temperature))
 
             conn.commit()
