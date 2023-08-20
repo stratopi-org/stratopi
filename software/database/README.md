@@ -19,18 +19,25 @@ sudo apt-get clean
 
 ## Setup
 
-Create the StratoPi database.
-
-```shell
-sudo su - postgres
-createdb stratopi
-```
-
 Create the StratoPi PostgreSQL user.
 
 ```shell
 sudo su - postgres
 psql
 CREATE USER stratopi WITH PASSWORD '<password-here>';
-GRANT ALL PRIVILEGES ON SCHEMA stratopi TO stratopi;
+```
+
+Create the StratoPi PostgreSQL database.
+
+```shell
+sudo su - postgres
+createdb stratopi --owner=stratopi
+```
+
+Adjust PostgreSQL privileges.
+
+```shell
+sudo su - postgres
+psql
+GRANT ALL PRIVILEGES ON DATABASE stratopi TO stratopi;
 ```
