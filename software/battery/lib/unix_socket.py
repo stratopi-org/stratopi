@@ -25,9 +25,9 @@ def connect(_unix_socket_path):
 def send(_socket_client, _command, receive_buffer=256):
     try:
         _socket_client.send(_command.encode('utf-8'))
-        received_data = _socket_client.recv(receive_buffer)
+        received_data = _socket_client.recv(receive_buffer).decode('utf-8').strip()
         received_bytes = sys.getsizeof(received_data)
-        log.debug(f"received {received_bytes} bytes of data '${received_data}' from Unix socket")
+        log.debug(f"received {received_bytes} bytes of data '{received_data}' from Unix socket")
 
         if received_bytes >= receive_buffer:
             log.warning(
@@ -36,7 +36,7 @@ def send(_socket_client, _command, receive_buffer=256):
                 f"'receive_buffer' from {receive_buffer} bytes"
             )
 
-        return received_data.decode('utf-8').strip()
+        return received_data
     except socket.error as err:
         raise err
 
