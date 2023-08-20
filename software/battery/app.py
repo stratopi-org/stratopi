@@ -26,7 +26,7 @@ parser.add_argument('--version',
 parser.parse_args()
 
 log.info(f'{NAME} v{VERSION} ({common.python_version()})')
-log.info(f'refreshing battery metrics every {common.sec_to_min(SLEEP_TIME)} minute(s)')
+log.info(f'refreshing battery data every {common.sec_to_min(SLEEP_TIME)} minute(s)')
 
 
 async def loop_fn():
@@ -42,7 +42,14 @@ async def loop_fn():
         try:
             socket_client = unix_socket.connect(UNIX_SOCKET_PATH)
             battery_percent = unix_socket.send(socket_client, f'get battery')
-            log.info(battery_percent)
+            battery_temperature = unix_socket.send(socket_client, f'get temperature')
+
+            cursor.execute('INSERT INTO stratopi.battery (percent, temperature) VALUES (%s, %s)',
+                           (battery_percent, battery_temperature))
+
+            conn.commit()
+            log.info(
+                f'inserted battery data {battery_percent}, {battery_temperature} into PostgreSQL')
         except Exception as err:
             log.error(err)
             conn.rollback()
