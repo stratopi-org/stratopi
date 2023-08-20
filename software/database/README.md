@@ -32,5 +32,5 @@ Create the StratoPi PostgreSQL user.
 sudo su - postgres
 psql
 CREATE USER stratopi WITH PASSWORD '<password-here>';
-GRANT ALL PRIVILEGES ON DATABASE stratopi TO stratopi;
+GRANT ALL PRIVILEGES ON SCHEMA stratopi TO stratopi;
 ```
