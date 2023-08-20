@@ -24,6 +24,6 @@ def mask_postgres_url_password(_input):
 def cleanup_battery_data(_input):
     split_pieces = _input.split(': ')
     if len(split_pieces) >= 2:
-        return split_pieces[1]
+        return split_pieces[1].trim()
     else:
         return _input

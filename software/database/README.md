@@ -23,8 +23,7 @@ Create the StratoPi PostgreSQL user.
 
 ```shell
 sudo su - postgres
-psql
-CREATE USER stratopi WITH PASSWORD '<password-here>';
+createuser --interactive --pwprompt
 ```
 
 Create the StratoPi PostgreSQL database.
@@ -34,10 +33,21 @@ sudo su - postgres
 createdb stratopi --owner=stratopi
 ```
 
-Adjust PostgreSQL privileges.
+Grant PostgreSQL privileges.
 
 ```shell
 sudo su - postgres
-psql
+psql -d stratopi
 GRANT ALL PRIVILEGES ON DATABASE stratopi TO stratopi;
+```
+
+Adjust PostgreSQL host-based authentication. Append to file `/etc/postgresql/15/main/pg_hba.conf`:
+
+```
+local   stratopi        stratopi                                trust
+host    stratopi        stratopi        127.0.0.1/32            trust
+```
+
+```shell
+sudo service postgresql restart
 ```
