@@ -28,7 +28,7 @@ def send(_socket_client, _command, receive_buffer=256):
         received_data = _socket_client.recv(receive_buffer)
         received_bytes = sys.getsizeof(received_data)
         received_data = received_data.decode('utf-8').strip()
-        log.debug(f"received {received_bytes} bytes of data '{received_data}' from Unix socket")
+        log.debug(f"received {received_bytes} bytes '{received_data}' from Unix socket")
 
         if received_bytes >= receive_buffer:
             log.warning(
