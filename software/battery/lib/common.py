@@ -25,11 +25,13 @@ def cleanup_data(_input):
     split_pieces = _input.split(': ')
     if len(split_pieces) >= 2:
         try:
-            # return in the same format as PostgreSQL will concert to NUMERIC(4, 1)
             numeric_value = float(split_pieces[1])
-            formatted_value = "{:.1f}".format(numeric_value)
+            if numeric_value.is_integer():  # Check if is an integer
+                formatted_value = "{:.0f}".format(numeric_value)  # Format as flat integer
+            else:
+                formatted_value = "{:.1f}".format(numeric_value)  # Format with one decimal place
             return formatted_value
         except ValueError:
-            return _input
+            return _input  # Return original if conversion to numeric fails
     else:
         return _input
