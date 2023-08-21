@@ -46,6 +46,7 @@ Adjust PostgreSQL host-based authentication. Append to file `/etc/postgresql/15/
 ```
 local   stratopi        stratopi                                trust
 host    stratopi        stratopi        127.0.0.1/32            trust
+host    stratopi        stratopi        10.0.0.1/22             trust
 ```
 
 ```shell

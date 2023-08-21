@@ -24,6 +24,7 @@ def mask_postgres_url_password(_input):
 def cleanup_data(_input):
     split_pieces = _input.split(': ')
     if len(split_pieces) >= 2:
-        return split_pieces[1].strip()
+        # return in the same format as PostgreSQL will concert to NUMERIC(4, 1)
+        return "{:.1f}".format(split_pieces[1].strip())
     else:
         return _input
