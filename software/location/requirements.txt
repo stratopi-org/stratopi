@@ -1,0 +1,3 @@
+pip-outdated==0.6.0
+psycopg2==2.9.7
+serial=0.0.97
