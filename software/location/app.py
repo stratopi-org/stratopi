@@ -1,8 +1,9 @@
 import signal
+import sys
 import time
 from lib import gps
 
-signal.signal(signal.SIGINT, lamdba sig, frame: gps.power_off())
+signal.signal(signal.SIGINT, lambda sig, frame: (gps.power_off(), sys.exit(0)))
 gps.power_on()
 
 while True:

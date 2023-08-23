@@ -15,6 +15,7 @@ def power_on(power_key=6):
     time.sleep(1)
     GPIO.output(power_key, GPIO.LOW)
     time.sleep(1)
+    log.debug('GPS powered on')
 
 
 def send_at(_command, _expected_response, timeout=1):
@@ -60,3 +61,4 @@ def power_off(power_key=6):
     time.sleep(1)
     GPIO.output(power_key, GPIO.LOW)
     time.sleep(1)
+    log.debug('GPS powered off')
