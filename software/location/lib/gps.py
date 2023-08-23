@@ -19,6 +19,7 @@ def send_at(command, expected_response, timeout=1):
         time.sleep(0.05)
 
     rec_buff = rec_buff.decode().strip()
+    log.warning(f"serial command '{command}' did not respond back with '{expected_response}'")
     raise serial.SerialException(f"'{rec_buff}' is not in serial response of '{expected_response}'")
 
 
@@ -26,7 +27,6 @@ def get_gps_position():
     try:
         send_at('AT+CGPS=1,1', 'OK')
     except serial.SerialException as err:
-        log.warning(f"serial command 'AT+CGPS=1,1' did not respond back with 'OK'")
         send_at('AT+CGPS=0', 'OK')
 
     return send_at('AT+CGPSINFO', '+CGPSINFO: ')
