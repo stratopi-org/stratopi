@@ -7,21 +7,31 @@ ser = serial.Serial('/dev/ttyS0', baudrate=115200)
 ser.flushInput()
 
 
-def send_at(command, expected_response, timeout=1):
-    ser.write(f"{command}\r\n".encode())
-    log.debug(f"sent '{command}' from serial")
+def power_on(power_key=6):
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setwarnings(False)
+    GPIO.setup(power_key, GPIO.OUT)
+    GPIO.output(power_key, GPIO.HIGH)
+    time.sleep(1)
+    GPIO.output(power_key, GPIO.LOW)
+    time.sleep(1)
+
+
+def send_at(_command, _expected_response, timeout=1):
+    ser.write(f"{_command}\r\n".encode())
+    log.debug(f"sent '{_command}' from serial")
 
     start_time = time.time()
     rec_buff = b''  # Use bytes for receiving data
 
     while time.time() - start_time < timeout:
         rec_buff += ser.read(ser.inWaiting())
-        if expected_response.encode() in rec_buff:
+        if _expected_response.encode() in rec_buff:
             return rec_buff.decode().strip()
         time.sleep(0.05)
 
     rec_buff = rec_buff.decode().strip()
-    warning_message = f"serial command '{command}' did not receive '{expected_response}'"
+    warning_message = f"serial command '{_command}' did not receive '{_expected_response}'"
     log.warning(warning_message)
     raise serial.SerialException(warning_message)
 
@@ -33,18 +43,11 @@ def init():
         send_at('AT+CGPS=0', 'OK')
 
 
-def get_gps_position():
-    return send_at('AT+CGPSINFO', '+CGPSINFO: ')
-
-
-def power_on(power_key=6):
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setwarnings(False)
-    GPIO.setup(power_key, GPIO.OUT)
-    GPIO.output(power_key, GPIO.HIGH)
-    time.sleep(1)
-    GPIO.output(power_key, GPIO.LOW)
-    time.sleep(1)
+def get_gps():
+    try:
+        return send_at('AT+CGPSINFO', '+CGPSINFO: ')
+    except serial.SerialException as err:
+        init()
 
 
 def power_off(power_key=6):
