@@ -36,18 +36,16 @@ def send_at(_command, _expected_response, timeout=1):
     raise serial.SerialException(warning_message)
 
 
-def init():
-    try:
-        send_at('AT+CGPS=1,1', 'OK')
-    except serial.SerialException as err:
-        send_at('AT+CGPS=0', 'OK')
-
-
 def get_gps():
     try:
         return send_at('AT+CGPSINFO', '+CGPSINFO: ')
     except serial.SerialException as err:
-        init()
+        try:
+            send_at('AT+CGPS=1,1', 'OK')
+        except serial.SerialException:
+            send_at('AT+CGPS=0', 'OK')
+
+        return False
 
 
 def power_off(power_key=6):
