@@ -1,5 +1,14 @@
+import signal
+import time
 from lib import gps
 
+signal.signal(signal.SIGINT, lamdba sig, frame: gps.power_off())
 gps.power_on()
-print(gps.get_gps())
-gps.power_off()
+
+while True:
+    gps_result = gps.get_gps()
+
+    if gps_result:
+        print(gps_result)
+
+    time.sleep(3)
