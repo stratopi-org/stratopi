@@ -38,8 +38,15 @@ def send_at(_command, _expected_response, timeout=1):
 
 def get_gps():
     try:
-        return send_at('AT+CGPSINFO', '+CGPSINFO: ')
-    except serial.SerialException as err:
+        response = send_at('AT+CGPSINFO', '+CGPSINFO: ')
+
+        if ',,,,,,,,' in response:
+            warning_message = f"no GPS fix"
+            log.warning(warning_message)
+            raise serial.SerialException(warning_message)
+
+        return response
+    except serial.SerialException:
         try:
             send_at('AT+CGPS=1,1', 'OK')
         except serial.SerialException:
