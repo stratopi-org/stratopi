@@ -8,6 +8,7 @@ ser.flushInput()
 
 
 def power_on(power_key=6):
+    log.info('GPS is powering on...')
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
     GPIO.setup(power_key, GPIO.OUT)
@@ -15,7 +16,7 @@ def power_on(power_key=6):
     time.sleep(1)
     GPIO.output(power_key, GPIO.LOW)
     time.sleep(1)
-    log.debug('GPS powered on')
+    log.info('GPS powered on')
 
 
 def send_at(_command, _expected_response, timeout=1):
@@ -57,8 +58,9 @@ def get_gps():
 
 
 def power_off(power_key=6):
+    log.info('GPS is powering off...')
     GPIO.output(power_key, GPIO.HIGH)
     time.sleep(1)
     GPIO.output(power_key, GPIO.LOW)
     time.sleep(1)
-    log.debug('GPS powered off')
+    log.info('GPS powered off')
