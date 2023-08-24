@@ -53,8 +53,13 @@ def get_gps():
         functions = [lambda: send_at('AT+CGPS=1,1', 'OK'),
                      lambda: send_at('AT+CGPS=0', 'OK')]
 
-        random.choice(functions)
-        return False
+        send_at_fn = random.choice(functions)
+
+        try:
+            send_at_fn()
+            return False
+        except serial.SerialException:
+            return False
 
 
 def power_off(power_key=6):
