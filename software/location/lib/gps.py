@@ -28,7 +28,7 @@ def send_at(_command, _expected_response, timeout=1):
     rec_buff = b''  # Use bytes for receiving data
 
     while time.time() - start_time < timeout:
-        rec_buff += ser.read(ser.in_waiting or 1)
+        rec_buff += ser.read(ser.in_waiting)
         if _expected_response.encode() in rec_buff:
             return rec_buff.decode().strip()
         time.sleep(0.05)
