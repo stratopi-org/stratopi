@@ -39,10 +39,11 @@ def send_at(_command, _expected_response, timeout=1):
     raise serial.SerialException(warning_message)
 
 
-def get_gps():
+def get():
     try:
         response = send_at('AT+CGPSINFO', '+CGPSINFO: ')
 
+        # no GPS fix response is ,,,,,,,,
         if ',,,,,,,,' in response:
             warning_message = f"no GPS fix"
             log.warning(warning_message)
@@ -50,15 +51,6 @@ def get_gps():
 
         return response
     except serial.SerialException:
-        # send_at_fn = random.choice([lambda: send_at('AT+CGPS=1,1', 'OK'),
-        #                             lambda: send_at('AT+CGPS=0', 'OK')])
-
-        # try:
-        #     send_at_fn()
-        #     return False
-        # except serial.SerialException:
-        #     return False
-
         try:
             send_at('AT+CGPS=1,1', 'OK')
         except serial.SerialException:

@@ -1,9 +1,15 @@
-CREATE TABLE locations (
-    id serial PRIMARY KEY,
-    name text,
-    coordinates point
+CREATE EXTENSION IF NOT EXISTS citext;
+
+CREATE TABLE location (
+    id uuid DEFAULT gen_random_uuid(),
+    coordinates point,
+    added TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+
+    PRIMARY KEY (id)
 );
 
-INSERT INTO locations (name, coordinates)
-VALUES ('Location 1', '(-34.0522, -118.2437)');
+CREATE INDEX coordinates_idx
+    ON location USING GIST(coordinates);
 
+CREATE INDEX added_idx
+    ON location (added ASC);
