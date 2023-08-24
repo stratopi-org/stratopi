@@ -1,6 +1,7 @@
 import time
 import serial
 import RPi.GPIO as GPIO
+import random
 from lib import log
 
 ser = serial.Serial('/dev/ttyS0', baudrate=115200)
@@ -49,11 +50,10 @@ def get_gps():
 
         return response
     except serial.SerialException:
-        try:
-            send_at('AT+CGPS=1,1', 'OK')
-        except serial.SerialException:
-            send_at('AT+CGPS=0', 'OK')
+        functions = [lambda: send_at('AT+CGPS=1,1', 'OK'),
+                     lambda: send_at('AT+CGPS=0', 'OK')]
 
+        random.choice(functions)
         return False
 
 
