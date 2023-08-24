@@ -50,14 +50,20 @@ def get_gps():
 
         return response
     except serial.SerialException:
-        send_at_fn = random.choice([lambda: send_at('AT+CGPS=1,1', 'OK'),
-                                    lambda: send_at('AT+CGPS=0', 'OK')])
+        # send_at_fn = random.choice([lambda: send_at('AT+CGPS=1,1', 'OK'),
+        #                             lambda: send_at('AT+CGPS=0', 'OK')])
+
+        # try:
+        #     send_at_fn()
+        #     return False
+        # except serial.SerialException:
+        #     return False
 
         try:
-            send_at_fn()
-            return False
+            send_at('AT+CGPS=1,1', 'OK')
         except serial.SerialException:
-            return False
+            pass
+        return False
 
 
 def power_off(power_key=6):
