@@ -20,23 +20,36 @@ def power_on(power_key=6):
     log.info('GPS powered on')
 
 
+# def send_at(_command, _expected_response, timeout=1):
+#     ser.write(f"{_command}\r\n".encode())
+#     log.debug(f"sent '{_command}' from serial")
+
+#     start_time = time.time()
+#     rec_buff = b''  # Use bytes for receiving data
+
+#     while time.time() - start_time < timeout:
+#         rec_buff += ser.read(ser.inWaiting())
+#         if _expected_response.encode() in rec_buff:
+#             return rec_buff.decode().strip()
+#         time.sleep(0.05)
+
+#     rec_buff = rec_buff.decode().strip()
+#     warning_message = f"serial command '{_command}' did not receive '{_expected_response}'"
+#     log.warning(warning_message)
+#     raise serial.SerialException(warning_message)
+
 def send_at(_command, _expected_response, timeout=1):
     ser.write(f"{_command}\r\n".encode())
     log.debug(f"sent '{_command}' from serial")
 
-    start_time = time.time()
-    rec_buff = b''  # Use bytes for receiving data
+    response = ser.read_until(_expected_response.encode(), timeout=timeout).decode().strip()
 
-    while time.time() - start_time < timeout:
-        rec_buff += ser.read(ser.inWaiting())
-        if _expected_response.encode() in rec_buff:
-            return rec_buff.decode().strip()
-        time.sleep(0.05)
-
-    rec_buff = rec_buff.decode().strip()
-    warning_message = f"serial command '{_command}' did not receive '{_expected_response}'"
-    log.warning(warning_message)
-    raise serial.SerialException(warning_message)
+    if response:
+        return response
+    else:
+        warning_message = f"serial command '{_command}' did not receive '{_expected_response}'"
+        log.warning(warning_message)
+        raise serial.SerialException(warning_message)
 
 
 def get_gps():
