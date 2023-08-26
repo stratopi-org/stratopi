@@ -39,10 +39,6 @@ def send(_socket_client, _command, receive_buffer=256):
                 f"'receive_buffer' from {receive_buffer} bytes"
             )
 
-        # if 'long' is received data, retry
-        if received_data == 'long':
-            return send(_socket_client, _command, receive_buffer)
-
         return received_data
     except socket.error as err:
         raise err

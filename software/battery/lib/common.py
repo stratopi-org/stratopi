@@ -34,4 +34,5 @@ def cleanup_data(_input, str_format="{:.1f}"):
         except ValueError:
             return _input  # return original if conversion to numeric fails
     else:
+        log.warn(f"splitting on ': ' did not return exactly 2 pieces")
         return _input
