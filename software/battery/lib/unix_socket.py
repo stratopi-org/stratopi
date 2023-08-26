@@ -1,7 +1,8 @@
-import socket
 import os
 import stat
+import socket
 import sys
+import time
 from lib import log
 
 
@@ -24,10 +25,11 @@ def connect(_unix_socket_path):
 
 def send(_socket_client, _command, receive_buffer=256):
     try:
+        time.sleep(0.1)  # add a tiny delay before sending command
         _socket_client.send(_command.encode('utf-8'))
         received_data = _socket_client.recv(receive_buffer)
         received_bytes = sys.getsizeof(received_data)
-        received_data = received_data.decode('utf-8').strip()
+        received_data = received_data.decode('utf-8')
         log.debug(f"received {received_bytes} bytes '{received_data}' from Unix socket")
 
         if received_bytes >= receive_buffer:
