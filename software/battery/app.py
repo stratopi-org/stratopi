@@ -47,13 +47,19 @@ async def loop_fn():
             battery_temperature = common.cleanup_data(
                                     unix_socket.send(
                                         socket_client, f'get temperature'))
+            battery_voltage = common.cleanup_data(
+                                unix_socket.send(
+                                    socket_client, f'get battery_v'))
+            battery_current = common.cleanup_data(
+                                unix_socket.send(
+                                    socket_client, f'get battery_i'))
 
-            cursor.execute('INSERT INTO battery (percent, temperature) VALUES (%s, %s)',
-                           (battery_percent, battery_temperature))
+            cursor.execute('INSERT INTO battery (percent, temperature, voltage, current) VALUES (%s, %s, %s, %s)',
+                           (battery_percent, battery_temperature, battery_voltage, battery_current))
 
             conn.commit()
             log.info(
-                f"inserted battery data 'percent={battery_percent}, temperature={battery_temperature}' into PostgreSQL")
+                f"inserted battery data 'percent={battery_percent}, temperature={battery_temperature}, voltage={battery_voltage}, current={battery_current}' into PostgreSQL")
         except Exception as err:
             log.error(err)
             conn.rollback()
