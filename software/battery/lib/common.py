@@ -36,4 +36,4 @@ def cleanup_data(_input, str_format="{:.1f}"):
             return _input  # return original if conversion to numeric fails
     else:
         log.warning(f"splitting on ': ' did not return exactly 2 pieces")
-        return _input
+        return _input  # return original if splitting fails
