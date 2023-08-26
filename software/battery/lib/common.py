@@ -1,5 +1,5 @@
 import sys
-
+from lib import log
 
 def python_version():
     if not sys.version_info:
