@@ -26,12 +26,12 @@ def cleanup_data(_input, str_format="{:.1f}"):
     if len(split_pieces) >= 2:
         try:
             numeric_value = float(split_pieces[1])
-            if numeric_value.is_integer():  # Check if is an integer
-                formatted_value = "{:.0f}".format(numeric_value)  # Format as flat integer
+            if numeric_value.is_integer():  # check if is an integer
+                formatted_value = "{:.0f}".format(numeric_value)  # format as flat integer
             else:
-                formatted_value = str_format.format(numeric_value)  # Format with one decimal place
+                formatted_value = str_format.format(numeric_value)  # format with str_format
             return formatted_value
         except ValueError:
-            return _input  # Return original if conversion to numeric fails
+            return _input  # return original if conversion to numeric fails
     else:
         return _input
