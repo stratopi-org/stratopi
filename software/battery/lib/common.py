@@ -23,7 +23,7 @@ def mask_postgres_url_password(_input):
 
 def cleanup_data(_input, str_format="{:.1f}"):
     split_pieces = _input.split(': ')
-    if len(split_pieces) >= 2:
+    if len(split_pieces) == 2:
         try:
             numeric_value = float(split_pieces[1])
             if numeric_value.is_integer():  # check if is an integer
