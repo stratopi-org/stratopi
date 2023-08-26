@@ -21,7 +21,7 @@ def mask_postgres_url_password(_input):
     return f"{scheme}//{username}:{masked_password}@{url_parts[1]}"
 
 
-def cleanup_data(_input):
+def cleanup_data(_input, str_format="{:.1f}"):
     split_pieces = _input.split(': ')
     if len(split_pieces) >= 2:
         try:
@@ -29,7 +29,7 @@ def cleanup_data(_input):
             if numeric_value.is_integer():  # Check if is an integer
                 formatted_value = "{:.0f}".format(numeric_value)  # Format as flat integer
             else:
-                formatted_value = "{:.1f}".format(numeric_value)  # Format with one decimal place
+                formatted_value = str_format.format(numeric_value)  # Format with one decimal place
             return formatted_value
         except ValueError:
             return _input  # Return original if conversion to numeric fails
