@@ -34,7 +34,11 @@ def send(_socket_client, _command, receive_buffer=512):
                 break  # no more data to receive
             received_data += chunk
 
-        received_data = received_data.replace('\n', '')
+            messages = received_data.split('\n')
+            if received_data.endswith('\n'):
+                received_data = ''
+            else:
+                received_data = messages[-1]
 
         log.debug(f"received '{received_data}' from Unix socket")
         return received_data
