@@ -23,7 +23,7 @@ def connect(_unix_socket_path):
     return socket_client
 
 
-def send(_socket_client, _command, receive_buffer=256):
+def send(_socket_client, _command, receive_buffer=512):
     try:
         _socket_client.send(_command.encode('utf-8'))
 
@@ -32,13 +32,9 @@ def send(_socket_client, _command, receive_buffer=256):
             chunk = _socket_client.recv(receive_buffer).decode('utf-8')
             if not chunk:
                 break  # no more data to receive
-
             received_data += chunk
-            messages = received_data.split('\n')
-            received_data = messages.pop()  # store any incomplete data for the next iteration
 
-            for message in messages:
-                print(f"Received message: {message}")
+        received_data = received_data.replace('\n', '')
 
         log.debug(f"received '{received_data}' from Unix socket")
         return received_data
