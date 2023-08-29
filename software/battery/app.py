@@ -41,12 +41,10 @@ async def loop_fn():
 
         try:
             socket_client = unix_socket.connect(UNIX_SOCKET_PATH)
-            battery_percent = common.cleanup_data(
-                                unix_socket.send(
-                                    socket_client, f'get battery'))
-            battery_temperature = common.cleanup_data(
-                                    unix_socket.send(
-                                        socket_client, f'get temperature'))
+            battery_percent = unix_socket.send(socket_client, f'get battery')
+            battery_percent = common.cleanup_data(battery_percent)
+            battery_temperature = unix_socket.send(socket_client, f'get temperature')
+            battery_temperature = common.cleanup_data(battery_temperature)
 
             cursor.execute('INSERT INTO battery (percent, temperature) VALUES (%s, %s)',
                            (battery_percent, battery_temperature))
