@@ -32,13 +32,13 @@ def send(_socket_client, _command, receive_buffer=256):
             chunk = _socket_client.recv(receive_buffer).decode('utf-8')
             if not chunk:
                 break  # no more data to receive
-            received_data += chunk
 
-            # Check if the received data contains a complete message
-            while '\n' in received_data:
-                message, separator, remaining = received_data.partition('\n')
+            received_data += chunk
+            messages = received_data.split('\n')
+            received_data = messages.pop()  # store any incomplete data for the next iteration
+
+            for message in messages:
                 print(f"Received message: {message}")
-                received_data = remaining
 
         log.debug(f"received '{received_data}' from Unix socket")
         return received_data
