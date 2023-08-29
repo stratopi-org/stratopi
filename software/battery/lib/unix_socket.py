@@ -27,9 +27,15 @@ def send(_socket_client, _command, receive_buffer=512):
     try:
         _socket_client.send(_command.encode('utf-8'))
         received_data = _socket_client.recv(receive_buffer).decode('utf-8')
+
+        if received_data == 'long':
+            log.warning(f"received 'long' from Unix socket. Retrying...")
+            time.sleep(0.5)
+            return send(_socket_client, _command, receive_buffer)
+
         log.debug(f"received '{received_data}' from Unix socket")
         return received_data
-    except socket.error as err:
+    except (socket.error, UnicodeDecodeError) as err:
         raise err
 
 
