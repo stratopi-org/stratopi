@@ -34,7 +34,11 @@ def send(_socket_client, _command, receive_buffer=256):
                 break  # no more data to receive
             received_data += chunk
 
-        received_data = received_data.replace('\n', '')
+            # Check if the received data contains a complete message
+            while '\n' in received_data:
+                message, separator, remaining = received_data.partition('\n')
+                print(f"Received message: {message}")
+                received_data = remaining
 
         log.debug(f"received '{received_data}' from Unix socket")
         return received_data
