@@ -26,7 +26,16 @@ def connect(_unix_socket_path):
 def send(_socket_client, _command, receive_buffer=256):
     try:
         _socket_client.send(_command.encode('utf-8'))
-        received_data = _socket_client.recv(receive_buffer).decode('utf-8')
+
+        received_data = ''
+        while True:
+            chunk = _socket_client.recv(receive_buffer).decode('utf-8')
+            if not chunk:
+                break  # no more data to receive
+            received_data += chunk
+
+        received_data = received_data.replace('\n', '')
+
         log.debug(f"received '{received_data}' from Unix socket")
         return received_data
     except socket.error as err:
