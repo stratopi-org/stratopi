@@ -27,12 +27,11 @@ def cleanup_data(_input, str_format="{:.1f}"):
         try:
             numeric_value = float(split_pieces[1])
             if numeric_value.is_integer():  # check if is an integer
-                formatted_value = "{:.0f}".format(numeric_value)  # format as flat integer
-            else:
-                formatted_value = str_format.format(numeric_value)  # format with str_format
-            return formatted_value
+                return "{:.0f}".format(numeric_value)  # format as flat integer
+
+            return str_format.format(numeric_value)  # format with str_format
         except ValueError:
-            log.warning(f"value error in 'common.cleanup_data'")
+            log.warning(f"value error in 'common.cleanup_data()'")
             return _input  # return original if conversion to numeric fails
     else:
         log.warning(f"splitting on ': ' did not return exactly 2 pieces")
