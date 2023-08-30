@@ -23,10 +23,10 @@ def connect(_unix_socket_path):
     return socket_client
 
 
-def send(_socket_client, _command, receive_buffer=128):
+def send(_socket_client, _command, receive_buffer=256):
     try:
         _socket_client.send(_command.encode('utf-8'))
-        received_data = _socket_client.recv(receive_buffer).decode('utf-8').replace('\n', '')
+        received_data = _socket_client.recv(receive_buffer).decode('utf-8').replace('\n', '').strip()
 
         if received_data == 'long':
             log.warning(f"received 'long' from Unix socket. Retrying...")
