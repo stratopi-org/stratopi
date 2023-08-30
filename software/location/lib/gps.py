@@ -1,9 +1,10 @@
 import time
 import serial
 import RPi.GPIO as GPIO
-import random
 from lib import log
+from lib import common
 from datetime import datetime
+
 
 ser = serial.Serial('/dev/ttyS0', baudrate=115200)
 ser.flushInput()
@@ -68,7 +69,7 @@ def parse_coordinate(_coord_str, _hemisphere):
 
 def parse(_data):
     try:
-        data = _data.split('+CGPSINFO:').strip()
+        data = common.strip_list_elements(_data.split('+CGPSINFO:'))
         data_fields = _data[1].split(',')
 
         if len(data_fields) == 9:
