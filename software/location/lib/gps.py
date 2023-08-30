@@ -75,8 +75,8 @@ def parse(_data):
         if len(data_fields) == 9:
             latitude = parse_coordinate(data_fields[0], data_fields[1])
             longitude = parse_coordinate(data_fields[2], data_fields[3])
-            date = datetime.strptime(data_fields[4], '%Y-%m-%d')
-            time_utc = datetime.strptime(data_fields[5], '%H:%M:%S.%f').time()
+            date = datetime.strptime(data_fields[4], '%Y%m%d')
+            time_utc = datetime.strptime(data_fields[5], '%H%M%S.%f').time()
             altitude_meters = float(data_fields[6])
             altitude_feet = altitude_meters * 3.28084
             speed_ms = float(data_fields[7])
