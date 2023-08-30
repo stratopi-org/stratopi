@@ -70,7 +70,7 @@ def parse_coordinate(_coord_str, _hemisphere):
 def parse(_data):
     try:
         data = common.strip_list_elements(_data.split('+CGPSINFO:'))
-        data_fields = _data[1].split(',')
+        data_fields = data[1].split(',')
 
         if len(data_fields) == 9:
             latitude = parse_coordinate(data_fields[0], data_fields[1])
