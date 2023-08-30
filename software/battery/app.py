@@ -8,7 +8,7 @@ from lib import unix_socket
 
 NAME = 'battery'
 UNIX_SOCKET_PATH = '/tmp/pisugar-server.sock'
-SLEEP_TIME = 60 * 2
+SLEEP_TIME = 60 * 3
 
 try:
     with open('.version', 'r', encoding='UTF-8') as f:

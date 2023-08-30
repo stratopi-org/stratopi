@@ -12,4 +12,4 @@ while True:
     if gps_result:
         print(gps_result)
 
-    time.sleep(3)
+    time.sleep(30)
