@@ -36,7 +36,8 @@ async def loop_fn():
             os.environ['POSTGRES_URL'])
         log.debug(f'connected to PostgreSQL ({masked_postgres_url})')
 
-        socket_client = None
+        battery_percent_sc = None
+        battery_temperature_sc = None
         cursor = conn.cursor()
 
         try:
@@ -58,7 +59,9 @@ async def loop_fn():
             log.error(err)
             conn.rollback()
         finally:
-            unix_socket.close(socket_client)
+            unix_socket.close(battery_percent_sc)
+            unix_socket.close(battery_temperature_sc)
+
             cursor.close()
             conn.close()
             log.debug('closed PostgreSQL connection')
