@@ -41,5 +41,6 @@ def send(_socket_client, _command, receive_buffer=512):
 
 def close(_socket_client):
     if _socket_client:
+        socket_client_path = _socket_client.getpeername()
         _socket_client.close()
-        log.debug(f"closed Unix socket connection to '{_socket_client.getpeername()}'")
+        log.debug(f"closed Unix socket connection to '{socket_client_path}'")
