@@ -11,6 +11,6 @@ while True:
     result = gps.get()
 
     if result:
-        pprint(gps.parse(result))
+        pprint.pprint(gps.parse(result))
 
     time.sleep(30)
