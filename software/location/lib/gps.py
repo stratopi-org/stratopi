@@ -66,9 +66,10 @@ def parse_coordinate(_coord_str, _hemisphere):
     return -coordinate if _hemisphere in ['S', 'W'] else coordinate
 
 
-def parse_data(_data):
+def parse(_data):
     try:
-        data_fields = _data.split(',')
+        data = _data.split('+CGPSINFO:').strip()
+        data_fields = _data[1].split(',')
 
         if len(data_fields) == 9:
             latitude = parse_coordinate(data_fields[0], data_fields[1])

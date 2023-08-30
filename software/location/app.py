@@ -7,9 +7,9 @@ signal.signal(signal.SIGINT, lambda sig, frame: (gps.power_off(), sys.exit(0)))
 gps.power_on()
 
 while True:
-    gps_result = gps.get()
+    result = gps.get()
 
-    if gps_result:
-        print(gps.parse_data(gps_result))
+    if result:
+        print(gps.parse(result))
 
     time.sleep(30)
