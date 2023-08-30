@@ -82,10 +82,11 @@ def parse(_data):
             altitude_feet = altitude_meters * 3.28084
             speed_ms = float(data_fields[7])
             speed_knots = speed_ms * 1.94384
+            speed_mph = speed_ms * 2.23694
             course = float(data_fields[8])
 
             return {
-                "Date": date,
+                "Date (UTC)": date_utc,
                 "Time (UTC)": time_utc,
                 "Latitude": latitude,
                 "Longitude": longitude,
@@ -93,6 +94,7 @@ def parse(_data):
                 "Altitude (ft)": altitude_feet,
                 "Speed (m/s)": speed_ms,
                 "Speed (knots)": speed_knots,
+                "speed (mph)": speed_mph,
                 "Course": course
             }
     except (ValueError, IndexError, TypeError) as err:
