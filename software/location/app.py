@@ -10,6 +10,6 @@ while True:
     gps_result = gps.get()
 
     if gps_result:
-        print(gps_result)
+        print(gps.parse_data(gps_result))
 
     time.sleep(30)

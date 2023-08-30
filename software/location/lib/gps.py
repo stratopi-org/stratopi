@@ -3,6 +3,7 @@ import serial
 import RPi.GPIO as GPIO
 import random
 from lib import log
+from datetime import datetime
 
 ser = serial.Serial('/dev/ttyS0', baudrate=115200)
 ser.flushInput()
@@ -56,6 +57,46 @@ def get():
         except serial.SerialException:
             pass
         return False
+
+
+def parse_coordinate(_coord_str, _hemisphere):
+    degrees = float(_coord_str[:2])
+    minutes = float(_coord_str[2:])
+    coordinate = degrees + minutes / 60.0
+    return -coordinate if _hemisphere in ['S', 'W'] else coordinate
+
+
+def parse_data(_data):
+    try:
+        data_fields = _data.split(',')
+
+        if len(data_fields) == 9:
+            latitude = parse_coordinate(data_fields[0], data_fields[1])
+            longitude = parse_coordinate(data_fields[2], data_fields[3])
+            date = datetime.strptime(data_fields[4], '%Y-%m-%d')
+            time_utc = datetime.strptime(data_fields[5], '%H:%M:%S.%f').time()
+            altitude_meters = float(data_fields[6])
+            altitude_feet = altitude_meters * 3.28084
+            speed_ms = float(data_fields[7])
+            speed_knots = speed_ms * 1.94384
+            course = float(data_fields[8])
+
+            return {
+                "Date": date,
+                "Time (UTC)": time_utc,
+                "Latitude": latitude,
+                "Longitude": longitude,
+                "Altitude (m)": altitude_meters,
+                "Altitude (ft)": altitude_feet,
+                "Speed (m/s)": speed_ms,
+                "Speed (knots)": speed_knots,
+                "Course": course
+            }
+    except (ValueError, IndexError, TypeError) as err:
+        log.error(err)
+        pass
+
+    return None
 
 
 def power_off(power_key=6):
