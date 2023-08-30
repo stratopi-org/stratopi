@@ -26,10 +26,10 @@ def connect(_unix_socket_path):
 def send(_socket_client, _command, receive_buffer=1024):
     try:
         _socket_client.send(_command.encode('utf-8'))
-        raw_received_data = _socket_client.recv(receive_buffer).decode('utf-8').strip()
-        log.debug(f"received '{raw_received_data.replace('\n', '')}' from Unix socket")
+        raw_received_data = _socket_client.recv(receive_buffer).decode('utf-8').strip().replace('\n', '')
+        log.debug(f"received '{raw_received_data}' from Unix socket")
 
-        received_data = raw_received_data.replace('\n', '').replace('long', '')
+        received_data = raw_received_data.replace('long', '')
 
         if not received_data:
             log.warning(f"received data from Unix socket which is ignored. Retrying send...")
