@@ -30,7 +30,7 @@ def send(_socket_client, _command, receive_buffer=512):
 
         if received_data == 'long':
             log.warning(f"received 'long' from Unix socket. Retrying...")
-            time.sleep(0.5)
+            time.sleep(0.25)
             return send(_socket_client, _command, receive_buffer)
 
         log.debug(f"received '{received_data}' from Unix socket")
@@ -42,4 +42,4 @@ def send(_socket_client, _command, receive_buffer=512):
 def close(_socket_client):
     if _socket_client:
         _socket_client.close()
-        log.debug('closed Unix socket connection')
+        log.debug(f"closed Unix socket connection to '{_socket_client.getpeername()}'")
