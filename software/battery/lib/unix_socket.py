@@ -26,9 +26,10 @@ def connect(_unix_socket_path):
 def send(_socket_client, _command, receive_buffer=1024):
     try:
         _socket_client.send(_command.encode('utf-8'))
-        received_data = _socket_client.recv(receive_buffer).decode('utf-8').replace('\n', '').strip()
+        sc_data = _socket_client.recv(receive_buffer).decode('utf-8').strip()
+        received_data = sc_data.translate(str.maketrans({'\n': None, 'long': None}))
 
-        if received_data == 'long':
+        if not received_data:
             log.warning(f"received 'long' from Unix socket which is ignored. Retrying send...")
             time.sleep(0.05)
             return send(_socket_client, _command, receive_buffer)
