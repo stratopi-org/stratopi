@@ -74,6 +74,12 @@ def parse_coordinate(_coord_str, _hemisphere):
     return decimal_value
 
 
+def parse_direction(_course):
+    directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N']
+    index = int((_course + 22.5) % 360 // 45)
+    return directions[index]
+
+
 def parse(_data):
     try:
         data = common.strip_list_elements(_data.split('+CGPSINFO:'))
@@ -81,16 +87,17 @@ def parse(_data):
         data_fields = data.split(',')
 
         if len(data_fields) == 9:
-            latitude = parse_coordinate(data_fields[0], data_fields[1])
-            longitude = parse_coordinate(data_fields[2], data_fields[3])
             date_utc = datetime.strptime(data_fields[4], '%d%m%y').date()
             time_utc = datetime.strptime(data_fields[5], '%H%M%S.%f').time()
+            latitude = parse_coordinate(data_fields[0], data_fields[1])
+            longitude = parse_coordinate(data_fields[2], data_fields[3])
             altitude_meters = float(data_fields[6])
-            altitude_feet = altitude_meters * 3.28084
+            altitude_feet = common.meters_to_feet(altitude_meters)
             speed_ms = float(data_fields[7])
-            speed_knots = speed_ms * 1.94384
-            speed_mph = speed_ms * 2.23694
+            speed_knots = common.mps_to_knots(speed_ms)
+            speed_mph = common.mps_to_mph(speed_ms)
             course = float(data_fields[8])
+            direction = parse_direction(course)
 
             return {
                 "Date (UTC)": date_utc,
@@ -102,7 +109,8 @@ def parse(_data):
                 "Speed (m/s)": speed_ms,
                 "Speed (knots)": speed_knots,
                 "speed (mph)": speed_mph,
-                "Course": course
+                "Course (deg)": course,
+                "Direction": direction
             }
     except (ValueError, IndexError, TypeError) as err:
         log.error(err)
