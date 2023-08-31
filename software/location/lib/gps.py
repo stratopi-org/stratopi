@@ -61,10 +61,17 @@ def get():
 
 
 def parse_coordinate(_coord_str, _hemisphere):
-    degrees = float(_coord_str[:2])
-    minutes = float(_coord_str[2:])
-    coordinate = degrees + minutes / 60.0
-    return -coordinate if _hemisphere in ['S', 'W'] else coordinate
+    dms_value = float(_coord_str)
+
+    degrees = int(dms_value // 100)
+    minutes = dms_value % 100
+
+    decimal_value = degrees + (minutes / 60)
+
+    if _hemisphere.upper() in ('S', 'W'):
+        decimal_value = -decimal_value
+
+    return decimal_value
 
 
 def parse(_data):
