@@ -13,6 +13,7 @@ ExecStart=/usr/bin/python /home/pi/stratopi/software/battery/app.py
 WorkingDirectory=/home/pi/stratopi/software/battery
 Restart=always
 User=root
+EnvironmentFile=/etc/environment
 StandardOutput=journal
 StandardError=journal
 
