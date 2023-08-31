@@ -10,8 +10,8 @@ ExecStart=/usr/bin/python /home/pi/stratopi/software/battery/app.py
 WorkingDirectory=/home/pi/stratopi/software/battery
 Restart=always
 User=root
-StandardOutput=syslog
-StandardError=syslog
+StandardOutput=journal
+StandardError=journal
 
 [Install]
 WantedBy=multi-user.target
