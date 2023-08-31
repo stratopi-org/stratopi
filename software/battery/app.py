@@ -56,7 +56,7 @@ async def loop_fn():
 
             conn.commit()
             log.info(
-                f"inserted battery data 'percent={battery_percent}, temperature={battery_temperature}' into PostgreSQL")
+                f'inserted battery data {battery_percent}% {battery_temperature}°C into PostgreSQL')
         except Exception as err:
             log.error(err)
             conn.rollback()
