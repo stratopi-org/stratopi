@@ -13,4 +13,4 @@ while True:
     if result:
         pprint.pprint(gps.parse(result))
 
-    time.sleep(30)
+    time.sleep(10)
