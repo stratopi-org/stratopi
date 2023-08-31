@@ -10,7 +10,7 @@ pip install --user -r requirements.txt
 
 ```shell
 sudo su - postgres
-psql -h 127.0.0.1 -d stratopi -U stratopi -f database-schema.sql --password
+psql -h 127.0.0.1 -d stratopi -U stratopi -f battery/database-schema.sql --password
 ```
 
 ## Usage
