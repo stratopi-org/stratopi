@@ -51,7 +51,7 @@ async def loop_fn():
             battery_temperature = common.cleanup_data(battery_temperature)
             unix_socket.close(battery_temperature_sc)
 
-            cursor.execute('INSERT INTO battery (percent, temperature) VALUES (%s, %s)',
+            cursor.execute('INSERT INTO battery (percent, temperature_c) VALUES (%s, %s)',
                            (battery_percent, battery_temperature))
 
             conn.commit()
