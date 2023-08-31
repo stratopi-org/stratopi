@@ -6,7 +6,7 @@ Description=StratoPi Battery
 After=network.target
 
 [Service]
-ExecStart=app.py
+ExecStart=/home/pi/stratopi/software/battery/app.py
 WorkingDirectory=/home/pi/stratopi/software/battery
 Restart=always
 User=root
