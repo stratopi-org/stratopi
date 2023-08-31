@@ -1,19 +1,13 @@
 # battery
 
-## Install
-
-```shell
-pip install --user -r requirements.txt
-```
-
-Import PostgreSQL schema:
+## Import PostgreSQL schema:
 
 ```shell
 sudo su - postgres
 psql -h 127.0.0.1 -d stratopi -U stratopi -f database-schema.sql --password
 ```
 
-Install the service:
+## Install
 
 ```shell
 ./install-service.sh
