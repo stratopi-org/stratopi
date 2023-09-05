@@ -75,6 +75,7 @@ def parse_coordinate(_coord_str, _hemisphere):
 
 
 def parse_direction(_course):
+    # 'N' twice in the list is NOT a bug but a deliberate decision
     directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N']
     index = int((_course + 22.5) % 360 // 45)
     return directions[index]
