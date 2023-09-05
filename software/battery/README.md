@@ -1,10 +1,9 @@
 # battery
 
-## Import PostgreSQL schema:
+## Create PostgreSQL schema:
 
 ```shell
-sudo su - postgres
-psql -h 127.0.0.1 -d stratopi -U stratopi -f database-schema.sql --password
+sudo -u postgres psql -h 127.0.0.1 -d stratopi -U stratopi -f ./database-schema.sql --password
 ```
 
 ## Install
