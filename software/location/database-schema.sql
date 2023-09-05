@@ -1,10 +1,17 @@
 CREATE EXTENSION IF NOT EXISTS citext;
 
-CREATE TABLE location (
-    id uuid DEFAULT gen_random_uuid(),
-    coordinates point,
-    added TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+CREATE TYPE DIRECTION AS ENUM ('N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N');
 
+CREATE TABLE location (
+    id UUID DEFAULT gen_random_uuid(),
+    date DATE NOT NULL,
+    time TIME NOT NULL,
+    coordinates POINT NOT NULL,
+    altitude_m NUMERIC(8, 2) NOT NULL,
+    speed_mps NUMERIC(4, 1) NOT NULL,
+    course_d NUMERIC(4, 1) NOT NULL,
+    direction DIRECTION NOT NULL,
+    added TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     PRIMARY KEY (id)
 );
 

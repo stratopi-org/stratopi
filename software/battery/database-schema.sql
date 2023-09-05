@@ -1,7 +1,7 @@
 CREATE EXTENSION IF NOT EXISTS citext;
 
 CREATE TABLE battery (
-    id uuid DEFAULT gen_random_uuid(),
+    id UUID DEFAULT gen_random_uuid(),
     percent NUMERIC(4, 1) NOT NULL,
     temperature_c SMALLINT NOT NULL,
     added TIMESTAMPTZ NOT NULL DEFAULT NOW(),
