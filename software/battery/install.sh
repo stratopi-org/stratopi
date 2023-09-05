@@ -7,7 +7,7 @@ sudo pip install -r requirements.txt
 cat << EOF | sudo tee /etc/systemd/system/stratopi-battery.service > /dev/null
 [Unit]
 Description=StratoPi Battery
-After=network.target
+After=network.target postgresql.service
 
 [Service]
 ExecStart=/usr/bin/python /home/pi/stratopi/software/battery/app.py
