@@ -2,7 +2,7 @@
 set -eo pipefail; [[ $TRACE ]] && set -x
 
 # install pip packages globally
-sudo pip install -r requirements.txt
+sudo pip install --quiet -r requirements.txt
 
 cat << EOF | sudo tee /etc/systemd/system/stratopi-battery.service > /dev/null
 [Unit]
@@ -10,18 +10,21 @@ Description=StratoPi Battery
 After=network.target postgresql.service
 
 [Service]
-ExecStart=/usr/bin/python /home/pi/stratopi/software/battery/app.py
-WorkingDirectory=/home/pi/stratopi/software/battery
-Restart=always
 User=root
-EnvironmentFile=/etc/environment
+WorkingDirectory=/home/pi/stratopi/software/battery
+ExecStart=/usr/bin/python /home/pi/stratopi/software/battery/app.py
+Restart=always
 StandardOutput=journal
 StandardError=journal
+EnvironmentFile=/etc/environment
 
 [Install]
 WantedBy=multi-user.target
 EOF
 
 sudo systemctl daemon-reload
+echo "✅ Reloaded systemctl daemon"
 sudo systemctl enable stratopi-battery.service
+echo "✅ Enabled service 'stratopi-battery.service'"
 sudo systemctl restart stratopi-battery.service
+echo "✅ Restarted service 'stratopi-battery.service'"
