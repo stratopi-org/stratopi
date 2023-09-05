@@ -9,8 +9,8 @@ CREATE TABLE battery (
     PRIMARY KEY (id)
 );
 
-CREATE INDEX percent_idx
+CREATE INDEX battery_percent_idx
     ON battery (percent DESC);
 
-CREATE INDEX added_idx
+CREATE INDEX battery_added_idx
     ON battery (added ASC);

@@ -15,20 +15,20 @@ CREATE TABLE location (
     PRIMARY KEY (id)
 );
 
-CREATE INDEX date_idx
+CREATE INDEX location_date_idx
     ON location (date ASC);
 
-CREATE INDEX time_idx
+CREATE INDEX location_time_idx
     ON location (time ASC);
 
-CREATE INDEX coordinates_idx
+CREATE INDEX location_coordinates_idx
     ON location USING GIST(coordinates);
 
-CREATE INDEX altitude_m_idx
+CREATE INDEX location_altitude_m_idx
     ON location (altitude_m);
 
-CREATE INDEX speed_mps_idx
+CREATE INDEX location_speed_mps_idx
     ON location (speed_mps);
 
-CREATE INDEX added_idx
+CREATE INDEX location_added_idx
     ON location (added ASC);
