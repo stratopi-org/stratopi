@@ -10,15 +10,16 @@ ser = serial.Serial('/dev/ttyS0', baudrate=115200)
 ser.flushInput()
 
 
-def power_on(power_key=6):
+def power_on(power_key=6, sleep_delay=0.5):
     log.info('GPS is powering on...')
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
     GPIO.setup(power_key, GPIO.OUT)
+    time.sleep(sleep_delay)
     GPIO.output(power_key, GPIO.HIGH)
-    time.sleep(1)
+    time.sleep(sleep_delay)
     GPIO.output(power_key, GPIO.LOW)
-    time.sleep(1)
+    time.sleep(sleep_delay)
     log.info('GPS powered on')
 
 
@@ -120,10 +121,10 @@ def parse(_data):
     return None
 
 
-def power_off(power_key=6):
+def power_off(power_key=6, sleep_delay=0.5):
     log.info('GPS is powering off...')
     GPIO.output(power_key, GPIO.HIGH)
-    time.sleep(1)
+    time.sleep(sleep_delay)
     GPIO.output(power_key, GPIO.LOW)
-    time.sleep(1)
+    time.sleep(sleep_delay)
     log.info('GPS powered off')

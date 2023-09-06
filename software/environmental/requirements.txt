@@ -1,2 +1,4 @@
+pip-outdated==0.6.0
+psycopg2==2.9.7
 RPi.bme280=0.2.4
 smbus2=0.4.3
