@@ -1,5 +1,5 @@
-import time
 import serial
+import time
 import RPi.GPIO as GPIO
 from lib import log
 from lib import common
