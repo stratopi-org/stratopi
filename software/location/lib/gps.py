@@ -28,7 +28,7 @@ def send_at(_command, _expected_response, timeout=1):
     log.debug(f"sent '{_command}' from serial")
 
     start_time = time.time()
-    rec_buff = b''  # Use bytes for receiving data
+    rec_buff = b''  # use bytes for receiving data
 
     while time.time() - start_time < timeout:
         rec_buff += ser.read(ser.in_waiting)
@@ -37,7 +37,7 @@ def send_at(_command, _expected_response, timeout=1):
         time.sleep(0.05)
 
     rec_buff = rec_buff.decode().strip()
-    warning_message = f"serial command '{_command}' did not receive '{_expected_response}'"
+    warning_message = f"'{_command}' serial command returned '{rec_buff}' instead of '{_expected_response}'"
     log.warning(warning_message)
     raise serial.SerialException(warning_message)
 
