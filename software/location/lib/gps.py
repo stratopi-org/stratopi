@@ -89,30 +89,23 @@ def parse(_data):
         data_fields = data.split(',')
 
         if len(data_fields) == 9:
-            date_utc = datetime.strptime(data_fields[4], '%d%m%y').date()
-            time_utc = datetime.strptime(data_fields[5], '%H%M%S.%f').time()
+            date = datetime.strptime(data_fields[4], '%d%m%y').date()
+            time = datetime.strptime(data_fields[5], '%H%M%S.%f').time()
             latitude = parse_coordinate(data_fields[0], data_fields[1])
             longitude = parse_coordinate(data_fields[2], data_fields[3])
-            altitude_meters = float(data_fields[6])
-            altitude_feet = common.meters_to_feet(altitude_meters)
-            speed_ms = float(data_fields[7])
-            speed_knots = common.mps_to_knots(speed_ms)
-            speed_mph = common.mps_to_mph(speed_ms)
-            course = float(data_fields[8])
+            altitude_m = float(data_fields[6])
+            speed_mps = float(data_fields[7])
+            course_d = float(data_fields[8])
             direction = parse_direction(course)
 
             return {
-                "Date (UTC)": date_utc,
-                "Time (UTC)": time_utc,
-                "Latitude": latitude,
-                "Longitude": longitude,
-                "Altitude (m)": altitude_meters,
-                "Altitude (ft)": altitude_feet,
-                "Speed (m/s)": speed_ms,
-                "Speed (knots)": speed_knots,
-                "speed (mph)": speed_mph,
-                "Course (deg)": course,
-                "Direction": direction
+                "date": date,
+                "time": time,
+                "coordinates": (latitude, longitude),
+                "altitude_m": altitude_m,
+                "speed_mps": speed_mps,
+                "course_d": course_d,
+                "direction": direction
             }
     except (ValueError, IndexError, TypeError) as err:
         log.error(err)
