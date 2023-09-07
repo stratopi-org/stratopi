@@ -96,7 +96,7 @@ def parse(_data):
             altitude_m = float(data_fields[6])
             speed_mps = float(data_fields[7])
             course_d = float(data_fields[8])
-            direction = parse_direction(course)
+            direction = parse_direction(course_d)
 
             return {
                 "date": date,
