@@ -48,11 +48,14 @@ async def loop_fn():
             gps_response = gps.parse(gps.get())
 
             cursor.execute('INSERT INTO location (date, time, coordinates, altitude_m, speed_mps, course_d, direction) VALUES (%s, %s, %s, %s, %s, %s, %s)',
-                            (gps_response.date, gps_response.time, POINT(gps_response.latitude, gps_response.lontitude), gps_response.altitude_m, gps_response.speed_mps, gps_response.course_d, gps_response.direction))
+                            (gps_response['date'], gps_response['time'],
+                             POINT(gps_response['latitude'], gps_response['lontitude']),
+                             gps_response['altitude_m'], gps_response['speed_mps'],
+                             gps_response['course_d'], gps_response['direction']))
 
             conn.commit()
             log.info(
-                 f'inserted location data ({gps_response.latitude}, {gps_response.lontitude}, {gps_response.altitude_m}) into PostgreSQL')
+                 f'inserted location data ({gps_response['latitude']}, {gps_response['lontitude']}, {gps_response['altitude_m']}) into PostgreSQL')
         except Exception as err:
             log.error(err)
             conn.rollback()
