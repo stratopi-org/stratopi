@@ -55,7 +55,7 @@ async def loop_fn():
 
             conn.commit()
             log.info(
-                 f'inserted location data ({gps_response['latitude']}, {gps_response['lontitude']}, {gps_response['altitude_m']}) into PostgreSQL')
+                 f"inserted location data ({gps_response['latitude']}, {gps_response['lontitude']}, {gps_response['altitude_m']}) into PostgreSQL")
         except Exception as err:
             log.error(err)
             conn.rollback()
