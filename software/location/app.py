@@ -46,7 +46,7 @@ async def loop_fn():
             gps_data = gps.parse(gps.get())
             latitude, longitude = gps_data['coordinates']
 
-            sql_query = "INSERT INTO location (date, time, coordinates, altitude_m, speed_mps, course_d, direction) VALUES (%s, %s, ST_GeomFromText(%s), %s, %s, %s, %s)"
+            sql_query = "INSERT INTO location (date, time, coordinates, altitude_m, speed_mps, course_d, direction) VALUES (%s, %s, ST_SetSRID(ST_GeomFromText(%s), 4326), %s, %s, %s, %s)"
 
             cursor.execute(sql_query, (
                 gps_data['date'], gps_data['time'],
