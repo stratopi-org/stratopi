@@ -55,6 +55,7 @@ async def loop_fn():
                 gps_data['direction']
             ))
 
+            conn.commit()
             log.info(
                 f"inserted location data ({latitude}, {longitude}, {gps_data['altitude_m']}) into PostgreSQL")
         except Exception as err:
