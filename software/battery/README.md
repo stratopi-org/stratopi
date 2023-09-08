@@ -24,7 +24,7 @@ sudo -u postgres psql -h 127.0.0.1 -d stratopi -U stratopi -f ./database-schema.
 python -m util.backup
 ```
 
-- Truncate all PostgreSQL data from table `battery`:
+- Truncate all battery data from PostgreSQL:
 
 ```shell
 python -m util.truncate

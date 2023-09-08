@@ -18,13 +18,13 @@ sudo -u postgres psql -h 127.0.0.1 -d stratopi -U stratopi -f ./database-schema.
 
 ## Utilities
 
-- Create a PostgreSQL `pg_dump` backup of battery data:
+- Create a PostgreSQL `pg_dump` backup of location data:
 
 ```shell
 python -m util.backup
 ```
 
-- Truncate all PostgreSQL data from table `battery`:
+- Truncate all location data from PostgreSQL:
 
 ```shell
 python -m util.truncate
