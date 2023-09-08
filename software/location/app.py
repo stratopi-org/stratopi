@@ -43,19 +43,20 @@ async def loop_fn():
         cursor = conn.cursor()
 
         try:
-            gps_response = gps.parse(gps.get())
+            gps_data = gps.parse(gps.get())
+            latitude, longitude = gps_data['coordinates']
 
             sql_query = "INSERT INTO location (date, time, coordinates, altitude_m, speed_mps, course_d, direction) VALUES (%s, %s, ST_GeomFromText(%s), %s, %s, %s, %s)"
 
             cursor.execute(sql_query, (
-                gps_response['date'], gps_response['time'],
-                f'POINT({gps_response["latitude"]} {gps_response["longitude"]})',
-                gps_response['altitude_m'], gps_response['speed_mps'],
-                gps_response['course_d'], gps_response['direction']
+                gps_data['date'], gps_data['time'],
+                f'POINT({latitude} {longitude})',
+                gps_data['altitude_m'], gps_data['speed_mps'],
+                gps_data['course_d'], gps_data['direction']
             ))
 
             log.info(
-                f"inserted location data ({gps_response['latitude']}, {gps_response['longitude']}, {gps_response['altitude_m']}) into PostgreSQL")
+                f"inserted location data ({latitude}, {longitude}, {gps_data['altitude_m']}) into PostgreSQL")
         except Exception as err:
             log.error(err)
             conn.rollback()
