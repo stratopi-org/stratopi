@@ -32,8 +32,8 @@ def cleanup_data(_input, str_format="{:.1f}"):
 
             return str_format.format(numeric_value)  # format with str_format
         except ValueError:
-            log.warning(f"value error in 'common.cleanup_data()'")
+            log.warning("value error in 'common.cleanup_data()'")
             return _input  # return original if conversion to numeric fails
     else:
-        log.warning(f"splitting on ': ' did not return exactly 2 pieces")
+        log.warning("splitting on ': ' did not return exactly 2 pieces")
         return _input  # return original if splitting fails

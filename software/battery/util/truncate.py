@@ -7,4 +7,4 @@ psql_cmd = f"psql -d {os.environ['POSTGRES_URL']} -c 'TRUNCATE TABLE battery;'"
 log.info('starting table truncation...')
 subprocess.run(psql_cmd, shell=True)
 
-log.info(f"successfully truncated table 'battery'")
+log.info("successfully truncated table 'battery'")

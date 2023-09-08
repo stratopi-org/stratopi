@@ -1,7 +1,6 @@
 import os
 import stat
 import socket
-import sys
 import time
 from lib import log
 
@@ -32,7 +31,7 @@ def send(_socket_client, _command, receive_buffer=1024):
         received_data = raw_received_data.replace('long', '')
 
         if not received_data:
-            log.warning(f"received data from Unix socket which is ignored. Retrying send...")
+            log.warning('received data from Unix socket which is ignored. Retrying send...')
             time.sleep(0.05)
             return send(_socket_client, _command, receive_buffer)
 
@@ -47,5 +46,5 @@ def close(_socket_client):
             socket_client_path = _socket_client.getpeername()
             _socket_client.close()
             log.debug(f"closed Unix socket connection to '{socket_client_path}'")
-        except socket.error as err:
+        except socket.error:
             pass

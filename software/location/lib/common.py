@@ -1,5 +1,4 @@
 import sys
-from lib import log
 
 
 def python_version():
