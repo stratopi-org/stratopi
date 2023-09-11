@@ -7,7 +7,7 @@ CREATE TABLE location (
     date DATE NOT NULL,
     time TIME NOT NULL,
     coordinates POINT NOT NULL,
-    altitude_m NUMERIC(8, 2) NOT NULL,
+    altitude_m NUMERIC(6, 1) NOT NULL,
     speed_mps NUMERIC(4, 1) NOT NULL,
     course_d NUMERIC(4, 1) NOT NULL,
     direction DIRECTION NOT NULL,
