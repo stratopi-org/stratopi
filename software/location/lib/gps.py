@@ -72,7 +72,7 @@ def parse_coordinate(_coord_str, _hemisphere):
     if _hemisphere.upper() in ('S', 'W'):
         decimal_value = -decimal_value
 
-    return decimal_value
+    return "{:.5f}".format(decimal_value)
 
 
 def parse_direction(_course):
