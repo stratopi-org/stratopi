@@ -86,6 +86,9 @@ def parse_direction(_course):
 
 
 def parse(_data):
+    if not _data:
+        return None
+
     try:
         data = common.strip_list_elements(_data.split('+CGPSINFO:'))
         data = data[1].replace('\r\n\r\nOK', '').strip()

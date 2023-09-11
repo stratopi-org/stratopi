@@ -1,6 +1,10 @@
 CREATE EXTENSION IF NOT EXISTS citext;
 
-CREATE TYPE DIRECTION AS ENUM ('N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW');
+DO $$ BEGIN
+    IF to_regtype('DIRECTION') IS NULL THEN
+        CREATE TYPE DIRECTION AS ENUM ('N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW');
+    END IF;
+END $$;
 
 CREATE TABLE location (
     id UUID DEFAULT gen_random_uuid(),
