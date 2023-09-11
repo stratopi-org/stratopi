@@ -76,6 +76,9 @@ def parse_coordinate(_coord_str, _hemisphere):
 
 
 def parse_direction(_course):
+    if not isinstance(_course, float):
+        raise ValueError('course must in degress and a float')
+
     # 'N' twice in the list is NOT a bug but a deliberate decision
     directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N']
     index = int((_course + 22.5) % 360 // 45)
@@ -96,7 +99,7 @@ def parse(_data):
             altitude_m = "{:.2f}".format(float(data_fields[6]))
             speed_mps = "{:.1f}".format(float(data_fields[7]))
             course_d = "{:.1f}".format(float(data_fields[8]))
-            direction = parse_direction(course_d)
+            direction = parse_direction(float(course_d))
 
             return {
                 "date": date,
