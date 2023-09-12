@@ -47,7 +47,7 @@ def get():
 
         # no GPS fix response is ,,,,,,,,
         if ',,,,,,,,' in response:
-            warning_message = f"no GPS fix"
+            warning_message = 'no GPS fix'
             log.warning(warning_message)
             return False
 
