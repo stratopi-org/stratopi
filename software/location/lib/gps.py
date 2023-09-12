@@ -36,7 +36,7 @@ def send_at(_command, _expected_response, timeout=1):
             return rec_buff.decode().strip()
         time.sleep(0.05)
 
-    warning_message = f"'serial command '{_command}' did not return expected response '{_expected_response}'"
+    warning_message = f"serial command '{_command}' did not return expected response '{_expected_response}'"
     log.warning(warning_message)
     raise serial.SerialException(warning_message)
 
@@ -49,15 +49,30 @@ def get():
         if ',,,,,,,,' in response:
             warning_message = f"no GPS fix"
             log.warning(warning_message)
-            raise serial.SerialException(warning_message)
+            return False
 
         return response
     except serial.SerialException:
-        try:
-            send_at('AT+CGPS=1,1', 'OK')
-        except serial.SerialException:
-            pass
-        return False
+        pass
+
+    return False
+
+    # try:
+    #     response = send_at('AT+CGPSINFO', '+CGPSINFO: ')
+
+    #     # no GPS fix response is ,,,,,,,,
+    #     if ',,,,,,,,' in response:
+    #         warning_message = f"no GPS fix"
+    #         log.warning(warning_message)
+    #         raise serial.SerialException(warning_message)
+
+    #     return response
+    # except serial.SerialException:
+    #     try:
+    #         send_at('AT+CGPS=1,1', 'OK')
+    #     except serial.SerialException:
+    #         pass
+    #     return False
 
 
 def parse_coordinate(_coord_str, _hemisphere):
