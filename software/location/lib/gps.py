@@ -44,35 +44,21 @@ def send_at(_command, _expected_response, timeout=1):
 def get():
     try:
         response = send_at('AT+CGPSINFO', '+CGPSINFO: ')
+        print(response)
 
         # no GPS fix response is ,,,,,,,,
         if ',,,,,,,,' in response:
             warning_message = 'no GPS fix'
             log.warning(warning_message)
-            return False
+            raise serial.SerialException(warning_message)
 
         return response
     except serial.SerialException:
-        pass
-
-    return False
-
-    # try:
-    #     response = send_at('AT+CGPSINFO', '+CGPSINFO: ')
-
-    #     # no GPS fix response is ,,,,,,,,
-    #     if ',,,,,,,,' in response:
-    #         warning_message = f"no GPS fix"
-    #         log.warning(warning_message)
-    #         raise serial.SerialException(warning_message)
-
-    #     return response
-    # except serial.SerialException:
-    #     try:
-    #         send_at('AT+CGPS=1,1', 'OK')
-    #     except serial.SerialException:
-    #         pass
-    #     return False
+        try:
+            send_at('AT+CGPS=1,1', 'OK')
+        except serial.SerialException:
+            send_at('AT+CGPS=0,0', 'OK')
+        return False
 
 
 def parse_coordinate(_coord_str, _hemisphere):
