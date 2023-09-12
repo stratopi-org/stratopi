@@ -36,8 +36,7 @@ def send_at(_command, _expected_response, timeout=1):
             return rec_buff.decode().strip()
         time.sleep(0.05)
 
-    rec_buff = rec_buff.decode().strip()
-    warning_message = f"'{_command}' serial command returned '{rec_buff}' instead of '{_expected_response}'"
+    warning_message = f"'serial command '{_command}' did not return expected response '{_expected_response}'"
     log.warning(warning_message)
     raise serial.SerialException(warning_message)
 
