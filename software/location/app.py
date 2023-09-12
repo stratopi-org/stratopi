@@ -31,6 +31,7 @@ log.info(f'{NAME} v{VERSION} ({common.python_version()})')
 log.info(f'refreshing location data every {common.sec_to_min(SLEEP_TIME)} minute(s)')
 
 gps.power_on()
+gps.send_at('AT+CGPS=1,1', 'OK')
 
 
 async def loop_fn():
