@@ -52,3 +52,5 @@ host    stratopi        stratopi        10.0.0.1/22             trust
 ```shell
 sudo service postgresql restart
 ```
+
+*NOTE:* You likely will not need to add `10.0.0.1/22`. I've added that subnet so I can use remote database GUIs on my local home network.
