@@ -9,4 +9,3 @@
 
 - [MET](https://en.wikipedia.org/wiki/Mission_Elapsed_Time) clock
 - [vertical speed](https://en.wikipedia.org/wiki/Rate_of_climb) _(ft/m and m/s)_
-- [ground speed](https://en.wikipedia.org/wiki/Ground_speed) _(mph and km/h)_

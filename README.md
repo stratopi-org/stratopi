@@ -43,4 +43,4 @@ Polls the Bosch BME280 sensor and inserts the data into PostgreSQL.
 
 ### location
 
-Polls the Waveshare GPS and inserts the data into PostgreSQL. Provides date, time, latitude, longitude, altitude, speed, and course. From course, we can also determine direction like North, Southeast, etc.
+Polls the Waveshare GPS and inserts the data into PostgreSQL. Provides date, time, latitude, longitude, altitude, speed, and course. From course, can also determine direction such as North, Southeast, etc.
