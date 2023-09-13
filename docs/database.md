@@ -1,6 +1,6 @@
 # database
 
-- PostgreSQL 15
+- PostgreSQL 15 on [Raspbian](http://www.raspbian.org/)
 
 ## Install
 
