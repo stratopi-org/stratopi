@@ -1,4 +1,4 @@
-# database
+# Database
 
 - PostgreSQL 15 on [Raspbian](http://www.raspbian.org/)
 
@@ -49,8 +49,8 @@ host    stratopi        stratopi        127.0.0.1/32            trust
 host    stratopi        stratopi        10.0.0.1/22             trust
 ```
 
+*NOTE:* You likely will not need to add `10.0.0.1/22`. I've added that subnet so I can use remote database GUIs on my local home network.
+
 ```shell
 sudo service postgresql restart
 ```
-
-*NOTE:* You likely will not need to add `10.0.0.1/22`. I've added that subnet so I can use remote database GUIs on my local home network.
