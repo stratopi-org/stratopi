@@ -95,7 +95,7 @@ def parse(_data):
             latitude = parse_coordinate(data_fields[0], data_fields[1])
             longitude = parse_coordinate(data_fields[2], data_fields[3])
             altitude_m = "{:.1f}".format(float(data_fields[6]))
-            speed_mps = "{:.1f}".format(float(data_fields[7]))
+            speed_kn = "{:.1f}".format(float(data_fields[7]))
             course_d = "{:.1f}".format(float(data_fields[8]))
             direction = parse_direction(float(course_d))
 
@@ -104,7 +104,7 @@ def parse(_data):
                 "time": time,
                 "coordinates": (latitude, longitude),
                 "altitude_m": altitude_m,
-                "speed_mps": speed_mps,
+                "speed_kn": speed_kn,
                 "course_d": course_d,
                 "direction": direction
             }
