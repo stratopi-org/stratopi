@@ -25,7 +25,7 @@ def power_on(power_key=6, sleep_delay=0.5):
 
 def send_at(_command, _expected_response, timeout=1):
     ser.write(f"{_command}\r\n".encode())
-    log.debug(f"sent '{_command}' from serial")
+    log.debug(f"sent command '{_command}' via serial")
 
     start_time = time.time()
     rec_buff = b''  # use bytes for receiving data
