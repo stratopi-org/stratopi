@@ -31,7 +31,11 @@ log.info(f'{NAME} v{VERSION} ({common.python_version()})')
 log.info(f'refreshing location data every {common.sec_to_min(SLEEP_TIME)} minute(s)')
 
 gps.power_on()
-gps.send_at('AT+CGPS=1,1', 'OK')
+
+try:
+    gps.send_at('AT+CGPS=1,1', 'OK')
+except Exception:
+    pass
 
 
 async def loop_fn():
@@ -46,7 +50,7 @@ async def loop_fn():
         try:
             gps_data_raw = gps.get()
             if not gps_data_raw:
-                raise ValueError('invalid GPS response')
+                raise ValueError('no GPS fix')
 
             gps_data = gps.parse(gps_data_raw)
             latitude, longitude = gps_data['coordinates']
