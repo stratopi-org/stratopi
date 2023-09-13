@@ -29,12 +29,18 @@ I used the [ELEGOO 40pin cable pack](https://www.amazon.com/gp/product/B01EV70C7
 
 ## Software architecture
 
-All the software is written in Python 3 using standard packages. Originally, I was planning to run each application in a Docker container but decided to keep things as simple as possible and opted to use tried and tested systemd services for each application. [KISS](https://en.wikipedia.org/wiki/KISS_principle)!
+All the software is written in Python 3 using standard PyPI packages. Originally, I was planning to run each application in a Docker container but decided to keep things as simple as possible and opted to use tried and tested systemd services for each application. [KISS](https://en.wikipedia.org/wiki/KISS_principle)!
 
 ### battery
+
+Polls the battery percentage as well as the battery tempature and inserts the data into PostgreSQL.
 
 ### communication
 
 ### environmental
 
+Polls the Bosch BME280 sensor and inserts the data into PostgreSQL.
+
 ### location
+
+Polls the Waveshare GPS and inserts the data into PostgreSQL. Provides date, time, latitude, longitude, altitude, speed, and course. From course, we can also determine direction like North, Southeast, etc.
