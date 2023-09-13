@@ -16,7 +16,7 @@ Launch a weather balloon filled with helium into the stratosphere while recordin
 
 ### Computer battery
 
-[Pisugar 3 Plus](https://www.amazon.com/gp/product/B09MJ876FW). A polished and amazing integrated battery and software controller specifically designed for Raspberry Pi's.
+[Pisugar 3 Plus](https://www.amazon.com/gp/product/B09MJ876FW). A polished integrated battery and software controller specifically designed for Raspberry Pi's.
 
 ### Temperature, pressure, humidity sensor
 
@@ -31,16 +31,16 @@ I used the [ELEGOO 40pin cable pack](https://www.amazon.com/gp/product/B01EV70C7
 
 All the software is written in Python 3 using standard PyPI packages. Originally, I was planning to run each application in a Docker container but decided to keep things as simple as possible and opted to use tried and tested systemd services for each application. [KISS](https://en.wikipedia.org/wiki/KISS_principle)!
 
-### battery
+### [battery](https://github.com/stratopi-org/stratopi/tree/master/software/battery)
 
 Polls the battery percentage as well as the battery tempature and inserts the data into PostgreSQL.
 
-### communication
+### [communication](https://github.com/stratopi-org/stratopi/tree/master/software/communication)
 
-### environmental
+### [environmental](https://github.com/stratopi-org/stratopi/tree/master/software/environmental)
 
 Polls the Bosch BME280 sensor and inserts the data into PostgreSQL.
 
-### location
+### [location](https://github.com/stratopi-org/stratopi/tree/master/software/location)
 
 Polls the Waveshare GPS and inserts the data into PostgreSQL. Provides date, time, latitude, longitude, altitude, speed, and course. From course, can also determine direction such as North, Southeast, etc.
