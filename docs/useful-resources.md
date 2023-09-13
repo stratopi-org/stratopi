@@ -7,3 +7,4 @@
 - [Humidity, temperature and pressure project on RaspberryPi](https://projects.raspberrypi.org/en/projects/build-your-own-weather-station/2)
 - [Using 4G LTE wireless modems on a Raspberry Pi](https://www.jeffgeerling.com/blog/2022/using-4g-lte-wireless-modems-on-raspberry-pi)
 - [SIMPLEKML](https://simplekml.readthedocs.io/en/latest/gettingstarted.html)
+- [SiRF NEMA Reference Manual](https://www.sparkfun.com/datasheets/GPS/NMEA%20Reference%20Manual-Rev2.1-Dec07.pdf)

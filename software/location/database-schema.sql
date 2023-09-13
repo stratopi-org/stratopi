@@ -12,7 +12,7 @@ CREATE TABLE location (
     time TIME NOT NULL,
     coordinates POINT NOT NULL,
     altitude_m NUMERIC(6, 1) NOT NULL,
-    speed_mps NUMERIC(4, 1) NOT NULL,
+    speed_kn NUMERIC(4, 1) NOT NULL,
     course_d NUMERIC(4, 1) NOT NULL,
     direction DIRECTION NOT NULL,
     added TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -31,8 +31,8 @@ CREATE INDEX location_coordinates_idx
 CREATE INDEX location_altitude_m_idx
     ON location (altitude_m);
 
-CREATE INDEX location_speed_mps_idx
-    ON location (speed_mps);
+CREATE INDEX location_speed_kn_idx
+    ON location (speed_kn);
 
 CREATE INDEX location_added_idx
     ON location (added ASC);

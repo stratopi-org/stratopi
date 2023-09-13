@@ -55,12 +55,12 @@ async def loop_fn():
             gps_data = gps.parse(gps_data_raw)
             latitude, longitude = gps_data['coordinates']
 
-            sql_query = "INSERT INTO location (date, time, coordinates, altitude_m, speed_mps, course_d, direction) VALUES (%s, %s, POINT(%s, %s), %s, %s, %s, %s)"
+            sql_query = "INSERT INTO location (date, time, coordinates, altitude_m, speed_kn, course_d, direction) VALUES (%s, %s, POINT(%s, %s), %s, %s, %s, %s)"
 
             cursor.execute(sql_query, (
                 gps_data['date'], gps_data['time'],
                 latitude, longitude, gps_data['altitude_m'],
-                gps_data['speed_mps'], gps_data['course_d'],
+                gps_data['speed_kn'], gps_data['course_d'],
                 gps_data['direction']
             ))
 
