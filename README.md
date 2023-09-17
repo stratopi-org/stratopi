@@ -1,4 +1,4 @@
-# StratoPi 🌌 👽
+# StratoPi 🌌 👽 🛸
 
 ## Goal
 
