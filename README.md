@@ -2,15 +2,17 @@
 
 ## Goal
 
-Launch a weather balloon filled with helium into the stratosphere while recording the entire video footage of the ascent and descent flights using multiple cameras. Successfully recover the payload, which includes the Raspberry Pi computer, flight data, and video cameras and footage.
+Launch a latex weather balloon filled with helium into the stratosphere while recording the entire video footage of the ascent and descent flights using multiple cameras. Successfully recover the payload, which includes the Raspberry Pi computer, flight data, and video cameras and footage.
 
 - Altitude goal is 100,000ft _(30,480m)_.
+
+StratoPi is 100% purely a hobby project with zero financial incentives. All parts purchased at retail prices. Somewhat new/rookie to Python programming so go easy on me 😃. My experience is mostly as a DevOps Engineer.
 
 ## Parts
 
 - #### Weather balloon
 
-[Weather balloon]()
+[Latex weather balloon]()
 
 - #### Computer
 
