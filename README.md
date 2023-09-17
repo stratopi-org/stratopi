@@ -1,4 +1,4 @@
-# StratoPi 🌌 👽 🛸
+# StratoPi 🎈 🌌 👽 🛸
 
 ## Goal
 
@@ -6,7 +6,17 @@ Launch a latex weather balloon filled with helium into the stratosphere while re
 
 - Altitude goal is 100,000ft _(30,480m)_.
 
-StratoPi is 100% purely a hobby project with zero financial incentives. All parts purchased at retail prices. Somewhat new/rookie to Python programming so go easy on me 😃. My experience is mostly as a DevOps Engineer.
+StratoPi is 100% purely a hobby project with zero financial incentives. All parts purchased at retail prices. Somewhat new/rookie to Python programming so go easy on me 😁. My experience is mostly as a DevOps Engineer.
+
+## Wanna Help?
+
+- Potentially joining the launch and recovery in person
+- Code review and PR's of my noob Python 🙈
+- Parts recommendations and optimizations
+- 3d modeling and printing _(structural and mounting aspects)_
+- Flight, space, physics experience as I am sure I am negligently overlooking details
+- Video editing of the footage 🤞
+- Have a helium "hookup"?
 
 ## Parts
 
