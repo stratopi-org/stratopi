@@ -6,24 +6,32 @@ Launch a weather balloon filled with helium into the stratosphere while recordin
 
 ## Parts
 
-### Computer
+#### Computer
 
 [Raspberry Pi 3 B+](https://www.raspberrypi.com/products/raspberry-pi-3-model-b-plus/). I already had an extra Raspberry Pi 3 B+ lying around so I used that. It's plenty powerful in terms of processing and memory and it's really power efficient. A newer [Raspberry Pi 4](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/) would work as well.
 
-### Cellular communication / GPS
+#### Cameras
+
+[RunCam 5 Orange](https://shop.runcam.com/runcam-5-orange/). Ultra-light _(56 grams)_ 4K HD camera with image stabilization. Specifically built for airborne [FPV](https://en.wikipedia.org/wiki/First-person_view_(radio_control).
+
+#### Cellular communication / GPS
 
 [Waveshare SIM7600A-H 4G HAT Board](https://www.amazon.com/gp/product/B07PLTP3M6). Provides GPS support which facilitates locating the payload after descent and communications capability using 4G wireless networking.
 
-### Computer battery
+#### Auxiliary location
 
-[Pisugar 3 Plus](https://www.amazon.com/gp/product/B09MJ876FW). A polished integrated battery and software controller specifically designed for Raspberry Pi's.
+[Apple AirTag](https://www.apple.com/shop/buy-airtag/airtag/1-pack). Provides auxiliary location tracking usign bluetooth and the Apple Find My network.
 
-### Temperature, pressure, humidity sensor
+#### Temperature, pressure, humidity sensor
 
 [Bosch BME280 Sensor](https://www.amazon.com/gp/product/B0BQFV883T). Provides environmental data; atmospheric pressure, temperature, and humidity.
 I used the [ELEGOO 40pin cable pack](https://www.amazon.com/gp/product/B01EV70C78) to connect the BME280 sensor to the Raspberry Pi.
 
-### Camera battery
+#### Computer battery
+
+[Pisugar 3 Plus](https://www.amazon.com/gp/product/B09MJ876FW). A integrated battery and software controller specifically designed for Raspberry Pi's.
+
+#### Camera battery
 
 [RGVOTA 38800mAh USB-A power bank](https://www.amazon.com/dp/B09H4GLZXT?th=1). Required extended battery power for the cameras.
 
