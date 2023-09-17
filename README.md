@@ -11,7 +11,7 @@ StratoPi is 100% purely a hobby project with zero financial incentives. All part
 ## Wanna Help?
 
 - Potentially joining the launch and recovery in person
-- Code review and PR's of my _noob_ Python 🙈
+- Code review and PR's of my _noob_ Python 🙈. Dig in looking at the [software](https://github.com/stratopi-org/stratopi/tree/master/software).
 - Parts recommendations and optimizations
 - 3d modeling and printing _(structural and mounting aspects)_
 - Flight, space, physics experience as I am sure I am negligently overlooking details
