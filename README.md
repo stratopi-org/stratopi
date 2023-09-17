@@ -1,6 +1,6 @@
 # StratoPi
 
-## Goals
+## Goal
 
 Launch a weather balloon filled with helium into the stratosphere while recording the entire video footage of the ascent and descent flights using multiple cameras. Successfully recover the payload, which includes the Raspberry Pi computer, flight data, and video cameras and footage.
 
@@ -12,7 +12,7 @@ Launch a weather balloon filled with helium into the stratosphere while recordin
 
 - #### Cameras
 
-[RunCam 5 Orange](https://shop.runcam.com/runcam-5-orange/). Ultra-light _(56 grams)_ 4K HD camera with image stabilization. Specifically built for airborne [FPV](https://en.wikipedia.org/wiki/First-person_view_\(radio_control\)).
+[RunCam 5 Orange](https://shop.runcam.com/runcam-5-orange/). Ultra-light _(56 grams)_ 4K HD camera with image stabilization. Uses a Sony IMX 377 12MP sensor and specifically built for airborne [FPV](https://en.wikipedia.org/wiki/First-person_view_\(radio_control\)).
 
 - #### Cellular communication / GPS
 
