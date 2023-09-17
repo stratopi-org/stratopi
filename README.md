@@ -35,7 +35,7 @@ I used the [ELEGOO 40pin cable pack](https://www.amazon.com/gp/product/B01EV70C7
 
 - #### Parachute
 
-[Parachute]()< br/>
+[Parachute]()<br/>
 [Parachute cord]()
 
 - #### Payload external shroud and miscellaneous
