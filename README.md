@@ -10,11 +10,11 @@ StratoPi is 100% purely a hobby project with zero financial incentives. All part
 
 ## Wanna Help?
 
-- Potentially joining the launch and recovery in person
-- Code review and PR's of my noob Python 🙈
+- Code review and PR's of my _noob_ Python 🙈
 - Parts recommendations and optimizations
 - 3d modeling and printing _(structural and mounting aspects)_
 - Flight, space, physics experience as I am sure I am negligently overlooking details
+- Potentially joining the launch and recovery in person
 - Video editing of the footage 🤞
 - Have a helium "hookup"?
 
@@ -65,7 +65,7 @@ I used the [ELEGOO 40pin cable pack](https://www.amazon.com/gp/product/B01EV70C7
 
 ## Software architecture
 
-All the software is written in Python 3 using standard PyPI packages. Originally, I was planning to run each application in a Docker container but decided to keep things as simple as possible and opted to use tried and tested systemd services for each application. [KISS](https://en.wikipedia.org/wiki/KISS_principle)!
+All the software is written in Python 3 using standard PyPI packages. Originally, I was planning to run each application in a Docker container but decided to keep things as simple as possible and opted to use tried and tested _systemd_ services for each application. [KISS](https://en.wikipedia.org/wiki/KISS_principle)!
 
 - ### [battery](https://github.com/stratopi-org/stratopi/tree/master/software/battery)
 
