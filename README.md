@@ -16,8 +16,8 @@ StratoPi is 100% purely a hobby project with zero financial incentives. All part
 - 3d modeling and printing _(structural and mounting aspects)_
 - Flight, space, physics experience as I am sure I am negligently overlooking details
 - GIS and GPS experience. KML, GeoJSON, GPS Visualizer, Google Earth/Maps
-- Video editing of the footage 🤞
-- Have a helium "hookup"?
+- Video editing of the flight footage 🤞
+- Have a helium "hookup"? 😉
 
 ## Parts
 
