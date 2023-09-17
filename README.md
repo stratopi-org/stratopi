@@ -35,7 +35,8 @@ Launch a latex weather balloon filled with helium into the stratosphere while re
 
 - #### Cellular communication / GPS
 
-[Waveshare SIM7600A-H 4G HAT Board](https://www.amazon.com/gp/product/B07PLTP3M6). Provides GPS support which facilitates locating the payload after descent and communications capability using 4G wireless networking.
+[Waveshare SIM7600A-H 4G HAT Board](https://www.amazon.com/gp/product/B07PLTP3M6). Provides GPS support which facilitates locating the payload after descent and communications capability using 4G wireless networking.<br />
+[Simbase SIM card and connectivity](https://www.simbase.com/). Provides wireless connectivity for IOT devices using multiple mobile operators. Wireless data is VERY expensive _($0.01 per MB)_ with Simbase so optimizations and clever solutions need to be implemented in the communications application.
 
 - #### Auxiliary location
 
