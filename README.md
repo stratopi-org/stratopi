@@ -66,7 +66,7 @@ I used the [ELEGOO 40pin cable pack](https://www.amazon.com/gp/product/B01EV70C7
 
 ## Software architecture
 
-All the software is written in Python 3 using standard PyPI packages. The pattern of each application is essentially poll for some data, and then insert that data into PostgreSQL. Originally, I was planning to run each application in a Docker container but decided to keep things as simple as possible and opted to use tried and true _systemd_ services for each application. [KISS](https://en.wikipedia.org/wiki/KISS_principle)!
+All the software is written in Python 3 using standard PyPI packages. The pattern of each application is essentially poll for some data, and then insert that data into PostgreSQL. The exception being the communication application which pulls data from PostgreSQL and sends it via wireless networking. Originally, I was planning to run each application in a Docker container but decided to keep things as simple as possible and opted to use tried and true _systemd_ services for each application. [KISS](https://en.wikipedia.org/wiki/KISS_principle)!
 
 - ### [battery](https://github.com/stratopi-org/stratopi/tree/master/software/battery)
 
