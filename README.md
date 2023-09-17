@@ -10,12 +10,12 @@ StratoPi is 100% purely a hobby project with zero financial incentives. All part
 
 ## Wanna Help?
 
+- Potentially joining the launch and recovery in person
 - Code review and PR's of my _noob_ Python 🙈
 - Parts recommendations and optimizations
 - 3d modeling and printing _(structural and mounting aspects)_
 - Flight, space, physics experience as I am sure I am negligently overlooking details
 - GIS and GPS experience. KML, GeoJSON, GPS Visualizer, Google Earth/Maps
-- Potentially joining the launch and recovery in person
 - Video editing of the footage 🤞
 - Have a helium "hookup"?
 
