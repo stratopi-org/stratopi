@@ -4,6 +4,8 @@
 
 Launch a weather balloon filled with helium into the stratosphere while recording the entire video footage of the ascent and descent flights using multiple cameras. Successfully recover the payload, which includes the Raspberry Pi computer, flight data, and video cameras and footage.
 
+- Altitude goal is 100,000ft _(30,480m)_.
+
 ## Parts
 
 - #### Computer
