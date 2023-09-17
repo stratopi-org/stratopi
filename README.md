@@ -12,7 +12,7 @@ Launch a weather balloon filled with helium into the stratosphere while recordin
 
 #### Cameras
 
-[RunCam 5 Orange](https://shop.runcam.com/runcam-5-orange/). Ultra-light _(56 grams)_ 4K HD camera with image stabilization. Specifically built for airborne [FPV](https://en.wikipedia.org/wiki/First-person_view_(radio_control).
+[RunCam 5 Orange](https://shop.runcam.com/runcam-5-orange/). Ultra-light _(56 grams)_ 4K HD camera with image stabilization. Specifically built for airborne [FPV](https://en.wikipedia.org/wiki/First-person_view_\(radio_control\)).
 
 #### Cellular communication / GPS
 
@@ -20,7 +20,7 @@ Launch a weather balloon filled with helium into the stratosphere while recordin
 
 #### Auxiliary location
 
-[Apple AirTag](https://www.apple.com/shop/buy-airtag/airtag/1-pack). Provides auxiliary location tracking usign bluetooth and the Apple Find My network.
+[Apple AirTag](https://www.apple.com/shop/buy-airtag/airtag/1-pack). Provides auxiliary location tracking using bluetooth and the Apple Find My network.
 
 #### Temperature, pressure, humidity sensor
 
@@ -39,16 +39,16 @@ I used the [ELEGOO 40pin cable pack](https://www.amazon.com/gp/product/B01EV70C7
 
 All the software is written in Python 3 using standard PyPI packages. Originally, I was planning to run each application in a Docker container but decided to keep things as simple as possible and opted to use tried and tested systemd services for each application. [KISS](https://en.wikipedia.org/wiki/KISS_principle)!
 
-### [battery](https://github.com/stratopi-org/stratopi/tree/master/software/battery)
+- ### [battery](https://github.com/stratopi-org/stratopi/tree/master/software/battery)
 
 Polls the battery percentage as well as the battery tempature and inserts the data into PostgreSQL.
 
-### [communication](https://github.com/stratopi-org/stratopi/tree/master/software/communication)
+- ### [communication](https://github.com/stratopi-org/stratopi/tree/master/software/communication)
 
-### [environmental](https://github.com/stratopi-org/stratopi/tree/master/software/environmental)
+- ### [environmental](https://github.com/stratopi-org/stratopi/tree/master/software/environmental)
 
 Polls the Bosch BME280 sensor and inserts the data into PostgreSQL.
 
-### [location](https://github.com/stratopi-org/stratopi/tree/master/software/location)
+- ### [location](https://github.com/stratopi-org/stratopi/tree/master/software/location)
 
 Polls the Waveshare GPS and inserts the data into PostgreSQL. Provides date, time, latitude, longitude, altitude, speed, and course. From course, can also determine direction such as North, Southeast, etc.
