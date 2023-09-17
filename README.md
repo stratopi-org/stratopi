@@ -6,7 +6,7 @@ Launch a latex weather balloon filled with helium into the stratosphere while re
 
 - Altitude goal is 100,000ft _(30,480m)_.
 
-StratoPi is 100% purely a hobby project with zero financial incentives. All parts purchased at retail prices. Somewhat new/rookie to Python programming so go easy on me 😁. My experience is mostly as a DevOps Engineer.
+StratoPi is 100% purely a hobby project with zero financial incentives. All parts purchased at retail prices. Somewhat new/rookie to Python programming so go easy on me 😁. My experience is mostly as the founder of [Elastic Byte](https://elasticbyte.netsx) and a DevOps Engineer.
 
 ## Wanna Help?
 
@@ -22,7 +22,7 @@ StratoPi is 100% purely a hobby project with zero financial incentives. All part
 
 - #### Weather balloon
 
-[Latex weather balloon]()
+*(TBD)* [Latex weather balloon]()
 
 - #### Computer
 
@@ -47,13 +47,13 @@ I used the [ELEGOO 40pin cable pack](https://www.amazon.com/gp/product/B01EV70C7
 
 - #### Parachute
 
-[Parachute]()<br />
-[Parachute cord]()
+*(TBD)* [Parachute]()<br />
+*(TBD)* [Parachute cord]()
 
 - #### Payload external shroud and miscellaneous
 
-[Styrofoam cooler]()<br />
-[Hand warmers]()
+*(TBD)* [Styrofoam cooler]()<br />
+*(TBD)* [Hand warmers]()
 
 - #### Computer battery
 
