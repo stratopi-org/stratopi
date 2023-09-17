@@ -8,6 +8,10 @@ Launch a weather balloon filled with helium into the stratosphere while recordin
 
 ## Parts
 
+- #### Weather balloon
+
+[Weather balloon]()
+
 - #### Computer
 
 [Raspberry Pi 3 B+](https://www.raspberrypi.com/products/raspberry-pi-3-model-b-plus/). I already had an extra Raspberry Pi 3 B+ lying around so I used that. It's plenty powerful in terms of processing and memory and it's really power efficient. A newer [Raspberry Pi 4](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/) would work as well.
@@ -28,6 +32,16 @@ Launch a weather balloon filled with helium into the stratosphere while recordin
 
 [Bosch BME280 Sensor](https://www.amazon.com/gp/product/B0BQFV883T). Provides environmental data; atmospheric pressure, temperature, and humidity.
 I used the [ELEGOO 40pin cable pack](https://www.amazon.com/gp/product/B01EV70C78) to connect the BME280 sensor to the Raspberry Pi.
+
+- #### Parachute
+
+[Parachute]()
+[Parachute cord]()
+
+- #### Payload external shroud and miscellaneous
+
+[Styrofoam cooler]()
+[Hand warmers]()
 
 - #### Computer battery
 
