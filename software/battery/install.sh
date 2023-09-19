@@ -8,7 +8,7 @@ echo "✅ Installed pip packages"
 cat << EOF | sudo tee /etc/systemd/system/stratopi-battery.service > /dev/null
 [Unit]
 Description=StratoPi Battery
-After=network.target postgresql.service
+After=multi-user.target postgresql.service
 
 [Service]
 User=root
