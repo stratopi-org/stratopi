@@ -14,6 +14,7 @@ Launch a latex weather balloon filled with helium into the stratosphere while re
 - Code review and PR's of my _noob_ Python 🙈. Dig into the [software](https://github.com/stratopi-org/stratopi/tree/master/software).
 - Parts recommendations and optimizations
 - 3d modeling and printing _(structural and mounting aspects)_
+- Website / Github Pages
 - Flight, space, physics experience as I am sure I am negligently overlooking details
 - GIS and GPS experience. KML, GeoJSON, GPS Visualizer, Google Earth/Maps
 - Video editing of the flight footage 🤞
