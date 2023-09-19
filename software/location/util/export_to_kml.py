@@ -1,11 +1,43 @@
+import os
+import psycopg2
 import simplekml
+from lib import log
+from lib import common
+
+conn = psycopg2.connect(os.environ['POSTGRES_URL'])
+masked_postgres_url = common.mask_postgres_url_password(
+    os.environ['POSTGRES_URL'])
+
+log.debug(f'connected to PostgreSQL ({masked_postgres_url})')
+
+cursor = conn.cursor()
+cursor.execute("SELECT coordinates[0] AS longitude, \
+                       coordinates[1] AS latitude, \
+                       altitude_m, \
+                       speed_kn, \
+                       course_d, \
+                       direction, \
+                       added \
+                FROM location ORDER BY added ASC;")
+
+rows = cursor.fetchall()
+
 kml = simplekml.Kml()
-ls = kml.newlinestring(name='A LineString')
-ls.description = ''
-ls.timestamp.when = ''
-ls.coords = [(18.333868, -34.038274, 10.0), (18.370618, -34.034421, 10.0)]
+ls = kml.newlinestring(name='StratoPi')
+ls.coords = []
 ls.extrude = 1
 ls.altitudemode = simplekml.AltitudeMode.relativetoground
 ls.style.linestyle.width = 5
 ls.style.linestyle.color = simplekml.Color.blue
-kml.save('LineString Styling.kml')
+ls.description = ''
+ls.timestamp.when = ''
+
+for row in rows:
+    longitude, latitude, altitude_m, speed_kn, course_d, direction, added = row
+    ls.coords.append((longitude, latitude, altitude_m))
+
+cursor.close()
+conn.close()
+kml.save('stratopi-location.kml')
+
+log.info('successfully created stratopi-location.kml')

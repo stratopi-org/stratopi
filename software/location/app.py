@@ -53,7 +53,9 @@ async def loop_fn():
                 raise ValueError('no GPS fix')
 
             gps_data = gps.parse(gps_data_raw)
-            latitude, longitude = gps_data['coordinates']
+
+            # x coordinate is longitude and y coordinates is latitude
+            longitude, latitude = gps_data['coordinates']
 
             sql_query = "INSERT INTO location (date, time, coordinates, altitude_m, speed_kn, course_d, direction) VALUES (%s, %s, POINT(%s, %s), %s, %s, %s, %s)"
 
