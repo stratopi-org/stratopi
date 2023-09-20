@@ -21,6 +21,9 @@ cursor.execute("SELECT coordinates[0] AS longitude, \
                 FROM location ORDER BY added ASC;")
 
 rows = cursor.fetchall()
+cursor.close()
+conn.close()
+log.debug('closed PostgreSQL connection')
 
 kml = simplekml.Kml()
 ls = kml.newlinestring(name='StratoPi')
@@ -34,10 +37,8 @@ ls.timestamp.when = ''
 
 for row in rows:
     longitude, latitude, altitude_m, speed_kn, course_d, direction, added = row
-    ls.coords.append((longitude, latitude, altitude_m))
+    ls.coords.addcoordinates([(longitude, latitude, altitude_m)])
 
-cursor.close()
-conn.close()
 kml.save('stratopi-location.kml')
 
 log.info('successfully created stratopi-location.kml')
