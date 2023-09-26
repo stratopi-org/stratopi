@@ -4,9 +4,17 @@
 
 Launch a latex weather balloon filled with helium into the stratosphere while recording the entire video footage of the ascent and descent flights using multiple cameras. Successfully recover the payload, which includes the Raspberry Pi computer, flight data _(GPS, tempature, presssure, humidity)_, and video cameras and footage.
 
+*In other words...*
+
+The goal is to send a weather balloon into the stratosphere and capture the video footage as well as write a bunch of ridiculously over engineered software to record metrics of the ascent and descent. If you like computing, Raspberry Pi's, space, flight, and have way too much free time and disposable income this might be just the place for you.
+
 - Altitude goal is 100,000ft _(30,480m)_.
 
 *Open sourced and community developed*. StratoPi is 100% purely a hobby project with zero financial incentives. All parts purchased at retail prices. Somewhat new/rookie to Python programming so go easy on me 😁. My experience is mostly as the founder of [Elastic Byte](https://elasticbyte.net) and a DevOps Engineer.
+
+## Show Me the Videos
+
+
 
 ## Wanna Help?
 
@@ -18,6 +26,7 @@ Launch a latex weather balloon filled with helium into the stratosphere while re
 - Flight, space, physics experience as I am sure I am negligently overlooking details
 - GIS and GPS experience. KML, GeoJSON, GPS Visualizer, Google Earth/Maps
 - Video editing of the flight footage 🤞
+- Have a latex baloon "hookup"?
 - Have a helium "hookup"? 😉
 
 ## Parts
