@@ -6,7 +6,7 @@ Launch a latex weather balloon filled with helium into the stratosphere while re
 
 *In other words...*
 
-The goal is to send a weather balloon into the stratosphere and capture the video footage as well as write a bunch of ridiculously over engineered software to record metrics of the ascent and descent. If you like computing, Raspberry Pi's, space, flight, and have way too much free time and perhaps disposable income this might be just the place for you.
+The goal is to send a weather balloon into the stratosphere and capture the video footage as well as write a bunch of ridiculously over engineered python software to record metrics of the ascent and descent. If you like computing, Raspberry Pi's, space, flight, and have way too much free time and perhaps disposable income this might be just the place for you.
 
 - Altitude goal is 100,000ft _(30,480m)_.
 
@@ -14,11 +14,13 @@ Open sourced and community developed. StratoPi is 100% purely a hobby project wi
 
 ## Show Me the Videos
 
+https://youtu.be/SpzycIWPKsQ
 
+https://youtube.com/shorts/Ua4CM7kJQfI
 
 ## Wanna Help?
 
-- Potentially joining the launch and recovery in person _Tennessee_
+- Potentially joining the launch and recovery in person _(Tennessee launch... I think)_
 - Code review and PR's of my _noob_ Python 🙈. Dig into the [software](https://github.com/stratopi-org/stratopi/tree/master/software).
 - Parts recommendations and optimizations
 - 3d modeling and printing _(structural and mounting aspects)_
