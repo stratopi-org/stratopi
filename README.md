@@ -14,7 +14,7 @@ Open sourced and community developed. StratoPi is 100% purely a hobby project wi
 
 ## Show Me the Videos
 
-https://youtu.be/SpzycIWPKsQ
+[![Raspberry Pi computer, battery, communications payload overview](http://img.youtube.com/vi/SpzycIWPKsQ/0.jpg)](http://www.youtube.com/watch?v=SpzycIWPKsQ "Raspberry Pi computer, battery, communications payload overview")
 
 https://youtube.com/shorts/Ua4CM7kJQfI
 
