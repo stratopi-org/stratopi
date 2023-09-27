@@ -39,7 +39,7 @@ Open sourced and community developed. StratoPi is 100% purely a hobby project wi
 
 - #### Cameras
 
-[RunCam 5 Orange](https://shop.runcam.com/runcam-5-orange/). Ultra-light _(56 grams)_ 4K HD camera with image stabilization. Uses a Sony IMX 377 12MP sensor and specifically built for airborne [FPV](https://en.wikipedia.org/wiki/First-person_view_\(radio_control\)).
+[RunCam 5 Orange](https://shop.runcam.com/runcam-5-orange/). Ultra-light _(56 grams)_ 4K HD camera with image stabilization. Uses a Sony IMX 377 12MP sensor and specifically built for airborne [FPV](https://en.wikipedia.org/wiki/First-person_view_\(radio_control\)).<br />
 [TEAMGROUP microSD Card 128GB - 3 Pack](https://www.amazon.com/dp/B09WRFQYW3). microSD storage for video footage.
 
 - #### Cellular communication / GPS
