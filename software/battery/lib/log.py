@@ -11,7 +11,7 @@ logging.basicConfig(level=log_level,
 stdout_logging = logging.Logger(name='stdout_logging',
                                 level=log_level)
 stdout_stream = logging.StreamHandler(stream=sys.stdout)
-stdout_stream.setFormatter(logging.Formatter('[%(levelname)s] %(asctime)s.%(msecs)03dZ %(message)s',
+stdout_stream.setFormatter(logging.Formatter('%(asctime)s.%(msecs)03dZ [%(levelname)s] %(message)s',
                                              datefmt='%Y-%m-%dT%H:%M:%S'))
 stdout_logging.addHandler(stdout_stream)
 
