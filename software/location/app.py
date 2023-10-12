@@ -28,7 +28,7 @@ parser.add_argument('--version',
 parser.parse_args()
 
 log.info(f'{NAME} v{VERSION} ({common.python_version()})')
-log.info(f'refreshing location data every {common.sec_to_min(SLEEP_TIME)} minute(s)')
+log.info(f'refreshing {NAME} data every {common.sec_to_min(SLEEP_TIME)} minute(s)')
 
 gps.power_on()
 
@@ -68,7 +68,7 @@ async def loop_fn():
 
             conn.commit()
             log.info(
-                f"inserted location data {latitude}°, {longitude}° {gps_data['altitude_m']}m into PostgreSQL")
+                f"inserted {NAME} data {latitude}°, {longitude}° {gps_data['altitude_m']}m into PostgreSQL")
         except Exception as err:
             log.error(err)
             conn.rollback()

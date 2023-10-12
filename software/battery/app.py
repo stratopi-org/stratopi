@@ -26,7 +26,7 @@ parser.add_argument('--version',
 parser.parse_args()
 
 log.info(f'{NAME} v{VERSION} ({common.python_version()})')
-log.info(f'refreshing battery data every {common.sec_to_min(SLEEP_TIME)} minute(s)')
+log.info(f'refreshing {NAME} data every {common.sec_to_min(SLEEP_TIME)} minute(s)')
 
 
 async def loop_fn():
@@ -56,7 +56,7 @@ async def loop_fn():
 
             conn.commit()
             log.info(
-                f'inserted battery data {battery_percent}% {battery_temperature}°C into PostgreSQL')
+                f'inserted {NAME} data {battery_percent}% {battery_temperature}°C into PostgreSQL')
         except Exception as err:
             log.error(err)
             conn.rollback()
