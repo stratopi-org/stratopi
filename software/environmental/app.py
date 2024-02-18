@@ -2,11 +2,14 @@ import argparse
 import os
 import asyncio
 import psycopg2
+import smbus2
+import bme280
 from lib import log
 from lib import common
 
 NAME = 'environmental'
-SLEEP_TIME = 60 * 1  # 1 minute
+SLEEP_TIME = 60 * 2  # 2 minutes
+BME280_ADDRESS = 0x76
 
 try:
     with open('.version', 'r', encoding='UTF-8') as f:
@@ -26,6 +29,9 @@ parser.parse_args()
 log.info(f'{NAME} v{VERSION} ({common.python_version()})')
 log.info(f'refreshing {NAME} data every {common.sec_to_min(SLEEP_TIME)} minute(s)')
 
+bus = smbus2.SMBus(1)
+calibration_params = bme280.load_calibration_params(bus, BME280_ADDRESS)
+
 
 async def loop_fn():
     while True:
@@ -37,7 +43,8 @@ async def loop_fn():
         cursor = conn.cursor()
 
         try:
-            log.debug('in try block')
+            data = bme280.sample(bus, BME280_ADDRESS, calibration_params)
+            print(data)
         except Exception as err:
             log.error(err)
             conn.rollback()
