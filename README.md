@@ -16,7 +16,7 @@ Open sourced and community developed. StratoPi is 100% purely a hobby project wi
 
 ## Wanna Help?
 
-- Potentially joining the launch and recovery in person _(Tennessee launch... I think)_
+- Potentially joining the launch and recovery in person _(Tennessee launch...)_
 - Code review and PR's of my _noob_ Python 🙈. Dig into the [software](https://github.com/stratopi-org/stratopi/tree/master/software).
 - Parts recommendations and optimizations
 - 3d modeling and printing _(structural and mounting aspects)_
