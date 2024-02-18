@@ -53,7 +53,7 @@ Open sourced and community developed. StratoPi is 100% purely a hobby project wi
 
 - #### Temperature, pressure, humidity sensor
 
-[Bosch BME280 Sensor](https://www.amazon.com/gp/product/B0BQFV883T). Provides environmental data; atmospheric pressure, temperature, and humidity.
+[Bosch BME280 Sensor](https://www.amazon.com/gp/product/B0BQFV883T). Provides environmental data.
 I used the [ELEGOO 40pin cable pack](https://www.amazon.com/gp/product/B01EV70C78) to connect the BME280 sensor to the Raspberry Pi.
 
 - #### Parachute
@@ -80,13 +80,13 @@ All the software is written in Python 3 using standard PyPI packages. The patter
 
 - ### [battery](https://github.com/stratopi-org/stratopi/tree/master/software/battery)
 
-Polls the battery percentage as well as the battery tempature and inserts the data into PostgreSQL.
+Polls the battery percentage as well as the battery temperature and inserts the data into PostgreSQL.
 
 - ### [communication](https://github.com/stratopi-org/stratopi/tree/master/software/communication)
 
 - ### [environmental](https://github.com/stratopi-org/stratopi/tree/master/software/environmental)
 
-Polls the Bosch BME280 sensor and inserts the data into PostgreSQL.
+Polls the Bosch BME280 sensor and inserts the data into PostgreSQL. Provides temperature, atmospheric pressure, and humidity.
 
 - ### [location](https://github.com/stratopi-org/stratopi/tree/master/software/location)
 
