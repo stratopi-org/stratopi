@@ -16,6 +16,7 @@ CREATE TABLE location (
     course_d NUMERIC(4, 1) NOT NULL,
     direction DIRECTION NOT NULL,
     added TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+
     PRIMARY KEY (id)
 );
 
