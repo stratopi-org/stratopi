@@ -1,12 +1,12 @@
 # battery
 
-## Create PostgreSQL schema:
+## Create PostgreSQL schema
 
 ```shell
 sudo -u postgres psql -h 127.0.0.1 -d stratopi -U stratopi -f ./database-schema.sql --password
 ```
 
-## Install
+## Install `systemd` service
 
 ```shell
 ./install.sh
@@ -15,6 +15,12 @@ sudo -u postgres psql -h 127.0.0.1 -d stratopi -U stratopi -f ./database-schema.
 ## Environment Variables
 
 - POSTGRES_URL
+
+## View logs
+
+```shell
+./view-logs.sh
+```
 
 ## Utilities
 
