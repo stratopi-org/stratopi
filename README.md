@@ -68,7 +68,7 @@ I used the [ELEGOO 40pin cable pack](https://www.amazon.com/gp/product/B01EV70C7
 
 - #### Computer battery
 
-[Pisugar 3 Plus](https://www.amazon.com/gp/product/B09MJ876FW). A integrated battery and software controller specifically designed for Raspberry Pi's.
+[PiSugar 3 Plus](https://www.amazon.com/gp/product/B09MJ876FW). A integrated battery and software controller specifically designed for Raspberry Pi's.
 
 - #### Camera battery
 
