@@ -10,11 +10,11 @@ Open sourced and community developed. StratoPi is 100% purely a hobby project wi
 
 ## Legality / FAA
 
-According to the [Strato Flights website](https://www.stratoflights.com/en/tutorial/weather-balloon-registration-insurance/usa/#:~:text=To%20launch%20a%20weather%20balloon,FAA%20Part%20101), must have approval from the Federal Aviation Administration _(FAA)_. Current events related to spy balloons may change laws and regulations.
+According to the [Strato Flights website](https://www.stratoflights.com/en/tutorial/weather-balloon-registration-insurance/usa/#:~:text=To%20launch%20a%20weather%20balloon,FAA%20Part%20101), must have approval from the Federal Aviation Administration _(FAA)_. Current events related to spy balloons may dramatically change laws and regulations at any time.
 
 See:
 
-- https://www.stratoflights.com/en/tutorial/weather-balloon-registration-insurance/usa/#:~:text=To%20launch%20a%20weather%20balloon,FAA%20Part%20101
+- https://www.ecfr.gov/current/title-14/chapter-I/subchapter-F/part-101
 - https://www.ecfr.gov/current/title-14/chapter-I/subchapter-C/part-48
 
 ## Videos
