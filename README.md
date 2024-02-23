@@ -57,6 +57,14 @@ Open sourced and community developed. StratoPi is 100% purely a hobby project wi
 [Bosch BME280 Sensor](https://www.amazon.com/gp/product/B0BQFV883T). Provides environmental data.
 I used the [ELEGOO 40pin cable pack](https://www.amazon.com/gp/product/B01EV70C78) to connect the BME280 sensor to the Raspberry Pi.
 
+- #### Computer battery
+
+[PiSugar 3 Plus](https://www.amazon.com/gp/product/B09MJ876FW). A integrated battery and software controller specifically designed for Raspberry Pi's.
+
+- #### Camera battery
+
+[RGVOTA 38800mAh USB-A power bank](https://www.amazon.com/dp/B09H4GLZXT?th=1). Required extended battery power for the cameras.
+
 - #### Parachute
 
 *(TBD)* [Parachute]()<br />
@@ -67,17 +75,9 @@ I used the [ELEGOO 40pin cable pack](https://www.amazon.com/gp/product/B01EV70C7
 *(TBD)* [Styrofoam cooler]()<br />
 *(TBD)* [Hand warmers]()
 
-- #### Computer battery
-
-[PiSugar 3 Plus](https://www.amazon.com/gp/product/B09MJ876FW). A integrated battery and software controller specifically designed for Raspberry Pi's.
-
-- #### Camera battery
-
-[RGVOTA 38800mAh USB-A power bank](https://www.amazon.com/dp/B09H4GLZXT?th=1). Required extended battery power for the cameras.
-
 ## Software architecture
 
-All the software is written in Python 3 using standard PyPI packages. The pattern of each application is essentially poll for some data, and then insert that data into PostgreSQL. The exception being the communication application which pulls data from PostgreSQL and sends it via wireless networking. Originally, I was planning to run each application in a Docker container but decided to keep things as simple as possible and opted to use tried and true _systemd_ services for each application. [KISS](https://en.wikipedia.org/wiki/KISS_principle)!
+All the software is written in Python 3 using standard PyPI packages. The pattern of each application is essentially poll for some data, and then insert that data into PostgreSQL. The exception being the communication application which pulls data from PostgreSQL and sends it via wireless networks. Originally, I was planning to run each application in a Docker container but decided to keep things as simple as possible and opted to use tried and true _systemd_ services for each application. [KISS](https://en.wikipedia.org/wiki/KISS_principle)!
 
 - ### [battery](https://github.com/stratopi-org/stratopi/tree/master/software/battery)
 
