@@ -8,6 +8,15 @@ The goal is to launch a latex weather balloon filled with helium into the strato
 
 Open sourced and community developed. StratoPi is 100% purely a hobby project with zero financial incentives. All parts purchased at retail prices. Somewhat new/rookie to Python programming so go easy on me 😁. My experience is mostly as the founder of [Elastic Byte](https://elasticbyte.net) and a DevOps Engineer.
 
+## Legality / FAA
+
+According to the [Strato Flights website](https://www.stratoflights.com/en/tutorial/weather-balloon-registration-insurance/usa/#:~:text=To%20launch%20a%20weather%20balloon,FAA%20Part%20101), must have approval from the Federal Aviation Administration _(FAA)_. Current events related to spy balloons may change laws and regulations.
+
+See:
+
+- https://www.stratoflights.com/en/tutorial/weather-balloon-registration-insurance/usa/#:~:text=To%20launch%20a%20weather%20balloon,FAA%20Part%20101
+- https://www.ecfr.gov/current/title-14/chapter-I/subchapter-C/part-48
+
 ## Videos
 
 [![Raspberry Pi computer, battery, communications payload overview](http://img.youtube.com/vi/SpzycIWPKsQ/0.jpg)](http://www.youtube.com/watch?v=SpzycIWPKsQ "Raspberry Pi computer, battery, communications payload overview")
