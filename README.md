@@ -28,6 +28,24 @@ Open sourced and community developed. StratoPi is 100% purely a hobby project wi
 - Have a latex baloon "hookup"?
 - Have a helium "hookup"? 😉
 
+## Software architecture
+
+All the software is written in Python 3 using standard PyPI packages. The pattern of each application is essentially poll for some data, and then insert that data into PostgreSQL. The exception being the communication application which pulls data from PostgreSQL and sends it via wireless networks. Originally, I was planning to run each application in a Docker container but decided to keep things as simple as possible and opted to use tried and true _systemd_ services for each application. [KISS](https://en.wikipedia.org/wiki/KISS_principle)!
+
+- ### [battery](https://github.com/stratopi-org/stratopi/tree/master/software/battery)
+
+Polls the battery percentage as well as the battery temperature and inserts the data into PostgreSQL.
+
+- ### [communication](https://github.com/stratopi-org/stratopi/tree/master/software/communication)
+
+- ### [environmental](https://github.com/stratopi-org/stratopi/tree/master/software/environmental)
+
+Polls the Bosch BME280 sensor and inserts the data into PostgreSQL. Provides temperature, atmospheric pressure, and humidity.
+
+- ### [location](https://github.com/stratopi-org/stratopi/tree/master/software/location)
+
+Polls the Waveshare GPS and inserts the data into PostgreSQL. Provides date, time, latitude, longitude, altitude, speed, and course. From course, can also determine direction such as North, Southeast, etc.
+
 ## Parts
 
 - #### Weather balloon
@@ -74,21 +92,3 @@ I used the [ELEGOO 40pin cable pack](https://www.amazon.com/gp/product/B01EV70C7
 
 *(TBD)* [Styrofoam cooler]()<br />
 *(TBD)* [Hand warmers]()
-
-## Software architecture
-
-All the software is written in Python 3 using standard PyPI packages. The pattern of each application is essentially poll for some data, and then insert that data into PostgreSQL. The exception being the communication application which pulls data from PostgreSQL and sends it via wireless networks. Originally, I was planning to run each application in a Docker container but decided to keep things as simple as possible and opted to use tried and true _systemd_ services for each application. [KISS](https://en.wikipedia.org/wiki/KISS_principle)!
-
-- ### [battery](https://github.com/stratopi-org/stratopi/tree/master/software/battery)
-
-Polls the battery percentage as well as the battery temperature and inserts the data into PostgreSQL.
-
-- ### [communication](https://github.com/stratopi-org/stratopi/tree/master/software/communication)
-
-- ### [environmental](https://github.com/stratopi-org/stratopi/tree/master/software/environmental)
-
-Polls the Bosch BME280 sensor and inserts the data into PostgreSQL. Provides temperature, atmospheric pressure, and humidity.
-
-- ### [location](https://github.com/stratopi-org/stratopi/tree/master/software/location)
-
-Polls the Waveshare GPS and inserts the data into PostgreSQL. Provides date, time, latitude, longitude, altitude, speed, and course. From course, can also determine direction such as North, Southeast, etc.
