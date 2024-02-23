@@ -16,6 +16,7 @@ Open sourced and community developed. StratoPi is 100% purely a hobby project wi
 
 ## Wanna Help?
 
+- See [Issues](https://github.com/stratopi-org/stratopi/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement) for outstanding tasks
 - Potentially joining the launch and recovery in person _(Tennessee launch...)_
 - Code review and PR's of my _noob_ Python 🙈. Dig into the [software](https://github.com/stratopi-org/stratopi/tree/master/software).
 - Parts recommendations and optimizations
