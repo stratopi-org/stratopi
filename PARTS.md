@@ -1,4 +1,4 @@
-# Parts List
+# Parts list
 
 - ### Weather balloon
 
