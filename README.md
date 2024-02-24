@@ -14,7 +14,7 @@ View the [parts list](https://github.com/stratopi-org/stratopi/blob/master/PARTS
 
 ## Legality / FAA
 
-According to the [Strato Flights website](https://www.stratoflights.com/en/tutorial/weather-balloon-registration-insurance/usa/#:~:text=To%20launch%20a%20weather%20balloon,FAA%20Part%20101), must have approval from the Federal Aviation Administration _(FAA)_. *Laws and regulations may undergo significant changes at any time due to ongoing developments involving spy balloons.*
+According to the [Strato Flights website](https://www.stratoflights.com/en/tutorial/weather-balloon-registration-insurance/usa/#:~:text=To%20launch%20a%20weather%20balloon,FAA%20Part%20101), must have approval from the Federal Aviation Administration _(FAA)_. _Laws and regulations may undergo significant changes at any time due to ongoing developments involving spy balloons._
 
 See:
 
