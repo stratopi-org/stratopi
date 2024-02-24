@@ -23,17 +23,12 @@ def mask_postgres_url_password(_input):
 
 
 def cleanup_data(_input, str_format="{:.1f}"):
-    split_pieces = _input.split(': ')
-    if len(split_pieces) == 2:
-        try:
-            numeric_value = float(split_pieces[1])
-            if numeric_value.is_integer():  # check if is an integer
-                return "{:.0f}".format(numeric_value)  # format as flat integer
+    try:
+        numeric_value = float(_input)
+        if numeric_value.is_integer():  # check if is an integer
+            return "{:.0f}".format(numeric_value)  # format as flat integer
 
-            return str_format.format(numeric_value)  # format with str_format
-        except ValueError:
-            log.warning("value error in 'common.cleanup_data()'")
-            return _input  # return original if conversion to numeric fails
-    else:
-        log.warning("splitting on ': ' did not return exactly 2 pieces")
-        return _input  # return original if splitting fails
+        return str_format.format(numeric_value)  # format with str_format
+    except ValueError:
+        log.warning("value error in 'common.cleanup_data()'")
+        return _input  # return original if conversion to numeric fails
