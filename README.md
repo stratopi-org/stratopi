@@ -101,4 +101,5 @@ I used the [ELEGOO 40pin cable pack](https://www.amazon.com/gp/product/B01EV70C7
 - #### Payload external shroud and miscellaneous
 
 *(TBD)* [Styrofoam cooler]()<br />
-*(TBD)* [Hand warmers]()
+*(TBD)* [Hand warmers]()<br />
+*(TBD)* [Lighting / strobes / beacons]()
