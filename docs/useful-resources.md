@@ -1,7 +1,9 @@
 # Documentation and resources
 
-- [National Weather Service Weather Balloons](https://www.weather.gov/bmx/kidscorner_weatherballoons)
+- [National Weather Service Weather Balloon / Upper Air Observations](https://www.weather.gov/rev/upperair)
 - [Weather Balloon Tutorial](https://www.stratoflights.com/en/tutorial/)
+- [FAA Regulations for Unmanned Free Balloons](https://eclipse.montana.edu/education/engineering-course/eng-lesson09-faaregs.pdf)
+- [Nationwide Eclipse Ballooning Project](https://eclipse.montana.edu/)
 - [PiSugar 3 Wiki](https://github.com/PiSugar/PiSugar/wiki/PiSugar-3-Series)
 - [Waveshark SIM7600E-H 4G HAT product page](https://www.waveshare.com/wiki/SIM7600E-H_4G_HAT)
 - [Core Electronics - 4G and GPS HAT For Raspberry Pi - Waveshare SIM7600X](https://core-electronics.com.au/guides/raspberry-pi-4g-gps-hat/)
