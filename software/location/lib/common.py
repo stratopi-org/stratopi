@@ -26,13 +26,13 @@ def strip_list_elements(_list):
     return stripped_list
 
 
+def meters_to_feet(_meters):
+    return _meters * 3.28084
+
+
 def mps_to_knots(_mps):
     return _mps * 1.94384449
 
 
 def mps_to_mph(_mps):
     return _mps * 2.23693629
-
-
-def meters_to_feet(_meters):
-    return _meters * 3.28084
