@@ -14,6 +14,7 @@ According to the [Strato Flights website](https://www.stratoflights.com/en/tutor
 
 See:
 
+- https://eclipse.montana.edu/education/engineering-course/eng-lesson09-faaregs.pdf
 - https://www.ecfr.gov/current/title-14/chapter-I/subchapter-F/part-101
 - https://www.ecfr.gov/current/title-14/chapter-I/subchapter-C/part-48
 - https://www.cbsnews.com/news/military-tracking-balloon-western-us-military/
