@@ -40,8 +40,9 @@ I used the [ELEGOO 40pin cable pack](https://www.amazon.com/gp/product/B01EV70C7
 *(TBD)* [Parachute]()<br />
 *(TBD)* [Parachute cord / fishing line (40lb maximum)]()
 
-- ### Payload external shroud, heating, and miscellaneous
+- ### Payload external shroud, heating, FAA requirements, and miscellaneous
 
 *(TBD)* [Styrofoam cooler]()<br />
 *(TBD)* [Hand warmers]()<br />
-*(TBD)* [Lighting / strobes / beacons]()
+*(TBD)* [Lighting / strobes / beacons]()<br />
+*(TBD)* [Radar reflector]()
