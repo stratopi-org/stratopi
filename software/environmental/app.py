@@ -8,7 +8,7 @@ from lib import log
 from lib import common
 
 NAME = 'environmental'
-SLEEP_TIME = 60 * 2  # 2 minutes
+SLEEP_TIME = 60 * 1   # 1 minute
 BME280_ADDRESS = 0x76
 
 try:
