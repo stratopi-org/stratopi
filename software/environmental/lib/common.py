@@ -1,4 +1,5 @@
 import sys
+from lib import log
 
 
 def python_version():
@@ -21,18 +22,25 @@ def mask_postgres_url_password(_input):
     return f"{scheme}//{username}:{masked_password}@{url_parts[1]}"
 
 
-def cleanup_data(_input, str_format="{:.1f}"):
-    split_pieces = _input.split(': ')
-    if len(split_pieces) == 2:
-        try:
-            numeric_value = float(split_pieces[1])
-            if numeric_value.is_integer():  # check if is an integer
-                return "{:.0f}".format(numeric_value)  # format as flat integer
+def format_data(_input, str_format="{:.1f}"):
+    try:
+        numeric_value = float(_input)
+        if numeric_value.is_integer():  # check if is an integer
+            return "{:.0f}".format(numeric_value)  # format as flat integer
 
-            return str_format.format(numeric_value)  # format with str_format
-        except ValueError:
-            log.warning("value error in 'common.cleanup_data()'")
-            return _input  # return original if conversion to numeric fails
-    else:
-        log.warning("splitting on ': ' did not return exactly 2 pieces")
-        return _input  # return original if splitting fails
+        return str_format.format(numeric_value)  # format with str_format
+    except ValueError:
+        log.warning("value error in 'common.cleanup_data()'")
+        return _input  # return original if conversion to numeric fails
+
+
+def celsius_to_fahrenheit(_celsius):
+    return (_celsius * 9/5) + 32
+
+
+def hectopascal_to_bar(_hectopascal):
+    return _hectopascal / 1000
+
+
+def hectopascal_to_psi(_hectopascal):
+    return _hectopascal * 0.0145038

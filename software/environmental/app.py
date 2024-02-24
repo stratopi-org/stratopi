@@ -43,14 +43,17 @@ async def loop_fn():
         cursor = conn.cursor()
 
         try:
-            bme = bme280.sample(bus, BME280_ADDRESS, calibration_params)
+            data = bme280.sample(bus, BME280_ADDRESS, calibration_params)
+            temperature = common.format_data(data.temperature)
+            pressure = common.format_data(data.pressure)
+            humidity = common.format_data(data.humidity)
 
             cursor.execute('INSERT INTO environmental (temperature_c, pressure_hpa, humidity_rh) VALUES (%s, %s, %s)',
-                           (bme.temperature, bme.pressure, bme.humidity))
+                           (temperature, pressure, humidity))
 
             conn.commit()
             log.info(
-                f'inserted {NAME} data {bme.temperature}°C {bme.pressure} hPa {bme.humidity} %rH into PostgreSQL')
+                f'inserted {NAME} data {temperature}°C {pressure} hPa {humidity} %rH into PostgreSQL')
         except Exception as err:
             log.error(err)
             conn.rollback()
