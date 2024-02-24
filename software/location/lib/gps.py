@@ -74,6 +74,9 @@ def parse_direction(_course):
     if not isinstance(_course, float):
         raise ValueError('course must in degress and a float')
 
+    if _course < 0 or _course > 360:
+        raise ValueError('course must be between 0 and 360 degrees')
+
     # 'N' twice in the list is NOT a bug but a deliberate decision
     directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N']
     index = int((_course + 22.5) % 360 // 45)
