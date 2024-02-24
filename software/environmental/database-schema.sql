@@ -16,5 +16,8 @@ CREATE INDEX environmental_temperature_c_idx
 CREATE INDEX environmental_pressure_hpa_idx
     ON environmental (pressure_hpa DESC);
 
+CREATE INDEX environmental_humidity_rh_idx
+    ON environmental (humidity_rh DESC);
+
 CREATE INDEX environmental_added_idx
     ON environmental (added ASC);
