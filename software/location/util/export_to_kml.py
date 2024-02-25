@@ -36,14 +36,15 @@ kml = simplekml.Kml()
 ls = kml.newlinestring(name='StratoPi')
 ls.coords = []
 ls.extrude = 1
-ls.altitudemode = simplekml.AltitudeMode.relativetoground
+ls.altitudemode = simplekml.AltitudeMode.absolute
 ls.style.linestyle.width = 5
 ls.style.linestyle.color = simplekml.Color.blue
-ls.description = ''
-ls.timestamp.when = ''
 
 for row in rows:
     longitude, latitude, altitude_m, speed_kn, course_d, direction, added = row
+    pnt = kml.newpoint(name=f'Point at ({latitude}, {longitude})', coords=[(longitude, latitude, altitude_m)])
+    pnt.description = f'Altitude: {altitude_m} m\nSpeed: {speed_kn} kn\nCourse: {course_d} degrees\nDirection: {direction}'
+    pnt.style.iconstyle.icon.href = 'http://maps.google.com/mapfiles/kml/paddle/red-circle.png'
     ls.coords.addcoordinates([(longitude, latitude, altitude_m)])
 
 kml.save(kml_file)
