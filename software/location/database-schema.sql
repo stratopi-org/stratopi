@@ -26,9 +26,6 @@ CREATE INDEX location_date_idx
 CREATE INDEX location_time_idx
     ON location (time ASC);
 
-CREATE INDEX location_timestamp_idx
-    ON location ((date + time)::TIMESTAMP);
-
 CREATE INDEX location_coordinates_idx
     ON location USING GIST(coordinates);
 
