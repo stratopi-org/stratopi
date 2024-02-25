@@ -30,9 +30,9 @@ def meters_to_feet(_meters):
     return _meters * 3.28084
 
 
-def mps_to_knots(_mps):
-    return _mps * 1.94384449
+def knots_to_mps(_knots):
+    return _knots * 0.514444
 
 
-def mps_to_mph(_mps):
-    return _mps * 2.23693629
+def knots_to_mph(_knots):
+    return _knots * 1.15078
