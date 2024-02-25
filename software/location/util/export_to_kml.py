@@ -18,8 +18,7 @@ kml_file = os.path.join(tempfile.gettempdir(),
                         f'stratopi_location_{current_date}.kml')
 
 cursor = conn.cursor()
-cursor.execute("SELECT date, \
-                       time, \
+cursor.execute("SELECT (date + time)::TIMESTAMP AS timestamp, \
                        FORMAT('%sT%sZ', TO_CHAR(date, 'YYYY-MM-DD'), TO_CHAR(time, 'HH24:MI:SS')) AS timestamp_iso_8601, \
                        coordinates[0] AS longitude, \
                        coordinates[1] AS latitude, \
@@ -27,7 +26,7 @@ cursor.execute("SELECT date, \
                        speed_kn, \
                        course_d, \
                        direction \
-                FROM location ORDER BY added ASC;")
+                FROM location ORDER BY timestamp ASC;")
 
 rows = cursor.fetchall()
 cursor.close()
@@ -43,10 +42,10 @@ ls.style.linestyle.width = 7
 ls.style.linestyle.color = simplekml.Color.blue
 
 for i, row in enumerate(rows, start=1):
-    date, time, timestamp_iso_8601, longitude, latitude, altitude_m, speed_kn, course_d, direction = row
+    timestamp, timestamp_iso_8601, longitude, latitude, altitude_m, speed_kn, course_d, direction = row
     pnt = kml.newpoint(name=f'#{i}', coords=[(longitude, latitude, altitude_m)])
     pnt.timestamp.when = timestamp_iso_8601
-    pnt.description = f'{date} {time}\n\nAltitude: {altitude_m}m\nSpeed: {speed_kn}kn\nCourse: {course_d}°\nDirection: {direction}'
+    pnt.description = f'#{i}\n\nDate/Time: {timestamp}\nAltitude: {altitude_m}m\nSpeed: {speed_kn}kn\nCourse: {course_d}°\nDirection: {direction}'
     pnt.style.iconstyle.icon.href = 'https://maps.google.com/mapfiles/kml/paddle/red-circle.png'
     ls.coords.addcoordinates([(longitude, latitude, altitude_m)])
 
