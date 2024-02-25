@@ -27,12 +27,12 @@ def strip_list_elements(_list):
 
 
 def meters_to_feet(_meters):
-    return _meters * 3.28084
+    return float(_meters) * 3.28084
 
 
 def knots_to_mps(_knots):
-    return _knots * 0.514444
+    return float(_knots) * 0.514444
 
 
 def knots_to_mph(_knots):
-    return _knots * 1.15078
+    return float(_knots) * 1.15078
