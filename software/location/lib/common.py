@@ -35,4 +35,4 @@ def knots_to_mps(_knots):
 
 
 def knots_to_mph(_knots):
-    return "{:.1f}".format(float(_knots) * 1.15078)
+    return "{:.0f}".format(float(_knots) * 1.15078)
