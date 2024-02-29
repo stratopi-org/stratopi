@@ -14,7 +14,8 @@ sudo -u postgres psql -h 127.0.0.1 -d stratopi -U stratopi -f ./database-schema.
 
 ## Environment variables
 
-- POSTGRES_URL
+- `LOG_LEVEL` _(default=INFO)_
+- `POSTGRES_URL` _(required)_
 
 ## View logs
 
