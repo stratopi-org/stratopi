@@ -2,8 +2,8 @@
 set -eo pipefail; [[ $TRACE ]] && set -x
 
 # install pip packages globally
-sudo pip install --quiet -r requirements.txt
-echo "✅ Installed pip packages"
+sudo pip install --quiet -r requirements.txt --break-system-packages
+echo "=> Installed pip packages"
 
 cat << EOF | sudo tee /etc/systemd/system/stratopi-location.service > /dev/null
 [Unit]
@@ -23,11 +23,11 @@ EnvironmentFile=/etc/environment
 [Install]
 WantedBy=multi-user.target
 EOF
-echo "✅ Created systemd service 'stratopi-location.service'"
+echo "=> Created systemd service 'stratopi-location.service'"
 
 sudo systemctl daemon-reload
-echo "✅ Reloaded systemctl daemon"
+echo "=> Reloaded systemctl daemon"
 sudo systemctl enable stratopi-location.service
-echo "✅ Enabled systemd service 'stratopi-location.service'"
+echo "=> Enabled systemd service 'stratopi-location.service'"
 sudo systemctl restart stratopi-location.service
-echo "✅ Restarted systemd service 'stratopi-location.service'"
+echo "=> Restarted systemd service 'stratopi-location.service'"
