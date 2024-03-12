@@ -2,7 +2,7 @@
 
 - ### Weather balloon
 
-*(TBD)* [Latex weather balloon]()
+*(TBD)* [Latex weather balloon](https://github.com/stratopi-org/stratopi/blob/master/PARTS.md)
 
 - ### Computer
 
@@ -37,12 +37,12 @@ I used the [ELEGOO 40pin cable pack](https://www.amazon.com/gp/product/B01EV70C7
 
 - ### Parachute
 
-*(TBD)* [Parachute]()<br />
-*(TBD)* [Parachute cord / fishing line (40lb maximum)]()
+*(TBD)* [Parachute](https://github.com/stratopi-org/stratopi/blob/master/PARTS.md)<br />
+*(TBD)* [Parachute cord / fishing line (40lb maximum)](https://github.com/stratopi-org/stratopi/blob/master/PARTS.md)
 
 - ### Payload external shroud, heating, FAA requirements, and miscellaneous
 
-*(TBD)* [Styrofoam cooler]()<br />
-*(TBD)* [Hand warmers]()<br />
-*(TBD)* [Lighting / strobes / beacons]()<br />
-*(TBD)* [Radar reflector]()
+*(TBD)* [Styrofoam cooler](https://github.com/stratopi-org/stratopi/blob/master/PARTS.md)<br />
+*(TBD)* [Hand warmers](https://github.com/stratopi-org/stratopi/blob/master/PARTS.md)<br />
+*(TBD)* [Lighting / strobes / beacons](https://github.com/stratopi-org/stratopi/blob/master/PARTS.md)<br />
+*(TBD)* [Radar reflector](https://github.com/stratopi-org/stratopi/blob/master/PARTS.md)
