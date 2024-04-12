@@ -68,7 +68,7 @@ async def loop_fn():
 
             conn.commit()
             log.info(
-                f"inserted {NAME} data ({latitude}, {longitude}) <{common.decimal_degrees_to_dms(latitude, longitude)}> {gps_data['altitude_m']}m into PostgreSQL")
+                f"inserted {NAME} data ({latitude}, {longitude}) {common.decimal_degrees_to_dms(latitude, longitude, True)} {gps_data['altitude_m']}m into PostgreSQL")
         except Exception as err:
             log.error(err)
             conn.rollback()
