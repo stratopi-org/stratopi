@@ -26,7 +26,7 @@ def strip_list_elements(_list):
     return stripped_list
 
 
-def decimal_degrees_to_dms(_latitude, _longitude):
+def decimal_degrees_to_dms(_latitude, _longitude, _string=False):
     def decimal_to_dms(_deg):
         negative = _deg < 0
         _deg = abs(_deg)
@@ -45,7 +45,12 @@ def decimal_degrees_to_dms(_latitude, _longitude):
     lat_deg, lat_min, lat_sec = decimal_to_dms(_latitude)
     long_deg, long_min, long_sec = decimal_to_dms(_longitude)
 
-    return (lat_deg, lat_min, lat_sec), (long_deg, long_min, long_sec)
+    if _string:
+        lat_str = f"{abs(lat_deg)}° {lat_min}' {lat_sec}\" {'N' if lat_deg >= 0 else 'S'}"
+        long_str = f"{abs(long_deg)}° {long_min}' {long_sec}\" {'E' if long_deg >= 0 else 'W'}"
+        return lat_str, long_str
+    else:
+        return (lat_deg, lat_min, lat_sec), (long_deg, long_min, long_sec)
 
 
 def meters_to_feet(_meters):
