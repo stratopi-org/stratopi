@@ -38,6 +38,9 @@ def decimal_degrees_to_dms(_latitude, _longitude):
             d = -d
         return d, m, s
 
+    _latitude = float(_latitude)
+    _longitude = float(_longitude)
+
     lat_deg, lat_min, lat_sec = decimal_to_dms(_latitude)
     long_deg, long_min, long_sec = decimal_to_dms(_longitude)
 
