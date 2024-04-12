@@ -28,10 +28,14 @@ def strip_list_elements(_list):
 
 def decimal_degrees_to_dms(_latitude, _longitude):
     def decimal_to_dms(_deg):
+        negative = _deg < 0
+        _deg = abs(_deg)
         d = int(_deg)
         m, s = divmod((_deg - d) * 60, 1)
         m = int(m)
         s *= 60
+        if negative:
+            d = -d
         return d, m, s
 
     lat_deg, lat_min, lat_sec = decimal_to_dms(_latitude)
