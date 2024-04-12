@@ -1,4 +1,5 @@
 import sys
+import pyproj
 
 
 def python_version():
@@ -24,6 +25,20 @@ def mask_postgres_url_password(_input):
 def strip_list_elements(_list):
     stripped_list = [element.strip() for element in _list]
     return stripped_list
+
+
+def decimal_degrees_to_dms(_latitude, _longitude):
+    def decimal_to_dms(_deg):
+        d = int(_deg)
+        m, s = divmod((_deg - d) * 60, 1)
+        m = int(m)
+        s *= 60
+        return d, m, s
+
+    lat_deg, lat_min, lat_sec = decimal_to_dms(_latitude)
+    long_deg, long_min, long_sec = decimal_to_dms(_longitude)
+
+    return (lat_deg, lat_min, lat_sec), (long_deg, long_min, long_sec)
 
 
 def meters_to_feet(_meters):
