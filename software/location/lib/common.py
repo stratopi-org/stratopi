@@ -34,6 +34,7 @@ def decimal_degrees_to_dms(_latitude, _longitude):
         m, s = divmod((_deg - d) * 60, 1)
         m = int(m)
         s *= 60
+        s = round(s, 3)  # round seconds to three decimal places
         if negative:
             d = -d
         return d, m, s
