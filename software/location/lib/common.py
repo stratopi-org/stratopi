@@ -1,5 +1,4 @@
 import sys
-import pyproj
 
 
 def python_version():
