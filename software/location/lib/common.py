@@ -46,8 +46,8 @@ def decimal_degrees_to_dms(_latitude, _longitude, _string=False):
     long_deg, long_min, long_sec = decimal_to_dms(_longitude)
 
     if _string:
-        lat_str = f"{abs(lat_deg)}° {lat_min}' {lat_sec}\" {'N' if lat_deg >= 0 else 'S'}"
-        long_str = f"{abs(long_deg)}° {long_min}' {long_sec}\" {'E' if long_deg >= 0 else 'W'}"
+        lat_str = f"{abs(lat_deg)}° {int(lat_min)}\' {lat_sec:.3f}\" {'S' if lat_deg < 0 else 'N'}"
+        long_str = f"{abs(long_deg)}° {int(long_min)}\' {long_sec:.3f}\" {'W' if long_deg < 0 else 'E'}"
         return lat_str, long_str
     else:
         return (lat_deg, lat_min, lat_sec), (long_deg, long_min, long_sec)
