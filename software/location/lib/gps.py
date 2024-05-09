@@ -97,6 +97,7 @@ def parse(_data):
             time = datetime.strptime(data_fields[5], '%H%M%S.%f').time()
             latitude = parse_coordinate(data_fields[0], data_fields[1])
             longitude = parse_coordinate(data_fields[2], data_fields[3])
+            satellites = int(data_fields[5])
             altitude_m = "{:.1f}".format(float(data_fields[6]))
             speed_kn = "{:.1f}".format(float(data_fields[7]))
             course_d = "{:.1f}".format(float(data_fields[8]))
@@ -106,6 +107,7 @@ def parse(_data):
                 "date": date,
                 "time": time,
                 "coordinates": (latitude, longitude),
+                "satellites": satellites,
                 "altitude_m": altitude_m,
                 "speed_kn": speed_kn,
                 "course_d": course_d,
