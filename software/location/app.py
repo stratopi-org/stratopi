@@ -57,8 +57,6 @@ async def loop_fn():
             # x coordinate is longitude and y coordinates is latitude
             longitude, latitude = gps_data['coordinates']
 
-            log.debug(f"satellites={gps_data['satellites']}")
-
             sql_query = "INSERT INTO location (date, time, coordinates, altitude_m, speed_kn, course_d, direction) VALUES (%s, %s, POINT(%s, %s), %s, %s, %s, %s)"
 
             cursor.execute(sql_query, (
