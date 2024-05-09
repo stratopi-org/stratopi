@@ -91,7 +91,7 @@ def parse(_data):
         data = common.strip_list_elements(_data.split('+CGPSINFO:'))
         data = data[1].replace('\r\n\r\nOK', '').strip()
 
-        log.debug(f'raw gps data={data}')
+        log.debug(f"raw gps data '{data}'")
 
         data_fields = data.split(',')
 
