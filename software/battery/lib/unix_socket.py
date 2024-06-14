@@ -28,7 +28,7 @@ def send(_socket_client, _command, receive_buffer=1024):
         raw_received_data = _socket_client.recv(receive_buffer).decode('utf-8').strip().replace('\n', '')
         log.debug(f"received '{raw_received_data}' from Unix socket")
 
-        received_data = raw_received_data.replace('long', '')
+        received_data = raw_received_data.replace('single', '')
 
         if not received_data:
             log.warning('received data from Unix socket which is ignored. Retrying send...')
