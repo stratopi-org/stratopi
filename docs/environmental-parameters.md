@@ -9,4 +9,3 @@
 # Derivative environmental parameters
 
 - [MET](https://en.wikipedia.org/wiki/Mission_Elapsed_Time) clock
-- [vertical speed](https://en.wikipedia.org/wiki/Rate_of_climb) _(m/min and ft/m)_
