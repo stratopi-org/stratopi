@@ -20,8 +20,8 @@ kml_file = os.path.join(tempfile.gettempdir(),
 cursor = conn.cursor()
 cursor.execute("SELECT (date + time)::TIMESTAMP AS timestamp, \
                        FORMAT('%sT%sZ', TO_CHAR(date, 'YYYY-MM-DD'), TO_CHAR(time, 'HH24:MI:SS')) AS timestamp_iso_8601, \
-                       coordinates[0] AS longitude, \
-                       coordinates[1] AS latitude, \
+                       coordinates[0] AS latitude, \
+                       coordinates[1] AS longitude, \
                        altitude_m, \
                        speed_kn, \
                        course_d, \
@@ -42,12 +42,12 @@ ls.style.linestyle.width = 7
 ls.style.linestyle.color = simplekml.Color.blue
 
 for i, row in enumerate(rows, start=1):
-    timestamp, timestamp_iso_8601, longitude, latitude, altitude_m, speed_kn, course_d, direction = row
-    pnt = kml.newpoint(name=f'#{i}', coords=[(longitude, latitude, altitude_m)])
+    timestamp, timestamp_iso_8601, latitude, longitude, altitude_m, speed_kn, course_d, direction = row
+    pnt = kml.newpoint(name=f'#{i}', coords=[(latitude, longitude, altitude_m)])
     pnt.timestamp.when = timestamp_iso_8601
     pnt.description = f'Date and time: {timestamp_iso_8601}\nAltitude: {altitude_m}m | {common.meters_to_feet(altitude_m)}ft\nSpeed: {speed_kn}kn | {common.knots_to_mps(speed_kn)}m/s | {common.knots_to_mph(speed_kn)}mph\nCourse: {course_d}°\nDirection: {direction}'
     pnt.style.iconstyle.icon.href = 'https://maps.google.com/mapfiles/kml/paddle/red-circle.png'
-    ls.coords.addcoordinates([(longitude, latitude, altitude_m)])
+    ls.coords.addcoordinates([(latitude, longitude, altitude_m)])
 
 kml.save(kml_file)
 
