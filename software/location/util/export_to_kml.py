@@ -45,7 +45,7 @@ for i, row in enumerate(rows, start=1):
     timestamp, timestamp_iso_8601, latitude, longitude, altitude_m, speed_kn, course_d, direction = row
     pnt = kml.newpoint(name=f'#{i}', coords=[(latitude, longitude, altitude_m)])
     pnt.timestamp.when = timestamp_iso_8601
-    pnt.description = f'Date and time: {timestamp_iso_8601}\nAltitude: {altitude_m}m | {common.meters_to_feet(altitude_m)}ft\nSpeed: {speed_kn}kn | {common.knots_to_mps(speed_kn)}m/s | {common.knots_to_mph(speed_kn)}mph\nCourse: {course_d}°\nDirection: {direction}'
+    pnt.description = f'Date and time: {timestamp_iso_8601}\nAltitude: {altitude_m}m / {common.meters_to_feet(altitude_m)}ft\nSpeed: {speed_kn}kn / {common.knots_to_mps(speed_kn)}m/s / {common.knots_to_mph(speed_kn)}mph\nCourse: {course_d}°\nDirection: {direction}'
     pnt.style.iconstyle.icon.href = 'https://maps.google.com/mapfiles/kml/paddle/red-circle.png'
     ls.coords.addcoordinates([(latitude, longitude, altitude_m)])
 
