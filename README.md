@@ -53,6 +53,8 @@ Polls the battery percentage as well as the battery temperature and inserts the 
 
 - ### [communication](https://github.com/stratopi-org/stratopi/tree/master/software/communication)
 
+Pulls battery, environmental, and location data from PostgreSQL and inserts into Slack channels using wireless networks.
+
 - ### [environmental](https://github.com/stratopi-org/stratopi/tree/master/software/environmental)
 
 Polls the Bosch BME280 sensor and inserts the data into PostgreSQL. Provides temperature, atmospheric pressure, and humidity.
