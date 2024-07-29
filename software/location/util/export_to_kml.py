@@ -20,8 +20,8 @@ kml_file = os.path.join(tempfile.gettempdir(),
 cursor = conn.cursor()
 cursor.execute("SELECT (date + time)::TIMESTAMP AS timestamp, \
                        FORMAT('%sT%sZ', TO_CHAR(date, 'YYYY-MM-DD'), TO_CHAR(time, 'HH24:MI:SS')) AS timestamp_iso_8601, \
-                       coordinates[0] AS latitude, \
-                       coordinates[1] AS longitude, \
+                       coordinates[0] AS longitude, \
+                       coordinates[1] AS latitude, \
                        altitude_m, \
                        speed_kn, \
                        course_d, \
