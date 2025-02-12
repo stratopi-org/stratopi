@@ -29,7 +29,7 @@ See:
 
 [![RunCam 5 Camera Unboxing](http://img.youtube.com/vi/Ua4CM7kJQfI/0.jpg)](http://www.youtube.com/watch?v=Ua4CM7kJQfI "RunCam 5 Camera Unboxing")
 
-[![RunCam 5 Camera Power Test](https://github.com/stratopi-org/stratopi/blob/master/media/images/camera_test.jpg)]("RunCam 5 Camera Power Test")
+![RunCam 5 Camera Power Test](https://github.com/stratopi-org/stratopi/blob/master/media/images/camera_test.jpg)
 
 ## Wanna help?
 
