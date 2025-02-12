@@ -23,11 +23,13 @@ See:
 - https://www.ecfr.gov/current/title-14/chapter-I/subchapter-C/part-48
 - https://www.cbsnews.com/news/military-tracking-balloon-western-us-military/
 
-## Videos
+## Media
 
 [![Raspberry Pi computer, battery, communications payload overview](http://img.youtube.com/vi/SpzycIWPKsQ/0.jpg)](http://www.youtube.com/watch?v=SpzycIWPKsQ "Raspberry Pi computer, battery, communications payload overview")
 
 [![RunCam 5 Camera Unboxing](http://img.youtube.com/vi/Ua4CM7kJQfI/0.jpg)](http://www.youtube.com/watch?v=Ua4CM7kJQfI "RunCam 5 Camera Unboxing")
+
+[![RunCam 5 Camera Power Test](https://github.com/stratopi-org/stratopi/blob/master/media/images/camera_test.jpg)]("RunCam 5 Camera Power Test")
 
 ## Wanna help?
 
