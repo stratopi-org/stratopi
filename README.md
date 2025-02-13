@@ -53,7 +53,7 @@ Polls the Waveshare GPS and inserts the data into PostgreSQL. Provides date, tim
 
 ## Tests
 
-View [various tests](https://github.com/stratopi-org/stratopi/blob/master/docs/tests.md) _(mass, power, etc)_.
+View [various tests](https://github.com/stratopi-org/stratopi/blob/master/docs/tests.md) _(camera, mass, power, etc)_.
 
 ## Wanna help?
 
