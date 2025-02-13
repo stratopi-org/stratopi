@@ -1,4 +1,4 @@
-pip-outdated==0.6.0
-psycopg2==2.9.9
+pip-outdated==0.7.0
+psycopg2==2.9.10
 RPi.bme280==0.2.4
-smbus2==0.4.3
+smbus2==0.5.0
