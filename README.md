@@ -31,20 +31,6 @@ See:
 
 ![RunCam 5 Camera Power Test](https://github.com/stratopi-org/stratopi/blob/master/media/images/camera_test.jpg)
 
-## Wanna help?
-
-- See [GitHub Issues](https://github.com/stratopi-org/stratopi/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement) for outstanding tasks
-- Potentially joining the launch and recovery in person _(Tennessee launch...)_
-- Code review and PR's of my _noob_ Python 🙈. Dig into the [software](https://github.com/stratopi-org/stratopi/tree/master/software).
-- Parts recommendations and optimizations
-- 3d modeling and printing _(structural and mounting aspects)_
-- Website / Github Pages
-- Flight, space, physics experience as I am sure I am negligently overlooking details
-- GIS and GPS experience. KML, GeoJSON, GPS Visualizer, Google Earth/Maps
-- Video editing of the flight footage 🤞
-- Have a latex baloon "hookup"?
-- Have a helium "hookup"? 😉
-
 ## Software architecture
 
 All the software is written in Python 3 using standard PyPI packages. The pattern of each application is essentially poll for some data, and then insert that data into PostgreSQL. The exception being the communication application which pulls data from PostgreSQL and sends it to Slack via wireless networks. Originally, I was planning to run each application in a Docker container but decided to keep things as simple as possible and opted to use tried and true _systemd_ services for each application. [KISS](https://en.wikipedia.org/wiki/KISS_principle)!
@@ -64,3 +50,21 @@ Polls the Bosch BME280 sensor, Raspberry Pi CPU temperature, and inserts the dat
 - ### [location](https://github.com/stratopi-org/stratopi/tree/master/software/location)
 
 Polls the Waveshare GPS and inserts the data into PostgreSQL. Provides date, time, latitude, longitude, altitude, speed, and course. From course, can also determine direction such as North, Southeast, etc.
+
+## Tests
+
+View [various tests](https://github.com/stratopi-org/stratopi/blob/master/docs/tests.md) _(mass, power, etc)_.
+
+## Wanna help?
+
+- See [GitHub Issues](https://github.com/stratopi-org/stratopi/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement) for outstanding tasks
+- Potentially joining the launch and recovery in person _(Tennessee launch...)_
+- Code review and PR's of my _noob_ Python 🙈. Dig into the [software](https://github.com/stratopi-org/stratopi/tree/master/software).
+- Parts recommendations and optimizations
+- 3d modeling and printing _(structural and mounting aspects)_
+- Website / Github Pages
+- Flight, space, physics experience as I am sure I am negligently overlooking details
+- GIS and GPS experience. KML, GeoJSON, GPS Visualizer, Google Earth/Maps
+- Video editing of the flight footage 🤞
+- Have a latex baloon "hookup"?
+- Have a helium "hookup"? 😉
