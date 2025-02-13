@@ -6,6 +6,7 @@ import smbus2
 import bme280
 from lib import log
 from lib import common
+from lib import pi
 
 NAME = 'environmental'
 SLEEP_TIME = 60 * 1   # 1 minute
@@ -47,13 +48,14 @@ async def loop_fn():
             temperature = common.format_data(data.temperature)
             pressure = common.format_data(data.pressure)
             humidity = common.format_data(data.humidity)
+            cpu_temperature = pi.get_cpu_temperature()
 
-            cursor.execute('INSERT INTO environmental (temperature_c, pressure_hpa, humidity_rh) VALUES (%s, %s, %s)',
-                           (temperature, pressure, humidity))
+            cursor.execute('INSERT INTO environmental (temperature_c, pressure_hpa, humidity_rh, cpu_temperature_c) VALUES (%s, %s, %s, %s)',
+                           (temperature, pressure, humidity, cpu_temperature))
 
             conn.commit()
             log.info(
-                f'inserted {NAME} data temp={temperature}°C, pressure={pressure} hPa, humidity={humidity} %rH into PostgreSQL')
+                f'inserted {NAME} data temp={temperature}°C, pressure={pressure} hPa, humidity={humidity} %rH, cpu_temp={cpu_temperature}°C into PostgreSQL')
         except Exception as err:
             log.error(err)
             conn.rollback()
