@@ -10,7 +10,7 @@
 
 ### Masses
 
-- _(3x)_ RunCam 5 Oranges and the RGVOTA 38800mAh USB-A power bank: `634g`
+- _(3x)_ RunCam 5 Oranges and the RGVOTA 38800mAh USB-A power bank: `637g`
 - Raspberry Pi 3 B+, PiSugar 3 Plus, Waveshare SIM7600A-H 4G HAT Board, and Bosch BME280 Sensor: `266g`
 
 # February 24th 2024
