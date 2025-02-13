@@ -4,7 +4,7 @@
 
 - Upon running _(3x)_ RunCam 5 Oranges powered by the RGVOTA 38800mAh USB-A power bank lasted for `4 hours`. Each camera video resolution was set to `2.7k@60fps`, with recording duration limited by the 128GB microSD card storage capacity.
 
-    - Storage used: `116GB`
+    - Storage used: `116GB` each camera
     - USB-A power bank percentage remaining when storage was filled: `69%`
     - Ambient temperature: `20°C / 68°F`
 
