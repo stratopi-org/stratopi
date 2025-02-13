@@ -59,7 +59,7 @@ Pulls battery, environmental, and location data from PostgreSQL and inserts into
 
 - ### [environmental](https://github.com/stratopi-org/stratopi/tree/master/software/environmental)
 
-Polls the Bosch BME280 sensor and inserts the data into PostgreSQL. Provides temperature, atmospheric pressure, and humidity.
+Polls the Bosch BME280 sensor, Raspberry Pi CPU temperature, and inserts the data into PostgreSQL. Provides temperature, atmospheric pressure, and humidity.
 
 - ### [location](https://github.com/stratopi-org/stratopi/tree/master/software/location)
 

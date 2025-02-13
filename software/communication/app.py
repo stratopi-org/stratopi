@@ -37,7 +37,7 @@ async def loop_fn():
         cursor = conn.cursor()
 
         try:
-            # platholder
+            # placeholder
         except Exception as err:
             log.error(err)
         finally:
