@@ -2,6 +2,7 @@
 
 - [National Weather Service Weather Balloon / Upper Air Observations](https://www.weather.gov/rev/upperair)
 - [Weather Balloon Tutorial](https://www.stratoflights.com/en/tutorial/)
+- [UK High Altitude Society](https://www.ukhas.org.uk/doku.php?id=start)
 - [FAA Regulations for Unmanned Free Balloons](https://eclipse.montana.edu/education/engineering-course/eng-lesson09-faaregs.pdf)
 - [Nationwide Eclipse Ballooning Project](https://eclipse.montana.edu/)
 - [PiSugar 3 Wiki](https://github.com/PiSugar/PiSugar/wiki/PiSugar-3-Series)
