@@ -45,4 +45,4 @@ python -m util.export_to_kml
 
 ## Pip
 
-- `pip-outdated` to check if any requirements are outdated.
+- `pip-outdated` to check if any PyPI packages are outdated.
