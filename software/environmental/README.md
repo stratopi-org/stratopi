@@ -1,23 +1,23 @@
 # environmental
 
-## Create PostgreSQL schema
+## Create PostgreSQL Schema
 
 ```shell
 sudo -u postgres psql -h 127.0.0.1 -d stratopi -U stratopi -f ./database-schema.sql --password
 ```
 
-## Install systemd service
+## Install systemd Service
 
 ```shell
 ./install.sh
 ```
 
-## Environment variables
+## Environment Variables
 
 - `LOG_LEVEL` _(default=INFO)_
 - `POSTGRES_URL` _(required)_
 
-## View logs
+## View Logs
 
 ```shell
 ./view-logs.sh [--follow]
