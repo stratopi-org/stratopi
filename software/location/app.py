@@ -74,8 +74,8 @@ async def loop_fn():
             log.info(
                 f"inserted {NAME} data lat={latitude}, long={longitude}, alt={gps_data['altitude_m']}m into PostgreSQL")
         except Exception as err:
-            log.error(err)
             conn.rollback()
+            log.error(err)
         finally:
             cursor.close()
             conn.close()

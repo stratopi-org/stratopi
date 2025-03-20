@@ -57,8 +57,8 @@ async def loop_fn():
             log.info(
                 f'inserted {NAME} data temp={temperature}°C, pressure={pressure} hPa, humidity={humidity} %rH, cpu_temp={cpu_temperature}°C into PostgreSQL')
         except Exception as err:
-            log.error(err)
             conn.rollback()
+            log.error(err)
         finally:
             cursor.close()
             conn.close()
