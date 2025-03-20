@@ -58,8 +58,8 @@ async def loop_fn():
             log.info(
                 f'inserted {NAME} data battery={battery_percent}%, temp={battery_temperature}°C into PostgreSQL')
         except Exception as err:
-            log.error(err)
             conn.rollback()
+            log.error(err)
         finally:
             unix_socket.close(battery_percent_sc)
             unix_socket.close(battery_temperature_sc)
