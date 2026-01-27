@@ -29,11 +29,11 @@ I used the [ELEGOO 40pin cable pack](https://www.amazon.com/gp/product/B01EV70C7
 
 - ### Computer battery
 
-[PiSugar 3 Plus](https://www.amazon.com/gp/product/B09MJ876FW). A integrated battery and software controller specifically designed for Raspberry Pi's.
+[PiSugar 3 Plus](https://www.amazon.com/PiSugar-Plus-Pwnagotchi-Management-Raspberry/dp/B0FBK89B8H/). A integrated battery and software controller specifically designed for Raspberry Pi's.
 
 - ### Camera battery
 
-[RGVOTA 38800mAh USB-A power bank](https://www.amazon.com/dp/B09H4GLZXT?th=1). Required extended battery power for the cameras.
+[RGVOTA 38800mAh USB-A power bank](https://www.amazon.com/Portable-38800mAh-Charging-External-Essential/dp/B0G1YKB8WK/). Required extended battery power for the cameras.
 
 - ### Parachute
 
