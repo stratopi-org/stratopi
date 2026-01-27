@@ -41,10 +41,10 @@ async def loop_fn():
         cursor = conn.cursor()
 
         try:
-            battery_percent_sc = unix_socket.connect(UNIX_SOCKET_PATH)
-            battery_percent = unix_socket.send(battery_percent_sc, 'get battery')
+            s = unix_socket.connect(UNIX_SOCKET_PATH)
+            battery_percent = unix_socket.send(s, 'get battery')
             battery_percent = common.cleanup_data(battery_percent)
-            battery_temperature = unix_socket.send(battery_temperature_sc, 'get temperature')
+            battery_temperature = unix_socket.send(s, 'get temperature')
             battery_temperature = common.cleanup_data(battery_temperature)
             unix_socket.close(battery_temperature_sc)
 
