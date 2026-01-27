@@ -37,7 +37,7 @@ async def loop_fn():
         cursor = conn.cursor()
 
         try:
-            log.info("nothing to do yet in this module")
+            log.warning("no logic in module")
         except Exception as err:
             log.error(err)
         finally:
