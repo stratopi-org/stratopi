@@ -49,7 +49,7 @@ def build_description(
     course_d,
     direction,
 ):
-    """Build the HTML shown when a point is selected."""
+    """Build the details shown when a point is selected."""
     altitude_ft = (
         common.meters_to_feet(altitude_m)
         if altitude_m is not None
@@ -68,53 +68,22 @@ def build_description(
         else None
     )
 
-    values = {
-        "Date and time": html.escape(timestamp_iso),
-        "Altitude": (
-            f"{format_kml_number(altitude_m, 1, ' m')} / "
-            f"{format_kml_number(altitude_ft, 0, ' ft')}"
-        ),
-        "Speed": (
-            f"{format_kml_number(speed_kn, 1, ' kn')} / "
-            f"{format_kml_number(speed_mps, 1, ' m/s')} / "
-            f"{format_kml_number(speed_mph, 1, ' mph')}"
-        ),
-        "Course": format_kml_number(course_d, 1, "°"),
-        "Direction": html.escape(str(direction or "Unknown")),
-    }
-
-    table_rows = "".join(
-        f"""
-        <tr>
-            <td style="
-                padding: 4px 15px 4px 0;
-                color: #777;
-                white-space: nowrap;
-                vertical-align: top;
-            ">
-                <strong>{label}</strong>
-            </td>
-            <td style="
-                padding: 4px 0;
-                white-space: nowrap;
-                vertical-align: top;
-            ">
-                {value}
-            </td>
-        </tr>
-        """
-        for label, value in values.items()
-    )
+    date_time_display = html.escape(timestamp_iso)
+    direction_display = html.escape(str(direction or "Unknown"))
 
     return f"""
-    <div style="
-        font-family: Arial, sans-serif;
-        font-size: 13px;
-        line-height: 1.4;
-    ">
-        <table style="border-collapse: collapse;">
-            {table_rows}
-        </table>
+    <div>
+        <b>Date and time:</b> {date_time_display}<br/>
+        <b>Altitude:</b>
+        {format_kml_number(altitude_m, 1, " m")} /
+        {format_kml_number(altitude_ft, 0, " ft")}<br/>
+        <b>Speed:</b>
+        {format_kml_number(speed_kn, 1, " kn")} /
+        {format_kml_number(speed_mps, 1, " m/s")} /
+        {format_kml_number(speed_mph, 1, " mph")}<br/>
+        <b>Course:</b>
+        {format_kml_number(course_d, 1, "°")}<br/>
+        <b>Direction:</b> {direction_display}
     </div>
     """
 
@@ -160,10 +129,11 @@ def create_point_style():
     style = simplekml.Style()
 
     style.iconstyle.icon.href = POINT_ICON_URL
-    style.iconstyle.scale = 0.55
 
-    # Keep every point label visible but make it less dominant.
-    style.labelstyle.scale = 0.65
+    # The previous value was 0.55.
+    style.iconstyle.scale = 1.0
+
+    style.labelstyle.scale = 0.75
     style.labelstyle.color = simplekml.Color.white
 
     return style
