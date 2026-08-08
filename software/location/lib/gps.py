@@ -72,7 +72,7 @@ def parse_coordinate(_coord_str, _hemisphere):
 
 def parse_direction(_course):
     if not isinstance(_course, float):
-        raise ValueError('course must in degress and a float')
+        raise TypeError('course must in degress and a float')
 
     if _course < 0 or _course > 360:
         raise ValueError('course must be between 0 and 360 degrees')
@@ -116,7 +116,6 @@ def parse(_data):
             }
     except (ValueError, IndexError, TypeError) as err:
         log.error(err)
-        pass
 
     return None
 
