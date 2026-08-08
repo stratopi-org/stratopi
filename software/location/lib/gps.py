@@ -69,16 +69,16 @@ def parse_coordinate(_coord_str, _hemisphere):
     return f"{decimal_value:.5f}"
 
 
-def parse_direction(_course):
-    if not isinstance(_course, float):
-        raise TypeError('course must in degress and a float')
+def parse_direction(course):
+    if not isinstance(course, (int, float)):
+        raise TypeError("course must be a number")
 
-    if _course < 0 or _course > 360:
-        raise ValueError('course must be between 0 and 360 degrees')
+    if not 0 <= course <= 360:
+        raise ValueError("course must be between 0 and 360 degrees")
 
-    # 'N' twice in the list is NOT a bug but a deliberate decision
-    directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N']
-    index = int((_course + 22.5) % 360 // 45)
+    directions = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
+    index = int(((course + 22.5) % 360) // 45)
+
     return directions[index]
 
 
