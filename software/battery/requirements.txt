@@ -1,2 +1,2 @@
 pip-outdated==0.8.0
-psycopg2==2.9.11
+psycopg2==2.9.12
