@@ -1,3 +1,4 @@
+import math
 import sys
 
 
@@ -26,28 +27,51 @@ def strip_list_elements(_list):
     return stripped_list
 
 
-def decimal_degrees_to_dms(_latitude, _longitude, _string=False):
-    def decimal_to_dms(_deg):
-        negative = _deg < 0
-        _deg = abs(_deg)
-        d = int(_deg)
-        m, s = divmod((_deg - d) * 60, 1)
-        m = int(m)
-        s *= 60
-        s = round(s, 3)  # round seconds to three decimal places
-        if negative:
-            d = -d
-        return d, m, s
+def decimal_degrees_to_dms(latitude, longitude, as_string=False):
+    latitude = float(latitude)
+    longitude = float(longitude)
 
-    lat_deg, lat_min, lat_sec = decimal_to_dms(float(_latitude))
-    long_deg, long_min, long_sec = decimal_to_dms(float(_longitude))
+    if not math.isfinite(latitude) or not math.isfinite(longitude):
+        raise ValueError("coordinates must be finite numbers")
 
-    if _string:
-        lat_str = f"{abs(lat_deg)}° {lat_min}' {lat_sec}\" {'N' if lat_deg >= 0 else 'S'}"
-        long_str = f"{abs(long_deg)}° {long_min}' {long_sec}\" {'E' if long_deg >= 0 else 'W'}"
-        return lat_str, long_str
-    else:
-        return (lat_deg, lat_min, lat_sec), (long_deg, long_min, long_sec)
+    if not -90 <= latitude <= 90:
+        raise ValueError("latitude must be between -90 and 90 degrees")
+
+    if not -180 <= longitude <= 180:
+        raise ValueError("longitude must be between -180 and 180 degrees")
+
+    def decimal_to_dms(value):
+        negative = value < 0
+
+        # Rounding total seconds first handles carry into minutes/degrees.
+        total_seconds = round(abs(value) * 3600, 3)
+
+        degrees = int(total_seconds // 3600)
+        remainder = total_seconds % 3600
+        minutes = int(remainder // 60)
+        seconds = remainder % 60
+
+        return degrees, minutes, seconds, negative
+
+    lat_deg, lat_min, lat_sec, lat_negative = decimal_to_dms(latitude)
+    lon_deg, lon_min, lon_sec, lon_negative = decimal_to_dms(longitude)
+
+    if as_string:
+        lat = (
+            f"{lat_deg}° {lat_min}′ {lat_sec:.3f}″ "
+            f"{'S' if lat_negative else 'N'}"
+        )
+        lon = (
+            f"{lon_deg}° {lon_min}′ {lon_sec:.3f}″ "
+            f"{'W' if lon_negative else 'E'}"
+        )
+        return lat, lon
+
+    # Including direction avoids the ambiguous “negative zero degrees” problem.
+    return (
+        (lat_deg, lat_min, lat_sec, "S" if lat_negative else "N"),
+        (lon_deg, lon_min, lon_sec, "W" if lon_negative else "E"),
+    )
 
 
 def meters_to_feet(_meters):
