@@ -1,12 +1,11 @@
 import argparse
-import os
 import asyncio
+import os
+
+import bme280
 import psycopg2
 import smbus2
-import bme280
-from lib import log
-from lib import common
-from lib import pi
+from lib import common, log, pi
 
 NAME = 'environmental'
 SLEEP_TIME = 60 * 1   # 1 minute

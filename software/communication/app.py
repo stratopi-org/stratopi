@@ -1,9 +1,9 @@
 import argparse
-import os
 import asyncio
+import os
+
 import psycopg2
-from lib import log
-from lib import common
+from lib import common, log
 
 NAME = 'communication'
 SLEEP_TIME = 60 * 5   # 5 minutes

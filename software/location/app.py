@@ -1,12 +1,11 @@
 import argparse
-import os
 import asyncio
-import psycopg2
-import sys
+import os
 import signal
-from lib import log
-from lib import common
-from lib import gps
+import sys
+
+import psycopg2
+from lib import common, gps, log
 
 signal.signal(signal.SIGINT, lambda sig, frame: (gps.power_off(), sys.exit(0)))
 

@@ -1,7 +1,8 @@
 import os
-import stat
 import socket
+import stat
 import time
+
 from lib import log
 
 
