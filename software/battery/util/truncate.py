@@ -1,10 +1,10 @@
 import os
 import subprocess
-from lib import log
 
+from lib import log
 
 psql_cmd = f"psql -d {os.environ['POSTGRES_URL']} -c 'TRUNCATE TABLE battery;'"
 log.info('starting table truncation...')
-subprocess.run(psql_cmd, shell=True)
+subprocess.run(psql_cmd, check=False, shell=True)
 
 log.info("successfully truncated table 'battery'")

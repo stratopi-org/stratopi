@@ -1,4 +1,5 @@
 import sys
+
 from lib import log
 
 
@@ -28,7 +29,7 @@ def cleanup_data(_input, str_format="{:.1f}"):
         try:
             numeric_value = float(split_pieces[1])
             if numeric_value.is_integer():  # check if is an integer
-                return "{:.0f}".format(numeric_value)  # format as flat integer
+                return f"{numeric_value:.0f}"  # format as flat integer
 
             return str_format.format(numeric_value)  # format with str_format
         except ValueError:

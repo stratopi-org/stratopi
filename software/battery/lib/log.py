@@ -1,5 +1,5 @@
-import os
 import logging
+import os
 import sys
 
 log_level = os.getenv('LOG_LEVEL', 'INFO').upper()

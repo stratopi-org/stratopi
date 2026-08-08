@@ -51,12 +51,12 @@ def decimal_degrees_to_dms(_latitude, _longitude, _string=False):
 
 
 def meters_to_feet(_meters):
-    return "{:.0f}".format(float(_meters) * 3.28084)
+    return f"{float(_meters) * 3.28084:.0f}"
 
 
 def knots_to_mps(_knots):
-    return "{:.1f}".format(float(_knots) * 0.514444)
+    return f"{float(_knots) * 0.514444:.1f}"
 
 
 def knots_to_mph(_knots):
-    return "{:.0f}".format(float(_knots) * 1.15078)
+    return f"{float(_knots) * 1.15078:.0f}"

@@ -1,10 +1,9 @@
-import serial
 import time
-import RPi.GPIO as GPIO
-from lib import log
-from lib import common
 from datetime import datetime
 
+import serial
+from lib import common, log
+from RPi import GPIO
 
 ser = serial.Serial('/dev/ttyS0', baudrate=115200)
 ser.flushInput()
@@ -67,7 +66,7 @@ def parse_coordinate(_coord_str, _hemisphere):
     if _hemisphere.upper() in ('S', 'W'):
         decimal_value = -decimal_value
 
-    return "{:.5f}".format(decimal_value)
+    return f"{decimal_value:.5f}"
 
 
 def parse_direction(_course):
@@ -100,9 +99,9 @@ def parse(_data):
             time = datetime.strptime(data_fields[5], '%H%M%S.%f').time()
             latitude = parse_coordinate(data_fields[0], data_fields[1])
             longitude = parse_coordinate(data_fields[2], data_fields[3])
-            altitude_m = "{:.1f}".format(float(data_fields[6]))
-            speed_kn = "{:.1f}".format(float(data_fields[7]))
-            course_d = "{:.1f}".format(float(data_fields[8]))
+            altitude_m = f"{float(data_fields[6]):.1f}"
+            speed_kn = f"{float(data_fields[7]):.1f}"
+            course_d = f"{float(data_fields[8]):.1f}"
             direction = parse_direction(float(course_d))
 
             return {

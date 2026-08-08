@@ -1,10 +1,10 @@
 import datetime
-import tempfile
 import os
+import tempfile
+
 import psycopg2
 import simplekml
-from lib import log
-from lib import common
+from lib import common, log
 
 conn = psycopg2.connect(os.environ['POSTGRES_URL'])
 masked_postgres_url = common.mask_postgres_url_password(

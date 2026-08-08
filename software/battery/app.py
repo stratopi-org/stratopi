@@ -1,10 +1,9 @@
 import argparse
-import os
 import asyncio
+import os
+
 import psycopg2
-from lib import log
-from lib import common
-from lib import unix_socket
+from lib import common, log, unix_socket
 
 NAME = 'battery'
 UNIX_SOCKET_PATH = '/tmp/pisugar-server.sock'
