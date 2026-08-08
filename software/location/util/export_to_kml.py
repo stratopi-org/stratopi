@@ -68,24 +68,52 @@ def build_description(
         else None
     )
 
-    date_time_display = html.escape(timestamp_iso)
-    direction_display = html.escape(str(direction or "Unknown"))
+    date_time = html.escape(timestamp_iso)
+    direction_text = html.escape(str(direction or "Unknown"))
 
-    return f"""
-    <div>
-        <b>Date and time:</b> {date_time_display}<br/>
-        <b>Altitude:</b>
-        {format_kml_number(altitude_m, 1, " m")} /
-        {format_kml_number(altitude_ft, 0, " ft")}<br/>
-        <b>Speed:</b>
-        {format_kml_number(speed_kn, 1, " kn")} /
-        {format_kml_number(speed_mps, 1, " m/s")} /
-        {format_kml_number(speed_mph, 1, " mph")}<br/>
-        <b>Course:</b>
-        {format_kml_number(course_d, 1, "°")}<br/>
-        <b>Direction:</b> {direction_display}
-    </div>
-    """
+    altitude = (
+        f"{format_kml_number(altitude_m, 1, ' m')} / "
+        f"{format_kml_number(altitude_ft, 0, ' ft')}"
+    )
+
+    speed = (
+        f"{format_kml_number(speed_kn, 1, ' kn')} / "
+        f"{format_kml_number(speed_mps, 1, ' m/s')} / "
+        f"{format_kml_number(speed_mph, 1, ' mph')}"
+    )
+
+    course = format_kml_number(course_d, 1, "°")
+
+    return (
+        '<div style="font-family:Arial,sans-serif;font-size:14px;">'
+
+        '<div style="margin-bottom:12px;">'
+        '<div><b>Date and time</b></div>'
+        f'<div>{date_time}</div>'
+        '</div>'
+
+        '<div style="margin-bottom:12px;">'
+        '<div><b>Altitude</b></div>'
+        f'<div>{altitude}</div>'
+        '</div>'
+
+        '<div style="margin-bottom:12px;">'
+        '<div><b>Speed</b></div>'
+        f'<div>{speed}</div>'
+        '</div>'
+
+        '<div style="margin-bottom:12px;">'
+        '<div><b>Course</b></div>'
+        f'<div>{course}</div>'
+        '</div>'
+
+        '<div>'
+        '<div><b>Direction</b></div>'
+        f'<div>{direction_text}</div>'
+        '</div>'
+
+        '</div>'
+    )
 
 
 def fetch_locations():
@@ -214,7 +242,6 @@ def add_points(kml, rows):
         )
 
         point.altitudemode = simplekml.AltitudeMode.absolute
-        point.timestamp.when = timestamp_iso
 
         point.description = build_description(
             timestamp_iso=timestamp_iso,
