@@ -172,7 +172,7 @@ def add_route(kml, rows):
     route_folder = kml.newfolder(name="Route")
 
     route = route_folder.newlinestring(
-        name="StratoPi flight path"
+        name="StratoPi"
     )
 
     route.altitudemode = simplekml.AltitudeMode.absolute
