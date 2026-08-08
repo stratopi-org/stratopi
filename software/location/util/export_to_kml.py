@@ -17,10 +17,15 @@ POINT_ICON_URL = (
 )
 
 
-def format_number(value, decimals=1, suffix=""):
-    """Format a numeric value for display in Google Earth."""
+def format_kml_number(value, decimals=1, suffix=""):
+    """Format numbers and numeric strings for the KML description."""
     if value is None:
         return "Unknown"
+
+    try:
+        value = float(value)
+    except (TypeError, ValueError):
+        return html.escape(str(value))
 
     return f"{value:,.{decimals}f}{suffix}"
 
@@ -66,15 +71,15 @@ def build_description(
     values = {
         "Date and time": html.escape(timestamp_iso),
         "Altitude": (
-            f"{format_number(altitude_m, 1, ' m')} / "
-            f"{format_number(altitude_ft, 0, ' ft')}"
+            f"{format_kml_number(altitude_m, 1, ' m')} / "
+            f"{format_kml_number(altitude_ft, 0, ' ft')}"
         ),
         "Speed": (
-            f"{format_number(speed_kn, 1, ' kn')} / "
-            f"{format_number(speed_mps, 1, ' m/s')} / "
-            f"{format_number(speed_mph, 1, ' mph')}"
+            f"{format_kml_number(speed_kn, 1, ' kn')} / "
+            f"{format_kml_number(speed_mps, 1, ' m/s')} / "
+            f"{format_kml_number(speed_mph, 1, ' mph')}"
         ),
-        "Course": format_number(course_d, 1, "°"),
+        "Course": format_kml_number(course_d, 1, "°"),
         "Direction": html.escape(str(direction or "Unknown")),
     }
 
