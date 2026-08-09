@@ -45,6 +45,7 @@ def timestamp_to_iso8601(timestamp):
 def build_description(
     timestamp_iso,
     altitude_m,
+    vertical_speed_mpm,
     speed_kn,
     course_d,
     direction,
@@ -55,6 +56,36 @@ def build_description(
         if altitude_m is not None
         else None
     )
+
+    vertical_speed_fpm = (
+        common.meters_to_feet(vertical_speed_mpm)
+        if vertical_speed_mpm is not None
+        else None
+    )
+
+    if vertical_speed_mpm is None:
+        vertical_speed = "Unknown"
+    else:
+        vertical_speed_value = float(vertical_speed_mpm)
+
+        if vertical_speed_value > 0:
+            vertical_speed_icon = (
+                '<span style="color:#16a34a;font-size:18px;">▲</span>'
+            )
+        elif vertical_speed_value < 0:
+            vertical_speed_icon = (
+                '<span style="color:#dc2626;font-size:18px;">▼</span>'
+            )
+        else:
+            vertical_speed_icon = (
+                '<span style="color:#6b7280;font-size:18px;">●</span>'
+            )
+
+        vertical_speed = (
+            f"{format_kml_number(vertical_speed_mpm, 1, ' m/min')} / "
+            f"{format_kml_number(vertical_speed_fpm, 0, ' ft/min')} "
+            f"{vertical_speed_icon}"
+        )
 
     speed_mps = (
         common.knots_to_mps(speed_kn)
@@ -74,6 +105,11 @@ def build_description(
     altitude = (
         f"{format_kml_number(altitude_m, 1, ' m')} / "
         f"{format_kml_number(altitude_ft, 0, ' ft')}"
+    )
+
+    vertical_speed = (
+        f"{format_kml_number(vertical_speed_mpm, 1, ' m/min')} / "
+        f"{format_kml_number(vertical_speed_fpm, 0, ' ft/min')}"
     )
 
     speed = (
@@ -98,7 +134,12 @@ def build_description(
         '</div>'
 
         '<div style="margin-bottom:12px;">'
-        '<div><b>Speed</b></div>'
+        '<div><b>Vertical speed</b></div>'
+        f'<div>{vertical_speed}</div>'
+        '</div>'
+
+        '<div style="margin-bottom:12px;">'
+        '<div><b>Ground speed</b></div>'
         f'<div>{speed}</div>'
         '</div>'
 
@@ -124,6 +165,7 @@ def fetch_locations():
             coordinates[0] AS longitude,
             coordinates[1] AS latitude,
             altitude_m,
+            vertical_speed_mpm,
             speed_kn,
             course_d,
             direction
@@ -196,6 +238,7 @@ def add_route(kml, rows):
             longitude,
             latitude,
             altitude_m,
+            _vertical_speed_mpm,
             _speed_kn,
             _course_d,
             _direction,
@@ -215,6 +258,7 @@ def add_points(kml, rows):
             longitude,
             latitude,
             altitude_m,
+            vertical_speed_mpm,
             speed_kn,
             course_d,
             direction,
@@ -246,6 +290,7 @@ def add_points(kml, rows):
         point.description = build_description(
             timestamp_iso=timestamp_iso,
             altitude_m=altitude_m,
+            vertical_speed_mpm=vertical_speed_mpm,
             speed_kn=speed_kn,
             course_d=course_d,
             direction=direction,
