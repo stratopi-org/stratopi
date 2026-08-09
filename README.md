@@ -49,7 +49,7 @@ Polls the Bosch BME280 sensor, Raspberry Pi CPU temperature, and inserts the dat
 
 - ### [location](https://github.com/stratopi-org/stratopi/tree/master/software/location)
 
-Polls the Waveshare GPS and inserts the data into PostgreSQL. Provides date, time, latitude, longitude, altitude, speed, and course. From course, can also determine direction such as North, Southeast, etc.
+Polls the Waveshare GPS and inserts the data into PostgreSQL. Provides date, time, latitude, longitude, altitude, speed, and course. From course, can also determine direction such as North, Southeast, etc. Addditionally vertical speed per minute is automatically added via a PostgreSQL trigger _(_see []())_.
 
 ## Tests
 

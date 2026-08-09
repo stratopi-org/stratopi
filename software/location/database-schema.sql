@@ -42,7 +42,7 @@ CREATE INDEX location_speed_kn_idx
 CREATE INDEX location_added_idx
     ON location (added ASC);
 
-# trigger that automatically calcualtes vertical speed
+-- Trigger that automatically calcualtes vertical speed based on altitude and time deltas
 CREATE OR REPLACE FUNCTION calculate_vertical_speed()
 RETURNS TRIGGER AS $$
 DECLARE
@@ -98,7 +98,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-# attach trigger and call calculate_vertical_speed() before insert
+-- Attach trigger and call calculate_vertical_speed() before insert
 CREATE TRIGGER location_vertical_speed_trigger
 BEFORE INSERT ON location
 FOR EACH ROW
