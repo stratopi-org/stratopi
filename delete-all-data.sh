@@ -3,7 +3,7 @@ set -eo pipefail; [[ $TRACE ]] && set -x
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 
-read -r -p "This will truncate all battery, environmental, and location database data. Continue? [y/N] " response
+read -r -p "Delete all battery, environmental, and location database data? Continue? [y/N] " response
 
 if [[ ! "$response" =~ ^[Yy]$ ]]; then
     exit 0
@@ -25,7 +25,7 @@ fi
 )
 
 
-read -r -p "Purge all systemd journal entries as well? Continue? [y/N] " response
+read -r -p "Delete all systemd journal entries as well? Continue? [y/N] " response
 
 if [[ ! "$response" =~ ^[Yy]$ ]]; then
     exit 0
