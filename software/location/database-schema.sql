@@ -12,6 +12,7 @@ CREATE TABLE location (
     time TIME NOT NULL,
     coordinates POINT NOT NULL,
     altitude_m NUMERIC(6, 1) NOT NULL,
+    vertical_speed_mpm NUMERIC(5, 1),
     speed_kn NUMERIC(4, 1) NOT NULL,
     course_d NUMERIC(4, 1) NOT NULL,
     direction DIRECTION NOT NULL,
@@ -40,3 +41,65 @@ CREATE INDEX location_speed_kn_idx
 
 CREATE INDEX location_added_idx
     ON location (added ASC);
+
+# trigger that automatically calcualtes vertical speed
+CREATE OR REPLACE FUNCTION calculate_vertical_speed()
+RETURNS TRIGGER AS $$
+DECLARE
+    previous_altitude NUMERIC;
+    previous_date DATE;
+    previous_time TIME;
+    elapsed_seconds NUMERIC;
+BEGIN
+    -- Get the most recent previous location.
+    SELECT
+        altitude_m,
+        date,
+        time
+    INTO
+        previous_altitude,
+        previous_date,
+        previous_time
+    FROM location
+    ORDER BY date DESC, time DESC
+    LIMIT 1;
+
+    -- No previous reading means vertical speed cannot be calculated.
+    IF previous_altitude IS NULL THEN
+        NEW.vertical_speed_mpm := NULL;
+        RETURN NEW;
+    END IF;
+
+    -- Calculate actual elapsed time between GPS readings.
+    elapsed_seconds :=
+        EXTRACT(
+            EPOCH FROM
+            ((NEW.date + NEW.time) - (previous_date + previous_time))
+        );
+
+    -- Protect against duplicate or out-of-order timestamps.
+    IF elapsed_seconds <= 0 THEN
+        NEW.vertical_speed_mpm := NULL;
+        RETURN NEW;
+    END IF;
+
+    -- Calculate vertical speed in meters per minute.
+    NEW.vertical_speed_mpm :=
+        ROUND(
+            (
+                (NEW.altitude_m - previous_altitude)
+                / elapsed_seconds
+                * 60
+            )::NUMERIC,
+            1
+        );
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+# attach trigger and call calculate_vertical_speed() before insert
+CREATE TRIGGER location_vertical_speed_trigger
+BEFORE INSERT ON location
+FOR EACH ROW
+EXECUTE FUNCTION calculate_vertical_speed();
