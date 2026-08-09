@@ -3,7 +3,7 @@ set -eo pipefail; [[ $TRACE ]] && set -x
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 
-read -r -p "Delete all battery, environmental, and location database data? Continue? [y/N] " response
+read -r -p "Delete all database data for battery, environmental, and location? Continue? [y/N] " response
 
 if [[ ! "$response" =~ ^[Yy]$ ]]; then
     exit 0
@@ -25,11 +25,11 @@ fi
 )
 
 
-read -r -p "Delete all systemd journal entries as well? Continue? [y/N] " response
+read -r -p "Delete all systemd journal entries for battery, environmental, and location? Continue? [y/N] " response
 
 if [[ ! "$response" =~ ^[Yy]$ ]]; then
     exit 0
 fi
 
-sudo journalctl --rotate
-sudo journalctl --vacuum-time=1s
+sudo journalctl --namespace=stratopi --rotate
+sudo journalctl --namespace=stratopi --vacuum-time=1s
