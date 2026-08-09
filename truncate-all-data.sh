@@ -23,3 +23,13 @@ fi
     cd "$SCRIPT_DIR/software/location"
     python -m util.truncate
 )
+
+
+read -r -p "Purge all systemd journal entries as well? Continue? [y/N] " response
+
+if [[ ! "$response" =~ ^[Yy]$ ]]; then
+    exit 0
+fi
+
+sudo journalctl --rotate
+sudo journalctl --vacuum-time=1s
