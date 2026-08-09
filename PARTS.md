@@ -38,11 +38,15 @@ I used the [ELEGOO 40pin cable pack](https://www.amazon.com/gp/product/B01EV70C7
 - ### Parachute
 
 *(TBD)* [Parachute](https://github.com/stratopi-org/stratopi/blob/master/PARTS.md)<br />
-*(TBD)* [Parachute cord / fishing line (40lb maximum)](https://github.com/stratopi-org/stratopi/blob/master/PARTS.md)
+*(TBD)* [Parachute cord / braided polyester/Dacron kite line](https://github.com/stratopi-org/stratopi/blob/master/PARTS.md)
 
-- ### Payload external shroud, heating, FAA requirements, and miscellaneous
+- ### Payload / external shroud
 
-*(TBD)* [Styrofoam cooler](https://github.com/stratopi-org/stratopi/blob/master/PARTS.md)<br />
-*(TBD)* [Hand warmers](https://github.com/stratopi-org/stratopi/blob/master/PARTS.md)<br />
+[Owens Corning FOAMULAR NGX F-150 1 in. x 4 ft. x 8 ft. SSE R-5 XPS Rigid Foam Board Insulation](https://www.homedepot.com/pep/Owens-Corning-FOAMULAR-NGX-F-150-1-in-x-4-ft-x-8-ft-SSE-R-5-XPS-Rigid-Foam-Board-Insulation-20WENGX/315197840)<br />
+[3/8 in. X 3/16 in. X 10 ft. Black High-Density Rubber Foam Weatherstrip Tape](https://www.homedepot.com/pep/Frost-King-3-8-in-X-3-16-in-X-10-ft-Black-High-Density-Rubber-Foam-Weatherstrip-Tape-R338H/100197882)<br />
+[PL 300 Foamboard 10 oz. Latex Construction Adhesive Blue Cartridge](https://www.homedepot.com/pep/Loctite-PL-300-Foamboard-10-oz-Latex-Construction-Adhesive-Blue-Cartridge-1421941/202020476)
+
+- ### FAA requirements, and miscellaneous
+
 *(TBD)* [Lighting / strobes / beacons](https://github.com/stratopi-org/stratopi/blob/master/PARTS.md)<br />
 *(TBD)* [Radar reflector](https://github.com/stratopi-org/stratopi/blob/master/PARTS.md)
