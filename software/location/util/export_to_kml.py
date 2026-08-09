@@ -10,11 +10,16 @@ from lib import common, log
 POSTGRES_URL = os.environ["POSTGRES_URL"]
 
 ROUTE_COLOR = simplekml.Color.rgb(30, 110, 255)
-ROUTE_WIDTH = 3
+ROUTE_WIDTH = 4
 
 POINT_ICON_URL = (
     "https://maps.google.com/mapfiles/kml/paddle/red-circle.png"
 )
+
+TOUR_FLY_DURATION = 1.5
+TOUR_WAIT_DURATION = 1.0
+TOUR_CAMERA_RANGE = 1_500
+TOUR_CAMERA_TILT = 45
 
 
 def format_kml_number(value, decimals=1, suffix=""):
@@ -195,10 +200,9 @@ def create_point_style():
 
     style.iconstyle.icon.href = POINT_ICON_URL
 
-    # The previous value was 0.55.
-    style.iconstyle.scale = 1.0
+    style.iconstyle.scale = 1.5
 
-    style.labelstyle.scale = 0.75
+    style.labelstyle.scale = 1
     style.labelstyle.color = simplekml.Color.white
 
     return style
@@ -282,6 +286,12 @@ def add_points(kml, rows):
 
         point.altitudemode = simplekml.AltitudeMode.absolute
 
+        # Creates:
+        # <TimeStamp>
+        #   <when>...</when>
+        # </TimeStamp>
+        point.timestamp.when = timestamp_iso
+
         point.description = build_description(
             timestamp_iso=timestamp_iso,
             altitude_m=altitude_m,
@@ -292,6 +302,55 @@ def add_points(kml, rows):
         )
 
         point.style = point_style
+
+
+def add_tour(kml, rows):
+    """Add a Google Earth tour that visits every recorded location."""
+    tour = kml.newgxtour(name="Play StratoPi Flight")
+    playlist = tour.newgxplaylist()
+
+    for row in rows:
+        (
+            _timestamp,
+            longitude,
+            latitude,
+            altitude_m,
+            _vertical_speed_mpm,
+            _speed_kn,
+            course_d,
+            _direction,
+        ) = row
+
+        altitude = (
+            float(altitude_m)
+            if altitude_m is not None
+            else 0.0
+        )
+
+        heading = (
+            float(course_d)
+            if course_d is not None
+            else 0.0
+        )
+
+        fly_to = playlist.newgxflyto(
+            gxduration=TOUR_FLY_DURATION,
+            gxflytomode=simplekml.GxFlyToMode.smooth,
+        )
+
+        fly_to.lookat = simplekml.LookAt(
+            longitude=float(longitude),
+            latitude=float(latitude),
+            altitude=altitude,
+            heading=heading,
+            tilt=TOUR_CAMERA_TILT,
+            range=TOUR_CAMERA_RANGE,
+            altitudemode=simplekml.AltitudeMode.absolute,
+        )
+
+        playlist.newgxwait(
+            gxduration=TOUR_WAIT_DURATION,
+        )
 
 
 def export_kml():
@@ -320,6 +379,7 @@ def export_kml():
 
     add_route(kml, rows)
     add_points(kml, rows)
+    add_tour(kml, rows)
 
     kml.save(kml_file)
 
