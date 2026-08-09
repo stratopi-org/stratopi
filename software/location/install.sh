@@ -16,6 +16,7 @@ WorkingDirectory=/home/pi/stratopi/software/location
 ExecStart=/usr/bin/python /home/pi/stratopi/software/location/app.py
 Restart=always
 RestartSec=3
+LogNamespace=stratopi
 StandardOutput=journal
 StandardError=journal
 EnvironmentFile=/etc/environment
