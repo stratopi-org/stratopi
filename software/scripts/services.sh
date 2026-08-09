@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -eo pipefail; [[ $TRACE ]] && set -x
 
-SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+SELF="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+SOFTWARE_DIR="$(cd -- "$SELF/.." && pwd)"
 
 ARG="${1:-}"
 
@@ -15,21 +16,21 @@ case "$ARG" in
 esac
 
 (
-    cd "$SCRIPT_DIR/software/battery"
+    cd "$SOFTWARE_DIR/battery"
     sudo service stratopi-battery "$ARG"
 )
 
 (
-    cd "$SCRIPT_DIR/software/communication"
+    cd "$SOFTWARE_DIR/communication"
     sudo service stratopi-communication "$ARG"
 )
 
 (
-    cd "$SCRIPT_DIR/software/environmental"
+    cd "$SOFTWARE_DIR/environmental"
     sudo service stratopi-environmental "$ARG"
 )
 
 (
-    cd "$SCRIPT_DIR/software/location"
+    cd "$SOFTWARE_DIR/location"
     sudo service stratopi-location "$ARG"
 )
