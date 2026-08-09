@@ -139,7 +139,7 @@ def build_description(
         '</div>'
 
         '<div style="margin-bottom:12px;">'
-        '<div><b>Ground speed</b></div>'
+        '<div><b>Speed</b></div>'
         f'<div>{speed}</div>'
         '</div>'
 
