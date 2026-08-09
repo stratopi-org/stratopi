@@ -82,7 +82,7 @@ def build_description(
             )
 
         vertical_speed = (
-            f"{format_kml_number(vertical_speed_mpm, 1, ' m/min')} / "
+            f"{format_kml_number(vertical_speed_mpm, 1, ' m/min')} | "
             f"{format_kml_number(vertical_speed_fpm, 0, ' ft/min')} "
             f"{vertical_speed_icon}"
         )
@@ -103,18 +103,13 @@ def build_description(
     direction_text = html.escape(str(direction or "Unknown"))
 
     altitude = (
-        f"{format_kml_number(altitude_m, 1, ' m')} / "
+        f"{format_kml_number(altitude_m, 1, ' m')} | "
         f"{format_kml_number(altitude_ft, 0, ' ft')}"
     )
 
-    vertical_speed = (
-        f"{format_kml_number(vertical_speed_mpm, 1, ' m/min')} / "
-        f"{format_kml_number(vertical_speed_fpm, 0, ' ft/min')}"
-    )
-
     speed = (
-        f"{format_kml_number(speed_kn, 1, ' kn')} / "
-        f"{format_kml_number(speed_mps, 1, ' m/s')} / "
+        f"{format_kml_number(speed_kn, 1, ' kn')} | "
+        f"{format_kml_number(speed_mps, 1, ' m/s')} | "
         f"{format_kml_number(speed_mph, 1, ' mph')}"
     )
 
