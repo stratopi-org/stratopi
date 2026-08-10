@@ -33,7 +33,7 @@ See:
 
 ## Software architecture
 
-All the software is written in Python 3 using standard PyPI packages. The pattern of each application is essentially poll for some data, and then insert that data into PostgreSQL. The exception being the communication application which pulls data from PostgreSQL and sends it to Slack via wireless networks. Originally, I was planning to run each application in a Docker container but decided to keep things as simple as possible and opted to use tried and true _systemd_ services for each application. [KISS](https://en.wikipedia.org/wiki/KISS_principle)!
+All the software is written in Python 3 using standard PyPI packages. The pattern of each application is essentially poll for some data, and then insert that data into PostgreSQL. The exception being the communication application which listens for data from PostgreSQL via notify and sends it to Slack via wireless networks. Originally, I was planning to run each application in a Docker container but decided to keep things as simple as possible and opted to use tried and true _systemd_ services for each application. [KISS](https://en.wikipedia.org/wiki/KISS_principle)!
 
 - ### [battery](https://github.com/stratopi-org/stratopi/tree/master/software/battery)
 
@@ -41,7 +41,7 @@ Polls the battery percentage as well as the battery temperature and inserts the 
 
 - ### [communication](https://github.com/stratopi-org/stratopi/tree/master/software/communication)
 
-Pulls battery, environmental, and location data from PostgreSQL and inserts into a Slack channel using wireless networks.
+Listens for battery, environmental, and location data from PostgreSQL via notify and sends it to Slack via wireless networks.
 
 - ### [environmental](https://github.com/stratopi-org/stratopi/tree/master/software/environmental)
 

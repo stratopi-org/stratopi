@@ -1,12 +1,13 @@
 import argparse
-import asyncio
 import os
+import select
+import signal
+import sys
 
 import psycopg2
 from lib import common, log
 
 NAME = 'communication'
-SLEEP_TIME = 60 * 5   # 5 minutes
 
 try:
     with open('.version', 'r', encoding='UTF-8') as f:
@@ -24,27 +25,58 @@ parser.add_argument('--version',
 parser.parse_args()
 
 log.info(f'{NAME} v{VERSION} ({common.python_version()})')
-log.info(f'pulling data every {common.sec_to_min(SLEEP_TIME)} minute(s)')
 
+conn = None
 
-async def loop_fn():
-    while True:
-        conn = psycopg2.connect(os.environ['POSTGRES_URL'])
-        masked_postgres_url = common.mask_postgres_url_password(
-            os.environ['POSTGRES_URL'])
-        log.debug(f'connected to PostgreSQL ({masked_postgres_url})')
+def handle_shutdown(signum, frame):
+    if conn:
+        conn.close()
+        log.debug('closed PostgreSQL connection')
 
-        cursor = conn.cursor()
+    sys.exit(0)
 
-        try:
-            log.warning("no logic in module")
-        except Exception as err:
-            log.error(err)
-        finally:
-            cursor.close()
-            conn.close()
-            log.debug('closed PostgreSQL connection')
+signal.signal(signal.SIGTERM, handle_shutdown)
+signal.signal(signal.SIGINT, handle_shutdown)
 
-        await asyncio.sleep(SLEEP_TIME)
+def process_battery(data):
+    log.debug(f'channel=battery_insert | {data}')
 
-asyncio.run(loop_fn())
+def process_environmental(data):
+    log.debug(f'channel=environmental_insert | {data}')
+
+def process_location(data):
+    log.debug(f'channel=location_insert | {data}')
+
+conn = psycopg2.connect(os.environ['POSTGRES_URL'])
+conn.autocommit = True
+masked_postgres_url = common.mask_postgres_url_password(
+    os.environ['POSTGRES_URL']
+)
+log.debug(f'connected to PostgreSQL ({masked_postgres_url})')
+
+with conn.cursor() as cur:
+    cur.execute("LISTEN battery_insert")
+    log.info('listening for PostgreSQL battery notify events...')
+
+    cur.execute("LISTEN environmental_insert")
+    log.info('listening for PostgreSQL environmental notify events...')
+
+    cur.execute("LISTEN location_insert")
+    log.info('listening for PostgreSQL location notify events...')
+
+while True:
+    select.select([conn], [], [])
+
+    conn.poll()
+
+    while conn.notifies:
+        notify = conn.notifies.pop(0)
+
+        if notify.channel == 'battery_insert':
+            process_battery(notify.payload)
+
+        elif notify.channel == 'environmental_insert':
+            process_environmental(notify.payload)
+
+        elif notify.channel == 'location_insert':
+            process_location(notify.payload)
