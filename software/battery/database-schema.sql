@@ -14,3 +14,9 @@ CREATE INDEX battery_percent_idx
 
 CREATE INDEX battery_added_idx
     ON battery (added ASC);
+
+-- Attach trigger and call notify_insert after insert
+CREATE TRIGGER battery_insert_notify
+AFTER INSERT ON battery
+FOR EACH ROW
+EXECUTE FUNCTION notify_insert();

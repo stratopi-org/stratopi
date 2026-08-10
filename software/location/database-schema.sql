@@ -103,3 +103,9 @@ CREATE TRIGGER location_vertical_speed_trigger
 BEFORE INSERT ON location
 FOR EACH ROW
 EXECUTE FUNCTION calculate_vertical_speed();
+
+-- Attach trigger and call notify_insert after insert
+CREATE TRIGGER location_insert_notify
+AFTER INSERT ON location
+FOR EACH ROW
+EXECUTE FUNCTION notify_insert();

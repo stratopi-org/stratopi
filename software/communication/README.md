@@ -1,5 +1,11 @@
 # communication
 
+## Create PostgreSQL Schema
+
+```shell
+sudo -u postgres psql -h 127.0.0.1 -d stratopi -U stratopi -f ./database-schema.sql --password
+```
+
 ## Install systemd Service
 
 ```shell

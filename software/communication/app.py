@@ -1,4 +1,5 @@
 import argparse
+import json
 import os
 import select
 import signal
@@ -71,12 +72,13 @@ while True:
 
     while conn.notifies:
         notify = conn.notifies.pop(0)
+        data = json.loads(notify.payload)
 
         if notify.channel == 'battery_insert':
-            process_battery(notify.payload)
+            process_battery(data)
 
         elif notify.channel == 'environmental_insert':
-            process_environmental(notify.payload)
+            process_environmental(data)
 
         elif notify.channel == 'location_insert':
-            process_location(notify.payload)
+            process_location(data)
