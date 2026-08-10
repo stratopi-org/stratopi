@@ -40,13 +40,13 @@ signal.signal(signal.SIGTERM, handle_shutdown)
 signal.signal(signal.SIGINT, handle_shutdown)
 
 def process_battery(data):
-    log.debug(f'channel=battery | {data}')
+    log.debug(f'channel=battery => {data}')
 
 def process_environmental(data):
-    log.debug(f'channel=environmental {data}')
+    log.debug(f'channel=environmental => {data}')
 
 def process_location(data):
-    log.debug(f'channel=location | {data}')
+    log.debug(f'channel=location => {data}')
 
 conn = psycopg2.connect(os.environ['POSTGRES_URL'])
 conn.autocommit = True
