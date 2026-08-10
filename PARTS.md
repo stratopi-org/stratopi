@@ -47,6 +47,7 @@ I used the [ELEGOO 40pin cable pack](https://www.amazon.com/gp/product/B01EV70C7
 [PL 300 Foamboard 10 oz. Latex Construction Adhesive Blue Cartridge](https://www.homedepot.com/pep/Loctite-PL-300-Foamboard-10-oz-Latex-Construction-Adhesive-Blue-Cartridge-1421941/202020476)<br />
 [Scotch Bi-Directional Filament Tape 8959 Transparent](https://www.amazon.com/gp/product/B00006XY3H)<br />
 [3M Multi-Use Colored Duct Tape, Orange with Strong Adhesive and Water-Resistant Backing](https://www.amazon.com/3M-Multi-Use-Adhesive-Water-Resistant-Multi-Surface/dp/B073WKYJ5K)
+[HUASAI 4/5" 100 Pack Zip Tie Mount](https://www.amazon.com/dp/B07Z79LHJC)
 
 - ### FAA requirements, and miscellaneous
 
