@@ -42,7 +42,7 @@ CREATE INDEX location_speed_kn_idx
 CREATE INDEX location_added_idx
     ON location (added ASC);
 
--- Trigger that automatically calcualtes vertical speed based on altitude and time deltas
+-- Trigger that automatically calculates vertical speed based on altitude and time deltas
 CREATE OR REPLACE FUNCTION calculate_vertical_speed()
 RETURNS TRIGGER AS $$
 DECLARE
@@ -104,7 +104,7 @@ BEFORE INSERT ON location
 FOR EACH ROW
 EXECUTE FUNCTION calculate_vertical_speed();
 
--- Attach trigger and call notify_insert after insert
+-- Attach trigger and call notify_insert() after insert
 CREATE TRIGGER location_insert_notify
 AFTER INSERT ON location
 FOR EACH ROW
