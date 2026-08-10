@@ -25,3 +25,9 @@ CREATE INDEX environmental_cpu_temperature_c_idx
 
 CREATE INDEX environmental_added_idx
     ON environmental (added ASC);
+
+-- Attach trigger and call notify_insert after insert
+CREATE TRIGGER environmental_insert_notify
+AFTER INSERT ON environmental
+FOR EACH ROW
+EXECUTE FUNCTION notify_insert();
