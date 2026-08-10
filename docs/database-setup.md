@@ -1,6 +1,6 @@
 # Database
 
-- PostgreSQL 15 on [Raspbian](https://www.raspberrypi.com/software/)
+- PostgreSQL 15 on [Pi OS](https://www.raspberrypi.com/software/)
 
 ## Install
 
