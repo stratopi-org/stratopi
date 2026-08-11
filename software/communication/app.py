@@ -39,16 +39,8 @@ def handle_shutdown(signum, frame):
 signal.signal(signal.SIGTERM, handle_shutdown)
 signal.signal(signal.SIGINT, handle_shutdown)
 
-def process_battery(data):
-    log.debug(f'channel=battery => {data}')
-    slack.send_message(data)
-
-def process_environmental(data):
-    log.debug(f'channel=environmental => {data}')
-    slack.send_message(data)
-
-def process_location(data):
-    log.debug(f'channel=location => {data}')
+def process_notify(data):
+    log.debug(f'({data.channel}) {data}')
     slack.send_message(data)
 
 conn = psycopg2.connect(os.environ['POSTGRES_URL'])
@@ -60,13 +52,13 @@ log.debug(f'connected to PostgreSQL ({masked_postgres_url})')
 
 with conn.cursor() as cur:
     cur.execute("LISTEN battery_insert")
-    log.info('listening for PostgreSQL battery notify events...')
+    log.info('listening on PostgreSQL \'battery_insert\'...')
 
     cur.execute("LISTEN environmental_insert")
-    log.info('listening for PostgreSQL environmental notify events...')
+    log.info('listening on PostgreSQL \'environmental_insert\'...')
 
     cur.execute("LISTEN location_insert")
-    log.info('listening for PostgreSQL location notify events...')
+    log.info('listening on PostgreSQL \'location_insert\'...')
 
 while True:
     select.select([conn], [], [])
@@ -76,12 +68,6 @@ while True:
     while conn.notifies:
         notify = conn.notifies.pop(0)
         data = json.loads(notify.payload)
+        data.channel = notify.channel
 
-        if notify.channel == 'battery_insert':
-            process_battery(data)
-
-        elif notify.channel == 'environmental_insert':
-            process_environmental(data)
-
-        elif notify.channel == 'location_insert':
-            process_location(data)
+        process_notify(data)
