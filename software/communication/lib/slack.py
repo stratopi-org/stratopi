@@ -1,3 +1,4 @@
+import json
 import os
 
 from lib import log
@@ -11,10 +12,17 @@ def create_api():
 api = create_api()
 
 def send_message(message):
+    if not isinstance(message, str):
+        message = json.dumps(
+            message,
+            indent=2,
+            default=str,
+        )
+
     try:
         api.chat_postMessage(
             channel=os.environ['SLACK_CHANNEL_ID'],
-            text=message,
+            text=f"```{message}```",
         )
     except SlackApiError as err:
         error = err.response.get('error', 'unknown_error')
