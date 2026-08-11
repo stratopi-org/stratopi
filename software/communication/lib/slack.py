@@ -1,10 +1,12 @@
 import json
+import logging
 import os
 
 from lib import log
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError, SlackClientError
 
+logging.getLogger('slack_sdk').setLevel(logging.WARNING)
 
 def create_api():
     return WebClient(token=os.environ['SLACK_BOT_TOKEN'])
@@ -12,17 +14,20 @@ def create_api():
 api = create_api()
 
 def send_message(message):
-    if not isinstance(message, str):
+    if isinstance(message, (dict, list)):
         message = json.dumps(
             message,
             indent=2,
             default=str,
         )
+        text = f"```{message}```"
+    else:
+        text = str(message)
 
     try:
         api.chat_postMessage(
             channel=os.environ['SLACK_CHANNEL_ID'],
-            text=f"```{message}```",
+            text=text
         )
     except SlackApiError as err:
         error = err.response.get('error', 'unknown_error')
