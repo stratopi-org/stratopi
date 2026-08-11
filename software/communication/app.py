@@ -40,7 +40,8 @@ signal.signal(signal.SIGTERM, handle_shutdown)
 signal.signal(signal.SIGINT, handle_shutdown)
 
 def on_notify(data):
-    log.debug(f"({data['channel']}) {data}")
+    channel = (data.get('_meta') or {}).get('channel')
+    log.debug(f"(${channel}) {data}")
     slack.send_message(data)
 
 conn = psycopg2.connect(os.environ['POSTGRES_URL'])
@@ -68,6 +69,8 @@ while True:
     while conn.notifies:
         notify = conn.notifies.pop(0)
         data = json.loads(notify.payload)
-        data['channel'] = notify.channel.removesuffix('_insert')
+        data['_meta'] = {
+            'channel': notify.channel.removesuffix('_insert'),
+        }
 
         on_notify(data)
