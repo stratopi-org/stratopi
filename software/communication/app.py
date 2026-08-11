@@ -39,7 +39,7 @@ def handle_shutdown(signum, frame):
 signal.signal(signal.SIGTERM, handle_shutdown)
 signal.signal(signal.SIGINT, handle_shutdown)
 
-def process_notify(data):
+def on_notify(data):
     log.debug(f"({data['channel']}) {data}")
     slack.send_message(data)
 
@@ -68,6 +68,6 @@ while True:
     while conn.notifies:
         notify = conn.notifies.pop(0)
         data = json.loads(notify.payload)
-        data['channel'] = notify.channel
+        data['channel'] = notify.channel.removesuffix('_insert')
 
-        process_notify(data)
+        on_notify(data)
