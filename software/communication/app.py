@@ -40,7 +40,7 @@ signal.signal(signal.SIGTERM, handle_shutdown)
 signal.signal(signal.SIGINT, handle_shutdown)
 
 def process_notify(data):
-    log.debug(f'({data['channel']}) {data}')
+    log.debug(f"({data['channel']}) {data}")
     slack.send_message(data)
 
 conn = psycopg2.connect(os.environ['POSTGRES_URL'])
