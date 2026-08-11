@@ -1,2 +1,3 @@
 pip-outdated==0.8.0
 psycopg2==2.9.12
+slack-sdk==3.43.0
