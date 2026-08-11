@@ -1,5 +1,7 @@
 # StratoPi 🎈 👽 🛸
 
+![StratoPi](https://github.com/stratopi-org/stratopi/blob/master/media/images/logo.png)
+
 ## Goal
 
 The goal is to launch a latex weather balloon filled with helium into the stratosphere while recording the entire video footage of the ascent and descent flights using multiple cameras. Successfully recover the payload, which includes the Raspberry Pi computer, flight data _(date, GPS, temperature, pressure, humidity, etc)_, and video cameras and footage. If you like computing, Raspberry Pi's, space, flight, and have way too much free time, this might just be the project for you.
