@@ -6,7 +6,7 @@ import signal
 import sys
 
 import psycopg2
-from lib import common, log
+from lib import common, log, slack
 
 NAME = 'communication'
 
@@ -41,12 +41,15 @@ signal.signal(signal.SIGINT, handle_shutdown)
 
 def process_battery(data):
     log.debug(f'channel=battery => {data}')
+    slack.send_message(data)
 
 def process_environmental(data):
     log.debug(f'channel=environmental => {data}')
+    slack.send_message(data)
 
 def process_location(data):
     log.debug(f'channel=location => {data}')
+    slack.send_message(data)
 
 conn = psycopg2.connect(os.environ['POSTGRES_URL'])
 conn.autocommit = True

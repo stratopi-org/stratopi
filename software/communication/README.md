@@ -16,6 +16,8 @@ sudo -u postgres psql -h 127.0.0.1 -d stratopi -U stratopi -f ./database-schema.
 
 - `LOG_LEVEL` _(default=INFO)_
 - `POSTGRES_URL` _(required)_
+- `SLACK_BOT_TOKEN` _(required)_
+- `SLACK_CHANNEL_ID` _(required)_
 
 ## View Logs
 
