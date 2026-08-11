@@ -20,7 +20,7 @@ sudo -u postgres psql -h 127.0.0.1 -d stratopi -U stratopi -f ./database-schema.
 ## View Logs
 
 ```shell
-./view-logs.sh [--follow]
+./logs.sh [--follow]
 ```
 
 ## Utilities
