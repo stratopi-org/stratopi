@@ -1,4 +1,5 @@
 import argparse
+import ast
 import json
 import os
 import select
@@ -42,7 +43,30 @@ signal.signal(signal.SIGINT, handle_shutdown)
 def on_notify(data):
     channel = (data.get('_meta') or {}).get('channel')
     log.debug(f"({channel}) {data}")
-    slack.send_message(data)
+
+    slack_txt = None
+
+    if channel == 'battery':
+        slack_txt = data
+
+    elif channel == 'location':
+        slack_txt = '\n'.join([
+            ':round_pushpin: *Location Update*',
+            f"*Date:* `{data['date']}`",
+            f"*Time:* `{data['time']}`",
+            f"*Latitude:* `{data['latitude']}`",
+            f"*Longitude:* `{data['longitude']}`",
+            f"*Altitude:* `{data['altitude_m']} m`",
+            f"*Vertical speed:* `{data['vertical_speed_mpm']} m/min`",
+            f"*Speed:* `{data['speed_kn']} kn`",
+            f"*Course:* `{data['course_d']}° {data['direction']}`",
+         ])
+
+    elif channel == 'environmental':
+        slack_txt = data
+
+    if slack_txt:
+        slack.send_message(slack_txt)
 
 conn = psycopg2.connect(os.environ['POSTGRES_URL'])
 conn.autocommit = True
@@ -69,6 +93,16 @@ while True:
     while conn.notifies:
         notify = conn.notifies.pop(0)
         data = json.loads(notify.payload)
+
+        # break coordinates into separate latitude and longitude keys
+        if notify.channel == 'location_insert':
+            longitude, latitude = ast.literal_eval(
+                data.pop('coordinates')
+            )
+
+            data['latitude'] = latitude
+            data['longitude'] = longitude
+
         data['_meta'] = {
             'channel': notify.channel.removesuffix('_insert'),
         }
