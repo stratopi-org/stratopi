@@ -65,10 +65,10 @@ def on_notify(data):
             else:
                 vertical_speed_icon = ':black_circle_for_record:'
 
-        vertical_speed = (
-            f"{vertical_speed_mpm:.1f} m/min | "
-            f"{common.meters_to_feet(vertical_speed_mpm)} ft/min"
-        )
+            vertical_speed = (
+                f"{vertical_speed_mpm:.1f} m/min | "
+                f"{common.meters_to_feet(vertical_speed_mpm)} ft/min"
+            )
 
         slack_txt = '\n'.join([
             ':round_pushpin: *Location Update*',
