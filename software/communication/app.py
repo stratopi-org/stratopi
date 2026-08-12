@@ -63,7 +63,7 @@ def on_notify(data):
             elif vertical_speed_mpm < 0:
                 vertical_speed_icon = ':arrow_down_small:'
             else:
-                vertical_speed_icon = ':arrow_up_down:'
+                vertical_speed_icon = ':black_circle_for_record:'
 
         vertical_speed = (
             f"{vertical_speed_mpm:.1f} m/min | "
@@ -80,13 +80,14 @@ def on_notify(data):
             f"*Altitude:* `{data['altitude_m']} m | "
             f"{common.meters_to_feet(data['altitude_m'])} ft`"
             ),
-            f"*Vertical speed:* {vertical_speed_icon} `{vertical_speed}`",
+            f"*Vertical speed:* `{vertical_speed} {vertical_speed_icon}`",
             (
                 f"*Speed:* `{data['speed_kn']} kn | "
                 f"{common.knots_to_mps(data['speed_kn'])} m/s | "
                 f"{common.knots_to_mph(data['speed_kn'])} mph`"
             ),
-            f"*Course:* `{data['course_d']}° {data['direction']}`",
+            f"*Course:* `{data['course_d']}°`",
+            f"*Direction:* `{data['direction']}`",
          ])
 
     elif channel == 'environmental':
