@@ -72,7 +72,7 @@ def build_description(
     )
 
     if vertical_speed_mpm is None:
-        vertical_speed = "Unknown"
+        vertical_speed = "unknown"
     else:
         vertical_speed_value = float(vertical_speed_mpm)
 

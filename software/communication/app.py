@@ -47,13 +47,22 @@ def on_notify(data):
     slack_txt = None
 
     if channel == 'battery':
+        slack_txt = '\n'.join([
+            ':battery: *Battery Update*',
+            f"*ID:* `{data['id']}`",
+            f"*Percent:* `{data['percent']}%`",
+            f"*Temperature:* `{data['temperature']} °C` `{common.celsius_to_fahrenheit(data['temperature'])} °F`",
+            f"*Added:* `{data['added']}`"
+        ])
+
+    elif channel == 'environmental':
         slack_txt = data
 
     elif channel == 'location':
         vertical_speed_mpm = data['vertical_speed_mpm']
 
         if vertical_speed_mpm is None:
-            vertical_speed = 'Unknown'
+            vertical_speed = '`unknown`'
             vertical_speed_icon = ':grey_question:'
         else:
             vertical_speed_mpm = float(vertical_speed_mpm)
@@ -95,10 +104,7 @@ def on_notify(data):
             f"*Course:* `{data['course_d']}°`",
             f"*Direction:* `{data['direction']}`\n",
             f"<{google_maps_url}|:world_map: Google Map>"
-         ])
-
-    elif channel == 'environmental':
-        slack_txt = data
+        ])
 
     if slack_txt:
         slack.send_message(slack_txt)
@@ -138,6 +144,7 @@ while True:
             data['latitude'] = latitude
             data['longitude'] = longitude
 
+        # add channel into a key _meta
         data['_meta'] = {
             'channel': notify.channel.removesuffix('_insert'),
         }
