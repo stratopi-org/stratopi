@@ -50,13 +50,21 @@ def on_notify(data):
         slack_txt = '\n'.join([
             ':battery: *Battery Update*',
             f"*ID:* `{data['id']}`",
-            f"*Percent:* `{data['percent']}%`",
+            f"*Battery:* `{data['percent']} %`",
             f"*Temperature:* `{data['temperature_c']} °C` `{common.celsius_to_fahrenheit(data['temperature_c'])} °F`",
             f"*Added:* `{data['added']}`"
         ])
 
     elif channel == 'environmental':
-        slack_txt = data
+        slack_txt = '\n'.join([
+            ':thermometer: *Environmental Update*',
+            f"*ID:* `{data['id']}`",
+            f"*Temperature:* `{data['temperature_c']} °C` `{common.celsius_to_fahrenheit(data['temperature_c'])} °F`",
+            f"*Pressure:* `{data['pressure_hpa']} hPa` `{common.hectopascal_to_bar(data['pressure_hpa'])} bar` `{common.hectopascal_to_psi(data['pressure_hpa'])} psi`",
+            f"*Humidity:* `{data['humidity_rh']} % RH,`",
+            f"*CPU temperature:* `{data['cpu_temperature_c']} °C` `{common.celsius_to_fahrenheit(data['cpu_temperature_c'])} °F`",
+            f"*Added:* `{data['added']}`"
+        ])
 
     elif channel == 'location':
         vertical_speed_mpm = data['vertical_speed_mpm']
@@ -102,7 +110,8 @@ def on_notify(data):
                 f"`{common.knots_to_mph(data['speed_kn'])} mph`"
             ),
             f"*Course:* `{data['course_d']}°`",
-            f"*Direction:* `{data['direction']}`\n",
+            f"*Direction:* `{data['direction']}`",
+            f"*Added:* `{data['added']}`\n\n",
             f"<{google_maps_url}|:world_map: Google Map>"
         ])
 
