@@ -5,11 +5,15 @@ import os
 from lib import log
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError, SlackClientError
+from slack_sdk.http_retry.builtin_handlers import ConnectionErrorRetryHandler
 
 logging.getLogger('slack_sdk').setLevel(logging.WARNING)
 
 def create_api():
-    return WebClient(token=os.environ['SLACK_BOT_TOKEN'])
+    return WebClient(
+        token=os.environ['SLACK_BOT_TOKEN'],
+        timeout=7
+    )
 
 api = create_api()
 
