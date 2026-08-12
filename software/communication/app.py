@@ -53,7 +53,7 @@ def on_notify(data):
         vertical_speed_mpm = data['vertical_speed_mpm']
 
         if vertical_speed_mpm is None:
-            vertical_speed = '-'
+            vertical_speed = 'Unknown'
             vertical_speed_icon = ':grey_question:'
         else:
             vertical_speed_mpm = float(vertical_speed_mpm)
