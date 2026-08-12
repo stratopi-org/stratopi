@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -eo pipefail; [[ $TRACE ]] && set -x
 
-journal_command="journalctl --namespace=stratopi -b -u stratopi-location -o cat"
+journal_command="journalctl --namespace=stratopi -u stratopi-location -o cat"
 
 if [ "$1" = "--follow" ]; then
     $journal_command --follow
