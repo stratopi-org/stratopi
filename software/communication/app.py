@@ -48,7 +48,7 @@ def on_notify(data):
 
     if channel == 'battery':
         slack_txt = '\n'.join([
-            ':battery: *Battery Update*',
+            ':battery: *BATTERY*',
             f"*ID:* `{data['id']}`",
             f"*Battery:* `{data['percent']} %`",
             f"*Temperature:* `{data['temperature_c']} °C` `{common.celsius_to_fahrenheit(data['temperature_c'])} °F`",
@@ -57,7 +57,7 @@ def on_notify(data):
 
     elif channel == 'environmental':
         slack_txt = '\n'.join([
-            ':thermometer: *Environmental Update*',
+            ':thermometer: *ENVIRONMENTAL*',
             f"*ID:* `{data['id']}`",
             f"*Temperature:* `{data['temperature_c']} °C` `{common.celsius_to_fahrenheit(data['temperature_c'])} °F`",
             f"*Pressure:* `{data['pressure_hpa']} hPa` `{common.hectopascal_to_bar(data['pressure_hpa'])} bar` `{common.hectopascal_to_psi(data['pressure_hpa'])} psi`",
@@ -93,7 +93,7 @@ def on_notify(data):
         )
 
         slack_txt = '\n'.join([
-            ':round_pushpin: *Location Update*',
+            ':round_pushpin: *LOCATION*',
             f"*ID:* `{data['id']}`",
             f"*Date (UTC):* `{data['date']}`",
             f"*Time (UTC):* `{data['time']}`",
