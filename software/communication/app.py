@@ -92,8 +92,8 @@ def on_notify(data):
                 f"{common.knots_to_mph(data['speed_kn'])} mph`"
             ),
             f"*Course:* `{data['course_d']}°`",
-            f"*Direction:* `{data['direction']}`",
-            f"<{google_maps_url}|:world_map: Google Maps>"
+            f"*Direction:* `{data['direction']}`\n",
+            f"<{google_maps_url}|:globe_with_meridians:Google Map>"
          ])
 
     elif channel == 'environmental':
