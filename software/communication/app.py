@@ -71,11 +71,8 @@ def on_notify(data):
             )
 
         google_maps_url = (
-            'https://www.google.com/maps/@'
-            f'?api=1&map_action=map'
-            f'&center={data['latitude']},{data['longitude']}'
-            '&zoom=15'
-            '&basemap=satellite'
+            'https://www.google.com/maps/search/'
+            f"?api=1&query={data['latitude']},{data['longitude']}"
         )
 
         slack_txt = '\n'.join([
