@@ -77,19 +77,20 @@ def on_notify(data):
 
         slack_txt = '\n'.join([
             ':round_pushpin: *Location Update*',
+            f"_id: `{data['id']}_`",
             f"*Date:* `{data['date']}`",
             f"*Time:* `{data['time']}`",
             f"*Latitude:* `{data['latitude']}`",
             f"*Longitude:* `{data['longitude']}`",
             (
-            f"*Altitude:* `{data['altitude_m']} m | "
-            f"{common.meters_to_feet(data['altitude_m'])} ft`"
+            f"*Altitude:* `{data['altitude_m']} m` "
+            f"`{common.meters_to_feet(data['altitude_m'])} ft`"
             ),
             f"*Vertical speed:* `{vertical_speed}` {vertical_speed_icon}",
             (
-                f"*Speed:* `{data['speed_kn']} kn | "
-                f"{common.knots_to_mps(data['speed_kn'])} m/s | "
-                f"{common.knots_to_mph(data['speed_kn'])} mph`"
+                f"*Speed:* `{data['speed_kn']} kn` "
+                f"`{common.knots_to_mps(data['speed_kn'])} m/s` "
+                f"`{common.knots_to_mph(data['speed_kn'])} mph`"
             ),
             f"*Course:* `{data['course_d']}°`",
             f"*Direction:* `{data['direction']}`\n",

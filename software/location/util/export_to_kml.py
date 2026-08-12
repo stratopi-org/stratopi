@@ -7,6 +7,7 @@ import psycopg2
 import simplekml
 from lib import common, log
 
+
 POSTGRES_URL = os.environ["POSTGRES_URL"]
 
 ROUTE_COLOR = simplekml.Color.rgb(30, 110, 255)
@@ -38,7 +39,9 @@ def format_kml_number(value, decimals=1, suffix=""):
 def timestamp_to_iso8601(timestamp):
     """Return a timestamp in UTC ISO-8601 format."""
     if timestamp.tzinfo is None:
-        timestamp = timestamp.replace(tzinfo=datetime.timezone.utc)
+        timestamp = timestamp.replace(
+            tzinfo=datetime.timezone.utc
+        )
 
     return (
         timestamp.astimezone(datetime.timezone.utc)
@@ -48,6 +51,7 @@ def timestamp_to_iso8601(timestamp):
 
 
 def build_description(
+    location_id,
     timestamp_iso,
     altitude_m,
     vertical_speed_mpm,
@@ -75,15 +79,21 @@ def build_description(
 
         if vertical_speed_value > 0:
             vertical_speed_icon = (
-                '<span style="color:#16a34a;font-size:18px;">▲</span>'
+                '<span style="color:#16a34a;font-size:18px;">'
+                "▲"
+                "</span>"
             )
         elif vertical_speed_value < 0:
             vertical_speed_icon = (
-                '<span style="color:#dc2626;font-size:18px;">▼</span>'
+                '<span style="color:#dc2626;font-size:18px;">'
+                "▼"
+                "</span>"
             )
         else:
             vertical_speed_icon = (
-                '<span style="color:#6b7280;font-size:18px;">●</span>'
+                '<span style="color:#6b7280;font-size:18px;">'
+                "●"
+                "</span>"
             )
 
         vertical_speed = (
@@ -104,6 +114,7 @@ def build_description(
         else None
     )
 
+    location_id_text = html.escape(str(location_id))
     date_time = html.escape(timestamp_iso)
     direction_text = html.escape(str(direction or "Unknown"))
 
@@ -124,36 +135,41 @@ def build_description(
         '<div style="font-family:Arial,sans-serif;font-size:14px;">'
 
         '<div style="margin-bottom:12px;">'
-        '<div><b>Date and time</b></div>'
-        f'<div>{date_time}</div>'
-        '</div>'
+        "<div><b>ID</b></div>"
+        f"<div>{location_id_text}</div>"
+        "</div>"
 
         '<div style="margin-bottom:12px;">'
-        '<div><b>Altitude</b></div>'
-        f'<div>{altitude}</div>'
-        '</div>'
+        "<div><b>Date and time</b></div>"
+        f"<div>{date_time}</div>"
+        "</div>"
 
         '<div style="margin-bottom:12px;">'
-        '<div><b>Vertical speed</b></div>'
-        f'<div>{vertical_speed}</div>'
-        '</div>'
+        "<div><b>Altitude</b></div>"
+        f"<div>{altitude}</div>"
+        "</div>"
 
         '<div style="margin-bottom:12px;">'
-        '<div><b>Speed</b></div>'
-        f'<div>{speed}</div>'
-        '</div>'
+        "<div><b>Vertical speed</b></div>"
+        f"<div>{vertical_speed}</div>"
+        "</div>"
 
         '<div style="margin-bottom:12px;">'
-        '<div><b>Course</b></div>'
-        f'<div>{course}</div>'
-        '</div>'
+        "<div><b>Speed</b></div>"
+        f"<div>{speed}</div>"
+        "</div>"
 
-        '<div>'
-        '<div><b>Direction</b></div>'
-        f'<div>{direction_text}</div>'
-        '</div>'
+        '<div style="margin-bottom:12px;">'
+        "<div><b>Course</b></div>"
+        f"<div>{course}</div>"
+        "</div>"
 
-        '</div>'
+        "<div>"
+        "<div><b>Direction</b></div>"
+        f"<div>{direction_text}</div>"
+        "</div>"
+
+        "</div>"
     )
 
 
@@ -161,6 +177,7 @@ def fetch_locations():
     """Retrieve all recorded locations in chronological order."""
     query = """
         SELECT
+            id,
             (date + time)::timestamp AS timestamp,
             coordinates[0] AS longitude,
             coordinates[1] AS latitude,
@@ -199,7 +216,6 @@ def create_point_style():
     style = simplekml.Style()
 
     style.iconstyle.icon.href = POINT_ICON_URL
-
     style.iconstyle.scale = 1.5
 
     style.labelstyle.scale = 1
@@ -233,6 +249,7 @@ def add_route(kml, rows):
             altitude_m if altitude_m is not None else 0,
         )
         for (
+            _location_id,
             _timestamp,
             longitude,
             latitude,
@@ -247,12 +264,16 @@ def add_route(kml, rows):
 
 def add_points(kml, rows):
     """Add a selectable, labeled marker for every GPS point."""
-    points_folder = kml.newfolder(name="Recorded locations")
+    points_folder = kml.newfolder(
+        name="Recorded locations"
+    )
+
     point_style = create_point_style()
     last_index = len(rows) - 1
 
     for index, row in enumerate(rows):
         (
+            location_id,
             timestamp,
             longitude,
             latitude,
@@ -293,6 +314,7 @@ def add_points(kml, rows):
         point.timestamp.when = timestamp_iso
 
         point.description = build_description(
+            location_id=location_id,
             timestamp_iso=timestamp_iso,
             altitude_m=altitude_m,
             vertical_speed_mpm=vertical_speed_mpm,
@@ -306,11 +328,15 @@ def add_points(kml, rows):
 
 def add_tour(kml, rows):
     """Add a Google Earth tour that visits every recorded location."""
-    tour = kml.newgxtour(name="Play StratoPi Flight")
+    tour = kml.newgxtour(
+        name="Play StratoPi"
+    )
+
     playlist = tour.newgxplaylist()
 
     for row in rows:
         (
+            _location_id,
             _timestamp,
             longitude,
             latitude,
@@ -363,7 +389,10 @@ def export_kml():
         )
         return None
 
-    created_at = datetime.datetime.now(datetime.timezone.utc)
+    created_at = datetime.datetime.now(
+        datetime.timezone.utc
+    )
+
     filename_timestamp = created_at.strftime(
         "%Y_%m_%d_%H_%M_%S"
     )
