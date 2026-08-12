@@ -22,7 +22,7 @@ def mask_postgres_url_password(_input):
 
 
 def meters_to_feet(_meters):
-    return f"{float(_meters) * 3.28084:.0f}"
+    return f"{float(_meters) * 3.28084:.1f}"
 
 
 def knots_to_mps(_knots):

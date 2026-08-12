@@ -75,7 +75,7 @@ def decimal_degrees_to_dms(latitude, longitude, as_string=False):
 
 
 def meters_to_feet(_meters):
-    return f"{float(_meters) * 3.28084:.0f}"
+    return f"{float(_meters) * 3.28084:.1f}"
 
 
 def knots_to_mps(_knots):
