@@ -1,6 +1,7 @@
 import argparse
 import asyncio
 import os
+import time
 
 import bme280
 import psycopg2
@@ -30,7 +31,25 @@ log.info(f'{NAME} v{VERSION} ({common.python_version()})')
 log.info(f'refreshing {NAME} data every {common.sec_to_min(SLEEP_TIME)} minute(s)')
 
 bus = smbus2.SMBus(1)
-calibration_params = bme280.load_calibration_params(bus, BME280_ADDRESS)
+
+max_attempts = 5
+for attempt in range(1, max_attempts + 1):
+    try:
+        calibration_params = bme280.load_calibration_params(
+            bus,
+            BME280_ADDRESS,
+        )
+        break
+    except OSError as err:
+        if attempt == max_attempts:
+            raise
+
+        log.warning(
+            f'failed to initialize BME280 '
+            f'(attempt {attempt}/{max_attempts}): {err}; retrying...'
+        )
+
+        time.sleep(2)
 
 
 async def loop_fn():
