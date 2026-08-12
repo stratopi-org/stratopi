@@ -70,6 +70,14 @@ def on_notify(data):
                 f"{common.meters_to_feet(vertical_speed_mpm)} ft/min"
             )
 
+        google_maps_url = (
+            'https://www.google.com/maps/@'
+            f'?api=1&map_action=map'
+            f'&center={data['latitude']},{data['longitude']}'
+            '&zoom=15'
+            '&basemap=satellite'
+        )
+
         slack_txt = '\n'.join([
             ':round_pushpin: *Location Update*',
             f"*Date:* `{data['date']}`",
@@ -88,6 +96,7 @@ def on_notify(data):
             ),
             f"*Course:* `{data['course_d']}°`",
             f"*Direction:* `{data['direction']}`",
+            f"<{google_maps_url}|:world_map: Google Maps>"
          ])
 
     elif channel == 'environmental':
