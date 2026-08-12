@@ -19,3 +19,15 @@ def mask_postgres_url_password(_input):
     username = username_password[0]
     masked_password = '*' * len(username_password[1])
     return f"{scheme}//{username}:{masked_password}@{url_parts[1]}"
+
+
+def meters_to_feet(_meters):
+    return f"{float(_meters) * 3.28084:.0f}"
+
+
+def knots_to_mps(_knots):
+    return f"{float(_knots) * 0.514444:.1f}"
+
+
+def knots_to_mph(_knots):
+    return f"{float(_knots) * 1.15078:.0f}"

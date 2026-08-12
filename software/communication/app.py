@@ -50,15 +50,42 @@ def on_notify(data):
         slack_txt = data
 
     elif channel == 'location':
+        vertical_speed_mpm = data['vertical_speed_mpm']
+
+        if vertical_speed_mpm is None:
+            vertical_speed = '-'
+            vertical_speed_icon = ':grey_question:'
+        else:
+            vertical_speed_mpm = float(vertical_speed_mpm)
+
+            if vertical_speed_mpm > 0:
+                vertical_speed_icon = ':arrow_up_small:'
+            elif vertical_speed_mpm < 0:
+                vertical_speed_icon = ':arrow_down_small:'
+            else:
+                vertical_speed_icon = ':arrow_up_down:'
+
+        vertical_speed = (
+            f"{vertical_speed_mpm:.1f} m/min | "
+            f"{common.meters_to_feet(vertical_speed_mpm)} ft/min"
+        )
+
         slack_txt = '\n'.join([
             ':round_pushpin: *Location Update*',
             f"*Date:* `{data['date']}`",
             f"*Time:* `{data['time']}`",
             f"*Latitude:* `{data['latitude']}`",
             f"*Longitude:* `{data['longitude']}`",
-            f"*Altitude:* `{data['altitude_m']} m`",
-            f"*Vertical speed:* `{data['vertical_speed_mpm']} m/min`",
-            f"*Speed:* `{data['speed_kn']} kn`",
+            (
+            f"*Altitude:* `{data['altitude_m']} m | "
+            f"{common.meters_to_feet(data['altitude_m'])} ft`"
+            ),
+            f"*Vertical speed:* {vertical_speed_icon} `{vertical_speed}`",
+            (
+                f"*Speed:* `{data['speed_kn']} kn | "
+                f"{common.knots_to_mps(data['speed_kn'])} m/s | "
+                f"{common.knots_to_mph(data['speed_kn'])} mph`"
+            ),
             f"*Course:* `{data['course_d']}° {data['direction']}`",
          ])
 
