@@ -66,8 +66,8 @@ def on_notify(data):
                 vertical_speed_icon = ':black_circle_for_record:'
 
             vertical_speed = (
-                f"{vertical_speed_mpm:.1f} m/min | "
-                f"{common.meters_to_feet(vertical_speed_mpm)} ft/min"
+                f"`{vertical_speed_mpm:.1f} m/min` "
+                f"`{common.meters_to_feet(vertical_speed_mpm)} ft/min`"
             )
 
         google_maps_url = (
@@ -77,7 +77,7 @@ def on_notify(data):
 
         slack_txt = '\n'.join([
             ':round_pushpin: *Location Update*',
-            f"_id: `{data['id']}_`",
+            f"__id: `{data['id']}__`",
             f"*Date:* `{data['date']}`",
             f"*Time:* `{data['time']}`",
             f"*Latitude:* `{data['latitude']}`",
@@ -86,7 +86,7 @@ def on_notify(data):
             f"*Altitude:* `{data['altitude_m']} m` "
             f"`{common.meters_to_feet(data['altitude_m'])} ft`"
             ),
-            f"*Vertical speed:* `{vertical_speed}` {vertical_speed_icon}",
+            f"*Vertical speed:* {vertical_speed} {vertical_speed_icon}",
             (
                 f"*Speed:* `{data['speed_kn']} kn` "
                 f"`{common.knots_to_mps(data['speed_kn'])} m/s` "
