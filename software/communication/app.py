@@ -51,7 +51,7 @@ def on_notify(data):
             ':battery: *Battery Update*',
             f"*ID:* `{data['id']}`",
             f"*Percent:* `{data['percent']}%`",
-            f"*Temperature:* `{data['temperature']} °C` `{common.celsius_to_fahrenheit(data['temperature'])} °F`",
+            f"*Temperature:* `{data['temperature_c']} °C` `{common.celsius_to_fahrenheit(data['temperature_c'])} °F`",
             f"*Added:* `{data['added']}`"
         ])
 
