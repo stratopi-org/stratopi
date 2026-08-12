@@ -93,7 +93,7 @@ def on_notify(data):
             ),
             f"*Course:* `{data['course_d']}°`",
             f"*Direction:* `{data['direction']}`\n",
-            f"<{google_maps_url}|:globe_with_meridians:Google Map>"
+            f"<{google_maps_url}|:world_map: Google Map>"
          ])
 
     elif channel == 'environmental':
