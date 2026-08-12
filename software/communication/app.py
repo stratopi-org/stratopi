@@ -80,7 +80,7 @@ def on_notify(data):
             f"*Altitude:* `{data['altitude_m']} m | "
             f"{common.meters_to_feet(data['altitude_m'])} ft`"
             ),
-            f"*Vertical speed:* `{vertical_speed} {vertical_speed_icon}`",
+            f"*Vertical speed:* `{vertical_speed}` {vertical_speed_icon}",
             (
                 f"*Speed:* `{data['speed_kn']} kn | "
                 f"{common.knots_to_mps(data['speed_kn'])} m/s | "
