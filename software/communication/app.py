@@ -77,7 +77,7 @@ def on_notify(data):
 
         slack_txt = '\n'.join([
             ':round_pushpin: *Location Update*',
-            f"__id: `{data['id']}__`",
+            f"_id: {data['id']}_",
             f"*Date:* `{data['date']}`",
             f"*Time:* `{data['time']}`",
             f"*Latitude:* `{data['latitude']}`",
