@@ -7,7 +7,6 @@ import psycopg2
 import simplekml
 from lib import common, log
 
-
 POSTGRES_URL = os.environ["POSTGRES_URL"]
 
 ROUTE_COLOR = simplekml.Color.rgb(30, 110, 255)
