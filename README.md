@@ -45,7 +45,7 @@ Polls the battery percentage as well as the battery temperature and inserts the 
 
 - ### [communication](https://github.com/stratopi-org/stratopi/tree/master/software/communication)
 
-Listens for battery, environmental, and location data from PostgreSQL via `pg_notify` and sends it to Slack via wireless networks.
+Listens for battery, environmental, and location data from PostgreSQL via `pg_notify` and sends it to Slack via cellular networks.
 
 - ### [environmental](https://github.com/stratopi-org/stratopi/tree/master/software/environmental)
 

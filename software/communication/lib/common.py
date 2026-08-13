@@ -21,15 +21,16 @@ def mask_postgres_url_password(_input):
     return f"{scheme}//{username}:{masked_password}@{url_parts[1]}"
 
 def celsius_to_fahrenheit(_celsius):
-    return (_celsius * 9/5) + 32
+    return f"{(_celsius * 9 / 5) + 32:.1f}"
 
 
 def hectopascal_to_bar(_hectopascal):
-    return _hectopascal / 1000
+    return f"{float(_hectopascal) / 1000:.3f}"
 
 
 def hectopascal_to_psi(_hectopascal):
-    return _hectopascal * 0.0145038
+    return f"{float(_hectopascal) * 0.0145038:.2f}"
+
 
 def meters_to_feet(_meters):
     return f"{float(_meters) * 3.28084:.0f}"

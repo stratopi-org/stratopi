@@ -41,4 +41,4 @@ def cleanup_data(_input, str_format="{:.1f}"):
 
 
 def celsius_to_fahrenheit(_celsius):
-    return (_celsius * 9/5) + 32
+    return f"{(_celsius * 9 / 5) + 32:.1f}"

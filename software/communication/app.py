@@ -47,8 +47,13 @@ def on_notify(data):
     slack_txt = None
 
     if channel == 'battery':
+        if data['percent'] <= 20:
+            battery_emoji = ':low_battery:'
+        else:
+            battery_emoji = ':battery:'
+
         slack_txt = '\n'.join([
-            '> :battery: *Battery*',
+            f'> {battery_emoji} *Battery*',
             f"*ID:* `{data['id']}`",
             f"*Battery:* `{data['percent']} %`",
             f"*Temperature:* `{data['temperature_c']} °C` `{common.celsius_to_fahrenheit(data['temperature_c'])} °F`",
