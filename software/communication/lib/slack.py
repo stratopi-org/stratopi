@@ -5,22 +5,25 @@ import os
 from lib import log
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError, SlackClientError
-from slack_sdk.http_retry.builtin_handlers import ConnectionErrorRetryHandler
+from slack_sdk.http_retry.builtin_handlers import (
+    ConnectionErrorRetryHandler,
+    RateLimitErrorRetryHandler,
+)
 
 logging.getLogger('slack_sdk').setLevel(logging.WARNING)
 
-def create_api():
+
+def create_client():
     return WebClient(
         token=os.environ['SLACK_BOT_TOKEN'],
         timeout=6,
         retry_handlers=[
             ConnectionErrorRetryHandler(max_retry_count=3),
-        ]
+            RateLimitErrorRetryHandler(max_retry_count=2),
+        ],
     )
 
-api = create_api()
-
-def send_message(message):
+def send_message(client, message):
     if isinstance(message, (dict, list)):
         message = json.dumps(
             message,
@@ -32,7 +35,7 @@ def send_message(message):
         text = str(message)
 
     try:
-        api.chat_postMessage(
+        client.chat_postMessage(
             channel=os.environ['SLACK_CHANNEL_ID'],
             text=text
         )

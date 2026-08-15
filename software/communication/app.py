@@ -2,21 +2,33 @@ import argparse
 import ast
 import json
 import os
+import queue
 import select
 import signal
 import sys
+import threading
 
 import psycopg2
 from lib import common, log, slack
 
 NAME = 'communication'
+conn = None
+
+def handle_shutdown(signum, frame):
+    if conn is not None and not conn.closed:
+        conn.close()
+        log.debug('closed PostgreSQL connection')
+
+    sys.exit(0)
+
+signal.signal(signal.SIGTERM, handle_shutdown)
+signal.signal(signal.SIGINT, handle_shutdown)
 
 try:
     with open('.version', 'r', encoding='UTF-8') as f:
         VERSION = f.read().strip()
 except FileNotFoundError as err:
     log.error(err, exit_code=3)
-
 
 parser = argparse.ArgumentParser(prog=NAME)
 parser.add_argument('--version',
@@ -28,19 +40,18 @@ parser.parse_args()
 
 log.info(f'{NAME} v{VERSION} ({common.python_version()})')
 
-conn = None
+CHANNELS = (
+    'battery_insert',
+    'environmental_insert',
+    'location_insert',
+)
 
-def handle_shutdown(signum, frame):
-    if conn:
-        conn.close()
-        log.debug('closed PostgreSQL connection')
+notification_queues = {
+    channel: queue.Queue(maxsize=100)
+    for channel in CHANNELS
+}
 
-    sys.exit(0)
-
-signal.signal(signal.SIGTERM, handle_shutdown)
-signal.signal(signal.SIGINT, handle_shutdown)
-
-def on_notify(data):
+def on_notify(data, slack_client):
     channel = (data.get('_meta') or {}).get('channel')
     log.debug(f"({channel}) {data}")
 
@@ -121,28 +132,53 @@ def on_notify(data):
         ])
 
     if slack_txt:
-        slack.send_message(slack_txt)
+        slack.send_message(slack_client, slack_txt)
+
+slack_clients = {
+    channel: slack.create_client()
+    for channel in CHANNELS
+}
+
+def notification_worker(channel):
+    while True:
+        data = notification_queues[channel].get()
+
+        try:
+            on_notify(data, slack_client)
+        except Exception as err:
+            log.error(
+                f'failed to process notification from '
+                f'{channel!r}: {err}'
+            )
+        finally:
+            notification_queues[channel].task_done()
+
+
+for channel in CHANNELS:
+    thread = threading.Thread(
+        target=notification_worker,
+        args=(channel, slack_clients[channel]),
+        name=f'{channel}-worker',
+        daemon=True,
+    )
+    thread.start()
+
 
 conn = psycopg2.connect(os.environ['POSTGRES_URL'])
 conn.autocommit = True
+
 masked_postgres_url = common.mask_postgres_url_password(
     os.environ['POSTGRES_URL']
 )
 log.debug(f'connected to PostgreSQL ({masked_postgres_url})')
 
 with conn.cursor() as cur:
-    cur.execute("LISTEN battery_insert")
-    log.info('listening on PostgreSQL \'battery_insert\'...')
-
-    cur.execute("LISTEN environmental_insert")
-    log.info('listening on PostgreSQL \'environmental_insert\'...')
-
-    cur.execute("LISTEN location_insert")
-    log.info('listening on PostgreSQL \'location_insert\'...')
+    for channel in CHANNELS:
+        cur.execute(f'LISTEN {channel}')
+        log.info(f'listening on PostgreSQL {channel!r}...')
 
 while True:
     select.select([conn], [], [])
-
     conn.poll()
 
     while conn.notifies:
@@ -163,4 +199,9 @@ while True:
             'channel': notify.channel.removesuffix('_insert'),
         }
 
-        on_notify(data)
+        try:
+            notification_queues[notify.channel].put_nowait(data)
+        except queue.Full:
+            log.error(
+                f'notification queue is full for {notify.channel!r}'
+            )
