@@ -46,6 +46,17 @@ CHANNELS = (
     'location_insert',
 )
 
+def handle_thread_exception(args):
+    log.error(
+        f'thread {args.thread.name!r} crashed: '
+        f'{args.exc_type.__name__}: {args.exc_value}'
+    )
+
+    os.kill(os.getpid(), signal.SIGTERM)
+
+
+threading.excepthook = handle_thread_exception
+
 notification_queues = {
     channel: queue.Queue(maxsize=100)
     for channel in CHANNELS
@@ -139,7 +150,7 @@ slack_clients = {
     for channel in CHANNELS
 }
 
-def notification_worker(channel):
+def notification_worker(channel, slack_client):
     while True:
         data = notification_queues[channel].get()
 
