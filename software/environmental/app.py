@@ -73,7 +73,7 @@ async def loop_fn():
 
             conn.commit()
             log.info(
-                f'inserted {NAME} data temp={temperature} °C, pressure={pressure} hPa, humidity={humidity} % RH, cpu_temp={cpu_temperature} °C into PostgreSQL')
+                f'inserted {NAME} data temp={temperature}°C, pressure={pressure} hPa, humidity={humidity}% RH, cpu_temp={cpu_temperature}°C into PostgreSQL')
         except Exception as err:
             conn.rollback()
             log.error(err)

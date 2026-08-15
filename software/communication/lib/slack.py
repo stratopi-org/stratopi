@@ -12,7 +12,10 @@ logging.getLogger('slack_sdk').setLevel(logging.WARNING)
 def create_api():
     return WebClient(
         token=os.environ['SLACK_BOT_TOKEN'],
-        timeout=7
+        timeout=6,
+        retry_handlers=[
+            ConnectionErrorRetryHandler(max_retry_count=3),
+        ]
     )
 
 api = create_api()
