@@ -55,8 +55,8 @@ def on_notify(data):
         slack_txt = '\n'.join([
             f'> {battery_emoji} *Battery*',
             f"*ID:* `{data['id']}`",
-            f"*Battery:* `{data['percent']} %`",
-            f"*Temperature:* `{data['temperature_c']} °C` `{common.celsius_to_fahrenheit(data['temperature_c'])} °F`",
+            f"*Battery:* `{data['percent']}%`",
+            f"*Temperature:* `{data['temperature_c']}°C` `{common.celsius_to_fahrenheit(data['temperature_c'])}°F`",
             f"*Added:* `{data['added']}`"
         ])
 
@@ -64,10 +64,10 @@ def on_notify(data):
         slack_txt = '\n'.join([
             '> :thermometer: *Environmental*',
             f"*ID:* `{data['id']}`",
-            f"*Temperature:* `{data['temperature_c']} °C` `{common.celsius_to_fahrenheit(data['temperature_c'])} °F`",
+            f"*Temperature:* `{data['temperature_c']}°C` `{common.celsius_to_fahrenheit(data['temperature_c'])}°F`",
             f"*Pressure:* `{data['pressure_hpa']} hPa` `{common.hectopascal_to_bar(data['pressure_hpa'])} bar` `{common.hectopascal_to_psi(data['pressure_hpa'])} psi`",
-            f"*Humidity:* `{data['humidity_rh']} % RH`",
-            f"*CPU temperature:* `{data['cpu_temperature_c']} °C` `{common.celsius_to_fahrenheit(data['cpu_temperature_c'])} °F`",
+            f"*Humidity:* `{data['humidity_rh']}% RH`",
+            f"*CPU temperature:* `{data['cpu_temperature_c']}°C` `{common.celsius_to_fahrenheit(data['cpu_temperature_c'])}°F`",
             f"*Added:* `{data['added']}`"
         ])
 
