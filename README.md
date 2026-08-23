@@ -33,7 +33,7 @@ See:
 
 ![RunCam 5 Camera Power Test](https://github.com/stratopi-org/stratopi/blob/master/media/images/camera_test.jpg)
 
-![Component layout foam board bottom](https://github.com/stratopi-org/stratopi/blob/master/media/images/component_layout_foam_board_bottom.jpg)
+![Slack Communication](https://github.com/stratopi-org/stratopi/blob/master/media/images/slack_communication.jpg)
 
 ## Software architecture
 
