@@ -45,7 +45,7 @@ I used the [ELEGOO 40pin cable pack](https://www.amazon.com/gp/product/B01EV70C7
 [Owens Corning FOAMULAR NGX F-150 1 in. x 4 ft. x 8 ft. SSE R-5 XPS Rigid Foam Board Insulation](https://www.homedepot.com/pep/Owens-Corning-FOAMULAR-NGX-F-150-1-in-x-4-ft-x-8-ft-SSE-R-5-XPS-Rigid-Foam-Board-Insulation-20WENGX/315197840)<br />
 [3/8 in. X 3/16 in. X 10 ft. Black High-Density Rubber Foam Weatherstrip Tape](https://www.homedepot.com/pep/Frost-King-3-8-in-X-3-16-in-X-10-ft-Black-High-Density-Rubber-Foam-Weatherstrip-Tape-R338H/100197882)<br />
 [PL 300 Foamboard 10 oz. Latex Construction Adhesive](https://www.homedepot.com/pep/Loctite-PL-300-Foamboard-10-oz-Latex-Construction-Adhesive-Blue-Cartridge-1421941/202020476)<br />
-[JB Weld Plastic Bonder](https://www.homedepot.com/p/J-B-Weld-0-85-oz-Plastic-Bonder-Epoxy-50133H/303710788)<br />
+[JB Weld Plastic Bonder Epoxy](https://www.homedepot.com/p/J-B-Weld-0-85-oz-Plastic-Bonder-Epoxy-50133H/303710788)<br />
 [Scotch Bi-Directional Filament Tape 8959 Transparent](https://www.amazon.com/gp/product/B00006XY3H)<br />
 [3M Multi-Use Colored Duct Tape, Orange with Strong Adhesive and Water-Resistant Backing](https://www.amazon.com/3M-Multi-Use-Adhesive-Water-Resistant-Multi-Surface/dp/B073WKYJ5K)<br />
 [HUASAI 4/5" 100 Pack Zip Tie Mount](https://www.amazon.com/dp/B07Z79LHJC)
