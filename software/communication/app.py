@@ -83,17 +83,19 @@ def on_notify(data, slack_client):
         ])
 
     elif channel == 'environmental':
+        fmt = common.format_measurement
+
         slack_txt = '\n'.join([
             '> :thermometer: *Environmental*',
             f"*ID:* `{data['id']}`",
-            f"*Internal Temperature:* `{data['in_temperature_c']}°C` `{common.celsius_to_fahrenheit(data['in_temperature_c'])}°F`",
-            f"*External Temperature:* `{data['ex_temperature_c']}°C` `{common.celsius_to_fahrenheit(data['ex_temperature_c'])}°F`",
-            f"*Internal Pressure:* `{data['in_pressure_hpa']} hPa` `{common.hectopascal_to_bar(data['in_pressure_hpa'])} bar` `{common.hectopascal_to_inhg(data['in_pressure_hpa'])} inHg` `{common.hectopascal_to_psi(data['in_pressure_hpa'])} psi`",
-            f"*External Pressure:* `{data['ex_pressure_hpa']} hPa` `{common.hectopascal_to_bar(data['ex_pressure_hpa'])} bar` `{common.hectopascal_to_inhg(data['ex_pressure_hpa'])} inHg` `{common.hectopascal_to_psi(data['ex_pressure_hpa'])} psi`",
-            f"*Estimated Altitude Via External Pressure:* `{common.pressure_to_altitude(data['ex_pressure_hpa'])} m` `{common.meters_to_feet(common.pressure_to_altitude(data['ex_pressure_hpa']))} ft`",
-            f"*Internal Humidity:* `{data['in_humidity_rh']}% RH`",
-            f"*External Humidity:* `{data['ex_humidity_rh']}% RH`",
-            f"*CPU temperature:* `{data['cpu_temperature_c']}°C` `{common.celsius_to_fahrenheit(data['cpu_temperature_c'])}°F`",
+            f"*Internal Temperature:* `{fmt(data['in_temperature_c'], '°C')}` `{fmt(data['in_temperature_c'], '°F', common.celsius_to_fahrenheit)}`",
+            f"*External Temperature:* `{fmt(data['ex_temperature_c'], '°C')}` `{fmt(data['ex_temperature_c'], '°F', common.celsius_to_fahrenheit)}`",
+            f"*Internal Pressure:* `{fmt(data['in_pressure_hpa'], ' hPa')}` `{fmt(data['in_pressure_hpa'], ' bar', common.hectopascal_to_bar)}` `{fmt(data['in_pressure_hpa'], ' inHg', common.hectopascal_to_inhg)}` `{fmt(data['in_pressure_hpa'], ' psi', common.hectopascal_to_psi)}`",
+            f"*External Pressure:* `{fmt(data['ex_pressure_hpa'], ' hPa')}` `{fmt(data['ex_pressure_hpa'], ' bar', common.hectopascal_to_bar)}` `{fmt(data['ex_pressure_hpa'], ' inHg', common.hectopascal_to_inhg)}` `{fmt(data['ex_pressure_hpa'], ' psi', common.hectopascal_to_psi)}`",
+            f"*Estimated Altitude Via External Pressure:* `{fmt(data['ex_pressure_hpa'], ' m', common.pressure_to_altitude)}` `{fmt(data['ex_pressure_hpa'], ' ft', lambda p: common.meters_to_feet(common.pressure_to_altitude(p)))}`",
+            f"*Internal Humidity:* `{fmt(data['in_humidity_rh'], '% RH')}`",
+            f"*External Humidity:* `{fmt(data['ex_humidity_rh'], '% RH')}`",
+            f"*CPU temperature:* `{fmt(data['cpu_temperature_c'], '°C')}` `{fmt(data['cpu_temperature_c'], '°F', common.celsius_to_fahrenheit)}`",
             f"*Added:* `{data['added']}`"
         ])
 

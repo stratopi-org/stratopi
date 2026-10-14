@@ -134,7 +134,15 @@ async def loop_fn():
             conn.commit()
 
             log.info(
-                f'inserted {NAME} data internal_temp={in_temperature}°C, internal_pressure={in_pressure} hPa, internal_humidity={in_humidity}% RH, external_temp={ex_temperature}°C, external_pressure={ex_pressure} hPa, external_humidity={ex_humidity}% RH, cpu_temp={cpu_temperature}°C into PostgreSQL'
+                f'inserted {NAME} data '
+                f'internal_temp={common.format_unit(in_temperature, "°C")}, '
+                f'internal_pressure={common.format_unit(in_pressure, " hPa")}, '
+                f'internal_humidity={common.format_unit(in_humidity, "% RH")}, '
+                f'external_temp={common.format_unit(ex_temperature, "°C")}, '
+                f'external_pressure={common.format_unit(ex_pressure, " hPa")}, '
+                f'external_humidity={common.format_unit(ex_humidity, "% RH")}, '
+                f'cpu_temp={common.format_unit(cpu_temperature, "°C")} '
+                f'into PostgreSQL'
             )
 
         except Exception as err:

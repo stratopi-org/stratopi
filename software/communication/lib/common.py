@@ -20,6 +20,17 @@ def mask_postgres_url_password(_input):
     masked_password = '*' * len(username_password[1])
     return f"{scheme}//{username}:{masked_password}@{url_parts[1]}"
 
+
+def format_measurement(value, unit, converter=None):
+    if value is None:
+        return 'N/A'
+
+    if converter is not None:
+        value = converter(value)
+
+    return f'{value}{unit}'
+
+
 def celsius_to_fahrenheit(_celsius):
     return f"{(_celsius * 9 / 5) + 32:.1f}"
 
