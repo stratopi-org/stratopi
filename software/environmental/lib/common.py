@@ -33,3 +33,6 @@ def format_data(_input, str_format="{:.1f}"):
     except ValueError:
         log.warning("value error in 'common.cleanup_data()'")
         return _input  # return original if conversion to numeric fails
+
+def format_unit(value, unit):
+    return f'{value}{unit}' if value is not None else 'None'
