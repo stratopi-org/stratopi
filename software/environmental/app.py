@@ -10,7 +10,7 @@ from lib import common, log, pi
 
 NAME = 'environmental'
 SLEEP_TIME = 60 * 1   # 1 minute
-BME280_ADDRESS = 0x76
+BME280_ADDRESS = 0x77
 
 try:
     with open('.version', 'r', encoding='UTF-8') as f:
