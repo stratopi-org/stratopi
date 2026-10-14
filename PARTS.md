@@ -25,7 +25,7 @@
 - ### Temperature, pressure, humidity sensor
 
 [Bosch BME280 Sensor](https://www.amazon.com/gp/product/B0BQFV883T). Provides internal environmental data.  
-[Adafruit MS8607 Sensor](https://www.adafruit.com/product/4716?srsltid=AU7gw4Uiu8FK_EUhDLibPeWslynlIw1pFwGk633jNH9QUR9HbAaUXFlL). Provides external environmental data. More accurate and supports lower temperatures and pressures.  
+[Adafruit MS8607 Sensor](https://www.adafruit.com/product/4716?srsltid=AU7gw4Uiu8FK_EUhDLibPeWslynlIw1pFwGk633jNH9QUR9HbAaUXFlL). Provides external environmental data. More accurate and supports much lower pressures.  
 I used the [ELEGOO 40pin cable pack](https://www.amazon.com/gp/product/B01EV70C78) to connect the sensors to the Raspberry Pi.
 
 - ### Computer battery
