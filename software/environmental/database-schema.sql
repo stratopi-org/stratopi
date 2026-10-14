@@ -4,14 +4,16 @@ CREATE TABLE environmental (
     id UUID DEFAULT gen_random_uuid(),
 
     -- BME280 (internal)
-    in_temperature_c NUMERIC(4, 1) NOT NULL,
-    in_pressure_hpa NUMERIC(5, 1) NOT NULL,
-    in_humidity_rh NUMERIC(4, 1) NOT NULL,
+    -- allow NULLS in case sensor fails
+    in_temperature_c NUMERIC(4, 1),
+    in_pressure_hpa NUMERIC(5, 1),
+    in_humidity_rh NUMERIC(4, 1),
 
     -- MS8607 (external)
-    ex_temperature_c NUMERIC(4, 1) NOT NULL,
-    ex_pressure_hpa NUMERIC(6, 2) NOT NULL,
-    ex_humidity_rh NUMERIC(4, 1) NOT NULL,
+    -- allow NULLS in case sensor fails
+    ex_temperature_c NUMERIC(4, 1),
+    ex_pressure_hpa NUMERIC(6, 2),
+    ex_humidity_rh NUMERIC(4, 1),
 
     cpu_temperature_c NUMERIC(4, 1) NOT NULL,
     added TIMESTAMPTZ NOT NULL DEFAULT NOW(),
