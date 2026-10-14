@@ -6,7 +6,7 @@ CREATE TABLE environmental (
     -- BME280 (internal)
     -- allow NULLS in case sensor fails
     in_temperature_c NUMERIC(4, 1),
-    in_pressure_hpa NUMERIC(5, 1),
+    in_pressure_hpa NUMERIC(6, 2),
     in_humidity_rh NUMERIC(4, 1),
 
     -- MS8607 (external)
