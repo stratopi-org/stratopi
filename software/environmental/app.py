@@ -48,8 +48,6 @@ for attempt in range(1, max_attempts + 1):
         )
         break
     except OSError as err:
-        calibration_params = None
-
         log.warning(
             f'failed to initialize Bosch BME280 '
             f'(attempt {attempt}/{max_attempts}): {err}'
@@ -70,8 +68,6 @@ for attempt in range(1, max_attempts + 1):
 
         break
     except (OSError, RuntimeError, ValueError) as err:
-        ms8607 = None
-
         log.warning(
             f'failed to initialize Adafruit MS8607 '
             f'(attempt {attempt}/{max_attempts}): {err}; retrying...'
