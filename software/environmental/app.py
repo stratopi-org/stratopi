@@ -49,7 +49,7 @@ for attempt in range(1, max_attempts + 1):
 
         log.warning(
             f'failed to initialize Bosch BME280 '
-            f'(attempt {attempt}/{max_attempts}): {err}; retrying...'
+            f'(attempt {attempt}/{max_attempts}): {err}'
         )
 
         if attempt < max_attempts:
