@@ -34,7 +34,7 @@ log.info(f'refreshing {NAME} data every {common.sec_to_min(SLEEP_TIME)} minute(s
 
 bus = smbus2.SMBus(1)
 
-max_attempts = 5
+max_attempts = 3
 
 # initialize BME280 (internal)
 for attempt in range(1, max_attempts + 1):
@@ -45,13 +45,15 @@ for attempt in range(1, max_attempts + 1):
         )
         break
     except OSError as err:
-        if attempt == max_attempts:
-            raise
+        calibration_params = None
 
         log.warning(
-            f'failed to initialize BME280 '
+            f'failed to initialize Adafruit BME280 '
             f'(attempt {attempt}/{max_attempts}): {err}; retrying...'
         )
+
+        if attempt < max_attempts:
+            time.sleep(2)
 
         time.sleep(2)
 
@@ -67,19 +69,51 @@ for attempt in range(1, max_attempts + 1):
 
         break
     except (OSError, RuntimeError, ValueError) as err:
-        if attempt == max_attempts:
-            raise
+        ms8607 = None
 
         log.warning(
-            f'failed to initialize MS8607 '
+            f'failed to initialize Bosch MS8607 '
             f'(attempt {attempt}/{max_attempts}): {err}; retrying...'
         )
 
-        time.sleep(2)
-
+        if attempt < max_attempts:
+            time.sleep(2)
 
 async def loop_fn():
     while True:
+        in_temperature = None
+        in_pressure = None
+        in_humidity = None
+
+        ex_temperature = None
+        ex_pressure = None
+        ex_humidity = None
+
+        # BME280 (internal)
+        if calibration_params is not None:
+            try:
+                data = bme280.sample(bus, BME280_ADDRESS, calibration_params)
+
+                in_temperature = common.format_data(data.temperature)
+                in_pressure = common.format_data(data.pressure)
+                in_humidity = common.format_data(data.humidity)
+
+            except (OSError, RuntimeError, ValueError) as err:
+                log.warning(f'failed to read Bosch BME280: {err}')
+
+        # MS8607 (external)
+        if ms8607 is not None:
+            try:
+                ex_temperature = common.format_data(ms8607.temperature)
+                ex_pressure = common.format_data(ms8607.pressure)
+                ex_humidity = common.format_data(ms8607.relative_humidity)
+
+            except (OSError, RuntimeError, ValueError) as err:
+                ex_temperature = None
+                ex_pressure = None
+                ex_humidity = None
+                log.warning(f'failed to read Adafruit MS8607: {err}')
+
         conn = psycopg2.connect(os.environ['POSTGRES_URL'])
         masked_postgres_url = common.mask_postgres_url_password(
             os.environ['POSTGRES_URL'])
@@ -88,25 +122,21 @@ async def loop_fn():
         cursor = conn.cursor()
 
         try:
-            # BME280 (internal)
-            data = bme280.sample(bus, BME280_ADDRESS, calibration_params)
-            in_temperature = common.format_data(data.temperature)
-            in_pressure = common.format_data(data.pressure)
-            in_humidity = common.format_data(data.humidity)
-
-            # MS8607 (external)
-            ex_temperature = common.format_data(ms8607.temperature)
-            ex_pressure = common.format_data(ms8607.pressure)
-            ex_humidity = common.format_data(ms8607.relative_humidity)
-
             cpu_temperature = pi.get_cpu_temperature()
 
-            cursor.execute('INSERT INTO environmental (in_temperature_c, in_pressure_hpa, in_humidity_rh, ex_temperature_c, ex_pressure_hpa, ex_humidity_rh, cpu_temperature_c) VALUES (%s, %s, %s, %s, %s, %s, %s)',
-                           (in_temperature, in_pressure, in_humidity, ex_temperature, ex_pressure, ex_humidity, cpu_temperature))
+            cursor.execute(
+                'INSERT INTO environmental (in_temperature_c, in_pressure_hpa, in_humidity_rh, ex_temperature_c, ex_pressure_hpa, ex_humidity_rh, cpu_temperature_c) VALUES (%s, %s, %s, %s, %s, %s, %s)',
+                (in_temperature, in_pressure, in_humidity,
+                 ex_temperature, ex_pressure, ex_humidity,
+                 cpu_temperature)
+            )
 
             conn.commit()
+
             log.info(
-                f'inserted {NAME} data internal_temp={in_temperature}°C, internal_pressure={in_pressure} hPa, internal_humidity={in_humidity}% RH, external_temp={ex_temperature}°C, external_pressure={ex_pressure} hPa, external_humidity={ex_humidity}% RH, cpu_temp={cpu_temperature}°C into PostgreSQL')
+                f'inserted {NAME} data internal_temp={in_temperature}°C, internal_pressure={in_pressure} hPa, internal_humidity={in_humidity}% RH, external_temp={ex_temperature}°C, external_pressure={ex_pressure} hPa, external_humidity={ex_humidity}% RH, cpu_temp={cpu_temperature}°C into PostgreSQL'
+            )
+
         except Exception as err:
             conn.rollback()
             log.error(err)
@@ -116,5 +146,3 @@ async def loop_fn():
             log.debug('closed PostgreSQL connection')
 
         await asyncio.sleep(SLEEP_TIME)
-
-asyncio.run(loop_fn())
