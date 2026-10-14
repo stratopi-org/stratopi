@@ -38,7 +38,3 @@ def cleanup_data(_input, str_format="{:.1f}"):
     else:
         log.warning("splitting on ': ' did not return exactly 2 pieces")
         return _input  # return original if splitting fails
-
-
-def celsius_to_fahrenheit(_celsius):
-    return f"{(_celsius * 9 / 5) + 32:.1f}"
