@@ -146,3 +146,5 @@ async def loop_fn():
             log.debug('closed PostgreSQL connection')
 
         await asyncio.sleep(SLEEP_TIME)
+
+asyncio.run(loop_fn())
