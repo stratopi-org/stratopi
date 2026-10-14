@@ -55,8 +55,6 @@ for attempt in range(1, max_attempts + 1):
         if attempt < max_attempts:
             time.sleep(2)
 
-        time.sleep(2)
-
 # initialize MS8607 (external)
 for attempt in range(1, max_attempts + 1):
     try:
@@ -99,6 +97,9 @@ async def loop_fn():
                 in_humidity = common.format_data(data.humidity)
 
             except (OSError, RuntimeError, ValueError) as err:
+                in_temperature = None
+                in_pressure = None
+                in_humidity = None
                 log.warning(f'failed to read Bosch BME280: {err}')
 
         # MS8607 (external)
