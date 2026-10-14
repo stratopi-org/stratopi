@@ -92,7 +92,7 @@ async def loop_fn():
                 data = bme280.sample(bus, BME280_ADDRESS, calibration_params)
 
                 in_temperature = common.format_data(data.temperature)
-                in_pressure = common.format_data(data.pressure)
+                in_pressure = common.format_data(data.pressure, str_format='{:.2f}')
                 in_humidity = common.format_data(data.humidity)
 
             except (OSError, RuntimeError, ValueError) as err:
@@ -105,7 +105,7 @@ async def loop_fn():
         if ms8607 is not None:
             try:
                 ex_temperature = common.format_data(ms8607.temperature)
-                ex_pressure = common.format_data(ms8607.pressure)
+                ex_pressure = common.format_data(ms8607.pressure, str_format='{:.2f}')
                 ex_humidity = common.format_data(ms8607.relative_humidity)
 
             except (OSError, RuntimeError, ValueError) as err:

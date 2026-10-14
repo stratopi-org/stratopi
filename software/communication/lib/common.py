@@ -36,11 +36,11 @@ def celsius_to_fahrenheit(_celsius):
 
 
 def hectopascal_to_bar(_hectopascal):
-    return f"{float(_hectopascal) / 1000:.3f}"
+    return f"{float(_hectopascal) / 1000:.4f}"
 
 
 def hectopascal_to_inhg(_hectopascal):
-    return f"{_hectopascal * 0.029529983:.2f}"
+    return f"{float(_hectopascal) * 0.029529983:.2f}"
 
 
 def hectopascal_to_psi(_hectopascal):
