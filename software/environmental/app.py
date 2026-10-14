@@ -36,7 +36,7 @@ bus = smbus2.SMBus(1)
 
 max_attempts = 5
 
-# initialize BME280
+# initialize BME280 (internal)
 for attempt in range(1, max_attempts + 1):
     try:
         calibration_params = bme280.load_calibration_params(
@@ -55,7 +55,7 @@ for attempt in range(1, max_attempts + 1):
 
         time.sleep(2)
 
-# initialize MS8607
+# initialize MS8607 (external)
 for attempt in range(1, max_attempts + 1):
     try:
         ms8607 = MS8607(board.I2C())
