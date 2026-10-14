@@ -34,6 +34,9 @@ log.info(f'refreshing {NAME} data every {common.sec_to_min(SLEEP_TIME)} minute(s
 
 bus = smbus2.SMBus(1)
 
+ms8607 = None
+calibration_params = None
+
 max_attempts = 3
 
 # initialize BME280 (internal)
