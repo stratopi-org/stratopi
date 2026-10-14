@@ -90,7 +90,7 @@ def on_notify(data, slack_client):
             f"*External Temperature:* `{data['ex_temperature_c']}°C` `{common.celsius_to_fahrenheit(data['ex_temperature_c'])}°F`",
             f"*Internal Pressure:* `{data['in_pressure_hpa']} hPa` `{common.hectopascal_to_bar(data['in_pressure_hpa'])} bar` `{common.hectopascal_to_psi(data['in_pressure_hpa'])} psi`",
             f"*External Pressure:* `{data['ex_pressure_hpa']} hPa` `{common.hectopascal_to_bar(data['ex_pressure_hpa'])} bar` `{common.hectopascal_to_psi(data['ex_pressure_hpa'])} psi`",
-            f"*Estimated Altitude Via External Pressure: `{common.pressure_to_altitude(data['ex_pressure_hpa'])} m` `{common.meters_to_feet(common.pressure_to_altitude(data['ex_pressure_hpa']))} ft`",
+            f"*Estimated Altitude Via External Pressure:* `{common.pressure_to_altitude(data['ex_pressure_hpa'])} m` `{common.meters_to_feet(common.pressure_to_altitude(data['ex_pressure_hpa']))} ft`",
             f"*Internal Humidity:* `{data['in_humidity_rh']}% RH`",
             f"*External Humidity:* `{data['ex_humidity_rh']}% RH`",
             f"*CPU temperature:* `{data['cpu_temperature_c']}°C` `{common.celsius_to_fahrenheit(data['cpu_temperature_c'])}°F`",
