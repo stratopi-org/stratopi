@@ -24,16 +24,20 @@ def celsius_to_fahrenheit(_celsius):
     return f"{(_celsius * 9 / 5) + 32:.1f}"
 
 
-def pressure_to_altitude(_hectopascal):
-    return f"{44330.77 * (1 - (_hectopascal / 1013.25) ** 0.190263):.1f}"
-
-
 def hectopascal_to_bar(_hectopascal):
     return f"{float(_hectopascal) / 1000:.3f}"
 
 
+def hectopascal_to_inhg(_hectopascal):
+    return f"{_hectopascal * 0.029529983:.2f}"
+
+
 def hectopascal_to_psi(_hectopascal):
     return f"{float(_hectopascal) * 0.0145038:.2f}"
+
+
+def pressure_to_altitude(_hectopascal):
+    return f"{44330.77 * (1 - (_hectopascal / 1013.25) ** 0.190263):.1f}"
 
 
 def meters_to_feet(_meters):

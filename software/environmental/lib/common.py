@@ -33,15 +33,3 @@ def format_data(_input, str_format="{:.1f}"):
     except ValueError:
         log.warning("value error in 'common.cleanup_data()'")
         return _input  # return original if conversion to numeric fails
-
-
-def celsius_to_fahrenheit(_celsius):
-    return f"{(_celsius * 9 / 5) + 32:.1f}"
-
-
-def hectopascal_to_bar(_hectopascal):
-    return f"{float(_hectopascal) / 1000:.3f}"
-
-
-def hectopascal_to_psi(_hectopascal):
-    return f"{float(_hectopascal) * 0.0145038:.2f}"
