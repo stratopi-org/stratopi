@@ -23,7 +23,7 @@ def mask_postgres_url_password(_input):
 
 def format_measurement(value, unit, converter=None):
     if value is None:
-        return 'null'
+        return 'n/a'
 
     if converter is not None:
         value = converter(value)
