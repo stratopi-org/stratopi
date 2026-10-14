@@ -49,7 +49,7 @@ Listens for battery, environmental, and location data from PostgreSQL via `pg_no
 
 - ### [environmental](https://github.com/stratopi-org/stratopi/tree/master/software/environmental)
 
-Polls the Bosch BME280 sensor, Adafruit MS8607 sensor, Raspberry Pi CPU temperature, and inserts the data into PostgreSQL. Provides temperature, atmospheric pressure, and humidity. The Bosch BME280 is used for internal readings while the more accurate and lower temperature and pressure supported Adafruit MS8607 is used for external.
+Polls the Bosch BME280 sensor, Adafruit MS8607 sensor, Raspberry Pi CPU temperature, and inserts the data into PostgreSQL. Provides temperature, atmospheric pressure, and humidity. The Bosch BME280 is used for internal readings while the more accurate and much lower pressures supported by Adafruit MS8607 is used for external.
 
 - ### [location](https://github.com/stratopi-org/stratopi/tree/master/software/location)
 
