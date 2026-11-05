@@ -1,0 +1,50 @@
+:root { color-scheme: dark; font-family: system-ui, sans-serif; color: #e6edf5; background: #0d1117; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+main { max-width: 1600px; margin: auto; padding: 48px 32px; }
+header { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 32px; }
+h1 { font-size: clamp(1.6rem, 3vw, 2.2rem); margin: 8px 0; letter-spacing: -.04em; }
+header p { color: #a3b1c2; margin: 0; }
+.eyebrow { font-size: .7rem; font-weight: 700; letter-spacing: .16em; }
+a { color: #88c7ff; text-decoration: none; }
+a:hover { text-decoration: underline; }
+a:focus-visible, .table-scroll:focus-visible { outline: 3px solid #88c7ff; outline-offset: 4px; }
+.refresh-controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 12px; }
+.refresh-controls label { display: flex; align-items: center; gap: 10px; font-size: .85rem; color: #a3b1c2; }
+.refresh-controls select { padding: 10px; border: 1px solid #354357; border-radius: 8px; background: #161e29; color: #e6edf5; font: inherit; }
+.refresh-controls select:focus-visible { outline: 3px solid #88c7ff; outline-offset: 3px; }
+#refresh-status { flex-basis: 100%; text-align: right; color: #a3b1c2; font-size: .8rem; }
+#refresh-status:empty { display: none; }
+nav { display: flex; flex-wrap: wrap; gap: 10px 20px; margin-bottom: 28px; font-size: .85rem; }
+section { background: #161e29; border: 1px solid #2b3747; border-radius: 10px; margin-bottom: 28px; overflow: hidden; scroll-margin-top: 24px; }
+.table-heading { padding: 18px 22px; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+h2 { margin: 0; font-size: 1rem; overflow-wrap: anywhere; }
+h2 span { color: #a3b1c2; font-weight: 400; }
+.count { color: #a3b1c2; font-size: .8rem; white-space: nowrap; }
+.table-scroll { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; text-align: left; font-size: .85rem; }
+th { background: #202c3b; font-weight: 600; position: sticky; top: 0; }
+th, td { padding: 12px 22px; border-top: 1px solid #2b3747; white-space: pre-wrap; min-width: 100px; max-width: 600px; overflow-wrap: anywhere; }
+td { font-family: ui-monospace, monospace; font-size: .8rem; }
+tbody tr:hover { background: #202c3b; }
+.null { color: #a3b1c2; font-style: italic; }
+.speed-positive { color: #86dba0; }
+.speed-negative { color: #f38b91; }
+.compass-direction { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+.direction-arrow { flex: none; color: #88c7ff; }
+.empty { padding: 28px 22px; color: #a3b1c2; font-family: inherit; }
+.notice { background: #161e29; padding: 24px; border: 1px solid #354357; border-radius: 10px; }
+.pagination { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 22px; margin: 0; border-top: 1px solid #2b3747; }
+.pagination a, .pagination > span[aria-disabled] { padding: 8px 12px; border: 1px solid #354357; border-radius: 6px; }
+.pagination a:hover { background: #202c3b; }
+.pagination > span[aria-disabled] { color: #7d8a9c; }
+.page-status { color: #a3b1c2; }
+.page-status strong { display: inline-block; min-width: 26px; padding: 2px 7px; border-radius: 5px; background: #253044; color: #f0f5ff; font-weight: 800; text-align: center; }
+.clipboard-notification { position: fixed; right: 24px; bottom: 24px; z-index: 1100; max-width: calc(100vw - 48px); padding: 12px 18px; border: 1px solid #6282ad; border-radius: 8px; background: #23324a; color: #e0eaff; box-shadow: 0 8px 24px #0008; font-size: .9rem; }
+.clipboard-notification:empty { padding: 0; border: 0; box-shadow: none; }
+th.id-column, td.id-column { width: 1%; min-width: 60px; padding: 8px 14px; white-space: normal; }
+.id-trigger { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; padding: 4px; border: 1px solid #354357; border-radius: 6px; background: #202c3b; color: #88c7ff; cursor: pointer; vertical-align: middle; }
+.id-trigger:hover { background: #2b3b50; }
+.id-trigger:focus-visible { outline: 3px solid #88c7ff; outline-offset: 3px; }
+.id-popover { position: fixed; z-index: 1000; width: max-content; max-width: calc(100vw - 24px); padding: 12px 16px; border: 1px solid #52657e; border-radius: 8px; background: #202c3b; color: #e6edf5; box-shadow: 0 8px 24px #0008; font: .85rem ui-monospace, monospace; overflow-wrap: anywhere; user-select: text; }
+@media (max-width: 600px) { main { padding: 28px 16px; } header { align-items: flex-start; flex-direction: column; } th, td { padding: 10px 14px; } }
