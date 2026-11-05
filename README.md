@@ -47,9 +47,9 @@ Polls the battery percentage as well as the battery temperature and inserts the 
 
 Listens for battery, environmental, and location data from PostgreSQL via `pg_notify` and sends it to Slack via cellular networks.
 
-- ### [dashboard](tps://github.com/stratopi-org/stratopi/tree/master/software/dashboard)
+- ### [dashboard](https://github.com/stratopi-org/stratopi/tree/master/software/dashboard)
 
-Web dashboard for visualizing charts and data. _99% AI coded.
+Web dashboard for visualizing charts and data. _99% AI coded_.
 
 - ### [environmental](https://github.com/stratopi-org/stratopi/tree/master/software/environmental)
 
