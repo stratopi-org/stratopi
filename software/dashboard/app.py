@@ -110,7 +110,7 @@ def create_app():
         if not database_url:
             return render_template(
                 'index.html', tables=[],
-                error='Set POSTGRES_URL in dashboard/.env to connect to your database.'
+                error='Set POSTGRES_URL in .env to connect to the database.'
             ), 503
         try:
             tables = read_tables(database_url, request.args)
@@ -119,7 +119,7 @@ def create_app():
             app.logger.error('Unable to read PostgreSQL tables.')
             return render_template(
                 'index.html', tables=[],
-                error='Unable to read the database. Check the connection, table permissions, and database availability.'
+                error='Unable to read the database. Check the connection, permissions, and database availability.'
             ), 503
         for number, table in enumerate(tables, start=1):
             key = page_key(table['schema'], table['name'])
