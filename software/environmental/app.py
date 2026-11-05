@@ -11,7 +11,7 @@ from adafruit_ms8607 import MS8607
 from lib import common, log, pi
 
 NAME = 'environmental'
-SLEEP_TIME = 60 * 1   # 1 minute
+SLEEP_TIME = 30   # 30 seconds
 BME280_ADDRESS = 0x77
 
 try:
@@ -30,7 +30,7 @@ parser.add_argument('--version',
 parser.parse_args()
 
 log.info(f'{NAME} v{VERSION} ({common.python_version()})')
-log.info(f'refreshing {NAME} data every {common.sec_to_min(SLEEP_TIME)} minute(s)')
+log.info(f'refreshing {NAME} data every {SLEEP_TIME} seconds')
 
 bus = smbus2.SMBus(1)
 

@@ -18,7 +18,7 @@ def create_client():
         token=os.environ['SLACK_BOT_TOKEN'],
         timeout=6,
         retry_handlers=[
-            ConnectionErrorRetryHandler(max_retry_count=3),
+            ConnectionErrorRetryHandler(max_retry_count=2),
             RateLimitErrorRetryHandler(max_retry_count=2),
         ],
     )
