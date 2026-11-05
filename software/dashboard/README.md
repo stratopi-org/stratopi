@@ -37,6 +37,7 @@ buttons, notices, and keyboard focus indicators.
 cd dashboard
 python3.14 -m venv .venv
 .venv/bin/python -m pip install -r requirements.txt
+touch .env
 ```
 
 Set `POSTGRES_URL` in `.env` to your PostgreSQL connection URL _(the same setting
