@@ -47,6 +47,10 @@ Polls the battery percentage as well as the battery temperature and inserts the 
 
 Listens for battery, environmental, and location data from PostgreSQL via `pg_notify` and sends it to Slack via cellular networks.
 
+- ### [dashboard](tps://github.com/stratopi-org/stratopi/tree/master/software/dashboard)
+
+Web dashboard for visualizing charts and data. _99% AI coded.
+
 - ### [environmental](https://github.com/stratopi-org/stratopi/tree/master/software/environmental)
 
 Polls the Bosch BME280 sensor, Adafruit MS8607 sensor, Raspberry Pi CPU temperature, and inserts the data into PostgreSQL. Provides temperature, atmospheric pressure, and humidity. The Bosch BME280 is used for internal readings while the more accurate and much lower pressures supported by Adafruit MS8607 is used for external.

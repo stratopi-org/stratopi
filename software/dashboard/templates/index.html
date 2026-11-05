@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>StratoPi Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main>
+    <header>
+      <div><p class="eyebrow">StratoPi Dashboard</p><h1>Data</h1>
+        <p>Tables and rows in the PostgreSQL database.</p></div>
+      <div class="refresh-controls">
+        <label for="auto-refresh">Auto refresh
+          <select id="auto-refresh">
+            <option value="0">Never</option>
+            <option value="5">Every 5 seconds</option>
+            <option value="15">Every 15 seconds</option>
+            <option value="30">Every 30 seconds</option>
+            <option value="60">Every 60 seconds</option>
+          </select>
+        </label>
+        <span id="refresh-status" role="status" aria-live="polite"></span>
+      </div>
+    </header>
+    <div id="table-data">
+    {% if error %}
+      <div class="notice" role="alert">{{ error }}</div>
+    {% elif not tables %}
+      <div class="notice">No tables in PostgreSQL database.</div>
+    {% else %}
+      <nav aria-label="Database tables">
+        {% for table in tables %}<a href="#table-{{ loop.index }}">{{ table.name }}</a>{% endfor %}
+      </nav>
+      {% for table in tables %}
+      <section id="table-{{ loop.index }}" aria-labelledby="heading-{{ loop.index }}">
+        <div class="table-heading"><h2 id="heading-{{ loop.index }}">{{ table.name }}</h2>
+          {% set row_count = table.total|default(table.rows|length) %}<span class="count">{{ row_count }} {{ 'row' if row_count == 1 else 'rows' }}</span></div>
+        <div class="table-scroll" tabindex="0" role="region" aria-label="{{ table.name }} data">
+          <table>
+            <thead><tr>{% for column in table.columns %}<th scope="col"{% if column == 'id' %} class="id-column"{% endif %}>{{ column }}</th>{% endfor %}</tr></thead>
+            <tbody>
+              {% for row in table.rows %}
+              <tr>{% for value in row %}{% set column = table.columns[loop.index0] %}<td{% if column == 'id' %} class="id-column"{% endif %}>{% if value is none %}<span class="null">NULL</span>{% elif column == 'id' %}
+                <button type="button" class="id-trigger" data-id="{{ value }}" aria-label="Copy ID to clipboard" aria-describedby="id-popover">
+                  <svg width="22" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="1" y="1" width="22" height="18" rx="3"/><circle cx="7" cy="8" r="2"/><path d="M4 15v-1a3 3 0 0 1 6 0v1M14 7h6M14 11h6M14 15h4"/></svg>
+                </button>
+              {% elif column == 'direction' %}{% set angle = value|direction_angle %}{% if angle is not none %}<span class="compass-direction"><svg class="direction-arrow" style="transform: rotate({{ angle }}deg)" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20V4M5 11l7-7 7 7"/></svg>{{ value }}</span>{% else %}{{ value }}{% endif %}{% elif column == 'vertical_speed_mpm' and value > 0 %}<span class="speed-positive">{{ value }}</span>{% elif column == 'vertical_speed_mpm' and value < 0 %}<span class="speed-negative">{{ value }}</span>{% elif column == 'coordinates' %}{% set map_link = value|maps_url %}{% if map_link %}<a href="{{ map_link }}" target="_blank" rel="noopener noreferrer">{{ value }}</a>{% else %}{{ value }}{% endif %}{% else %}{{ value|format_cell(column) }}{% endif %}</td>{% endfor %}</tr>
+              {% else %}<tr><td class="empty" colspan="{{ table.columns|length or 1 }}"><i>No rows in table.</i></td></tr>{% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% if table.page_count|default(1) > 1 %}
+        <nav class="pagination" aria-label="{{ table.name }} pagination">
+          {% if table.previous_url %}<a href="{{ table.previous_url }}" rel="prev">← Previous</a>{% else %}<span aria-disabled="true">← Previous</span>{% endif %}
+          <span class="page-status">Page <strong>{{ table.page|default(1) }}</strong> of {{ table.page_count|default(1) }}. Row {{ table.row_start }} - {{ table.row_end }}.</span>
+          {% if table.next_url %}<a href="{{ table.next_url }}" rel="next">Next →</a>{% else %}<span aria-disabled="true">Next →</span>{% endif %}
+        </nav>
+        {% endif %}
+      </section>
+      {% endfor %}
+    {% endif %}
+    </div>
+  </main>
+  <div id="id-popover" class="id-popover" role="tooltip" hidden></div>
+  <div id="clipboard-notification" class="clipboard-notification" role="status" aria-live="polite" aria-atomic="true"></div>
+  <script src="{{ url_for('static', filename='id-popover.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='auto-refresh.js') }}" defer></script>
+</body>
+</html>
