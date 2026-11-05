@@ -49,7 +49,7 @@ Listens for battery, environmental, and location data from PostgreSQL via `pg_no
 
 - ### [dashboard](https://github.com/stratopi-org/stratopi/tree/master/software/dashboard)
 
-Web dashboard for visualizing charts and data. _99% AI coded_.
+Web dashboard for visualizing PostgreSQL data. _99% AI coded_.
 
 - ### [environmental](https://github.com/stratopi-org/stratopi/tree/master/software/environmental)
 
