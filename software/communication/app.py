@@ -58,7 +58,7 @@ def handle_thread_exception(args):
 threading.excepthook = handle_thread_exception
 
 notification_queues = {
-    channel: queue.Queue(maxsize=100)
+    channel: queue.Queue(maxsize=500)
     for channel in CHANNELS
 }
 

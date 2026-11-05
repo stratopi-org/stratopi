@@ -10,7 +10,7 @@ from lib import common, gps, log
 signal.signal(signal.SIGINT, lambda sig, frame: (gps.power_off(), sys.exit(0)))
 
 NAME = 'location'
-SLEEP_TIME = 60 * 1  # 1 minute
+SLEEP_TIME = 30   # 30 seconds
 
 try:
     with open('.version', 'r', encoding='UTF-8') as f:
@@ -27,7 +27,7 @@ parser.add_argument('--version',
 parser.parse_args()
 
 log.info(f'{NAME} v{VERSION} ({common.python_version()})')
-log.info(f'refreshing {NAME} data every {common.sec_to_min(SLEEP_TIME)} minute(s)')
+log.info(f'refreshing {NAME} data every {SLEEP_TIME} seconds')
 
 gps.power_on()
 
