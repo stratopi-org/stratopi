@@ -35,7 +35,7 @@ buttons, notices, and keyboard focus indicators.
 
 ```sh
 cd dashboard
-python3.14 -m venv .venv
+python -m venv .venv
 .venv/bin/python -m pip install -r requirements.txt
 touch .env
 ```
