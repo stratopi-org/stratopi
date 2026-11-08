@@ -54,7 +54,7 @@
         {% if table.page_count|default(1) > 1 %}
         <nav class="pagination" aria-label="{{ table.name }} pagination">
           {% if table.previous_url %}<a href="{{ table.previous_url }}" rel="prev">← Previous</a>{% else %}<span aria-disabled="true">← Previous</span>{% endif %}
-          <span class="page-status">Page <strong>{{ table.page|default(1) }}</strong> of {{ table.page_count|default(1) }}. Row {{ table.row_start }} - {{ table.row_end }}.</span>
+          <span class="page-status">Page <strong>{{ table.page|default(1) }}</strong> of <strong>{{ table.page_count|default(1) }}</strong>. Row {{ table.row_start }} - {{ table.row_end }}.</span>
           {% if table.next_url %}<a href="{{ table.next_url }}" rel="next">Next →</a>{% else %}<span aria-disabled="true">Next →</span>{% endif %}
         </nav>
         {% endif %}
