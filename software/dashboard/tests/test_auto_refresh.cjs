@@ -19,7 +19,7 @@ function setup(saved = null, fetcher = async () => ({ ok: true, text: async () =
   const storage = { value: saved, getItem() { return this.value; }, setItem(_, value) { this.value = value; } };
   let timerId = 0;
   let now = 0;
-  const url = 'http://localhost:5000/?page%3A%5B%22public%22%2C%22sensors%22%5D=2#table-1';
+  const url = 'http://localhost:5000/data?page%3A%5B%22public%22%2C%22sensors%22%5D=2#table-1';
   runInNewContext(readFileSync(join(__dirname, '../static/auto-refresh.js'), 'utf8'), {
     document: {
       getElementById: id => elements[id], importNode: node => node,

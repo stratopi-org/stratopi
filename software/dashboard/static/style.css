@@ -16,6 +16,9 @@ a:focus-visible, .table-scroll:focus-visible { outline: 3px solid #88c7ff; outli
 #refresh-status { flex-basis: 100%; text-align: right; color: #a3b1c2; font-size: .8rem; }
 #refresh-status:empty { display: none; }
 nav { display: flex; flex-wrap: wrap; gap: 10px 20px; margin-bottom: 28px; font-size: .85rem; }
+.site-nav { gap: 8px; padding-bottom: 16px; border-bottom: 1px solid #2b3747; }
+.site-nav a { padding: 12px 20px; border-radius: 8px; font-size: 1rem; }
+.site-nav a[aria-current="page"] { background: #253044; color: #f0f5ff; font-weight: 600; }
 section { background: #161e29; border: 1px solid #2b3747; border-radius: 10px; margin-bottom: 28px; overflow: hidden; scroll-margin-top: 24px; }
 .table-heading { padding: 18px 22px; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
 h2 { margin: 0; font-size: 1rem; overflow-wrap: anywhere; }

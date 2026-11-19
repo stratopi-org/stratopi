@@ -25,7 +25,7 @@ class DashboardTests(unittest.TestCase):
             dict(schema='public', name='empty', columns=['id'], rows=[]),
         ]
         with patch('app.read_tables', return_value=tables):
-            response = self.client.get('/')
+            response = self.client.get('/data')
         self.assertEqual(response.status_code, 200)
         html = response.get_data(as_text=True)
         self.assertIn('<th scope="col">value</th>', html)
@@ -36,16 +36,26 @@ class DashboardTests(unittest.TestCase):
         self.assertNotIn('<script>', html)
         self.assertEqual(response.headers['Cache-Control'], 'no-store')
 
+    def test_home_renders_navigation_without_querying_the_database(self):
+        with patch('app.read_tables') as read:
+            response = self.client.get('/')
+        read.assert_not_called()
+        self.assertEqual(response.status_code, 200)
+        html = response.get_data(as_text=True)
+        self.assertIn('href="/" aria-current="page">Home</a>', html)
+        self.assertIn('href="/data">Data</a>', html)
+        self.assertNotIn('id="table-data"', html)
+
     def test_missing_configuration(self):
         self.app.config['POSTGRES_URL'] = None
-        self.assertEqual(self.client.get('/').status_code, 503)
+        self.assertEqual(self.client.get('/data').status_code, 503)
 
     def test_coordinates_link_uses_latitude_then_longitude(self):
         tables = [dict(schema='public', name='location', columns=['coordinates', 'other'],
                        rows=[('(-87.6298,41.8781)', '(-87.6298,41.8781)'),
                              (None, None), ('<invalid>', 'plain')])]
         with patch('app.read_tables', return_value=tables):
-            html = self.client.get('/').get_data(as_text=True)
+            html = self.client.get('/data').get_data(as_text=True)
         self.assertIn('href="https://www.google.com/maps/search/?api=1&amp;query=41.8781,-87.6298"', html)
         self.assertIn('<td><a href="https://www.google.com/maps/search/', html)
         self.assertIn('>(-87.6298,41.8781)</a></td>', html)
@@ -65,7 +75,7 @@ class DashboardTests(unittest.TestCase):
         tables = [dict(schema='public', name='sensors', columns=['id'],
                        rows=[(value,), ('"<unsafe>',), (None,)])]
         with patch('app.read_tables', return_value=tables):
-            html = self.client.get('/').get_data(as_text=True)
+            html = self.client.get('/data').get_data(as_text=True)
         self.assertIn(f'data-id="{value}"', html)
         self.assertNotIn(f'>{value}</td>', html)
         self.assertIn('data-id="&#34;&lt;unsafe&gt;"', html)
@@ -80,7 +90,7 @@ class DashboardTests(unittest.TestCase):
                        columns=['added', 'other_timestamp'],
                        rows=[(timestamp, timestamp), (None, None)])]
         with patch('app.read_tables', return_value=tables):
-            html = self.client.get('/').get_data(as_text=True)
+            html = self.client.get('/data').get_data(as_text=True)
         self.assertIn('<td>Nov 4 10:17:41 PM</td>', html)
         self.assertIn(str(timestamp), html)
         self.assertIn('NULL', html)
@@ -92,7 +102,7 @@ class DashboardTests(unittest.TestCase):
 
     def test_database_errors_do_not_expose_secrets(self):
         with patch('app.read_tables', side_effect=psycopg.OperationalError('secret-password')):
-            response = self.client.get('/')
+            response = self.client.get('/data')
         self.assertEqual(response.status_code, 503)
         self.assertNotIn('secret-password', response.get_data(as_text=True))
 
@@ -145,7 +155,7 @@ class DashboardTests(unittest.TestCase):
                   for name, page, count, total in [('first', 2, 3, 61), ('second', 1, 1, 0)]]
         params = {page_key('public', 'first'): '2', page_key('public', 'second'): '1'}
         with patch('app.read_tables', return_value=tables):
-            response = self.client.get('/', query_string=params)
+            response = self.client.get('/data', query_string=params)
         self.assertEqual(response.status_code, 200)
 
         class Links(HTMLParser):
@@ -163,11 +173,12 @@ class DashboardTests(unittest.TestCase):
         links.feed(html)
         for direction, page in [('prev', '1'), ('next', '3')]:
             parsed = links.pages[direction]
+            self.assertEqual(parsed.path, '/data')
             self.assertEqual(parse_qs(parsed.query),
                              {page_key('public', 'first'): [page],
                               page_key('public', 'second'): ['1']})
             self.assertEqual(parsed.fragment, 'table-1')
-        self.assertIn('Page <strong>2</strong> of 3. Row 31 - 60.', html)
+        self.assertIn('Page <strong>2</strong> of <strong>3</strong>. Row 31 - 60.', html)
         self.assertNotIn('Page 1 of 1', html)
         self.assertNotIn('aria-label="second pagination"', html)
         self.assertEqual(html.count('class="pagination"'), 1)
