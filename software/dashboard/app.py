@@ -106,10 +106,14 @@ def create_app():
 
     @app.get('/')
     def index():
+        return render_template('index.html')
+
+    @app.get('/data')
+    def data():
         database_url = app.config['POSTGRES_URL']
         if not database_url:
             return render_template(
-                'index.html', tables=[],
+                'data.html', tables=[],
                 error='Set POSTGRES_URL in .env to connect to the database.'
             ), 503
         try:
@@ -118,7 +122,7 @@ def create_app():
             # Avoid exposing connection credentials or database contents in errors.
             app.logger.error('Unable to read PostgreSQL tables.')
             return render_template(
-                'index.html', tables=[],
+                'data.html', tables=[],
                 error='Unable to read the database. Check the connection, permissions, and database availability.'
             ), 503
         for number, table in enumerate(tables, start=1):
@@ -129,10 +133,10 @@ def create_app():
                 params = request.args.to_dict()
                 params[key] = target
                 table[f'{direction}_url'] = (
-                    url_for('index') + '?' + urlencode(params) + f'#table-{number}'
+                    url_for('data') + '?' + urlencode(params) + f'#table-{number}'
                     if 1 <= target <= count else None
                 )
-        return render_template('index.html', tables=tables, error=None)
+        return render_template('data.html', tables=tables, error=None)
 
     @app.after_request
     def disable_cache(response):

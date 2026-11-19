@@ -44,10 +44,13 @@ Set `POSTGRES_URL` in `.env` to your PostgreSQL connection URL _(the same settin
 used by the other StratoPi software)_, then run:
 
 ```sh
-.venv/bin/python -m flask --app app run --host 127.0.0.1 --port 5000
+.venv/bin/python -m flask --app app run --host 0.0.0.0 --port 5000
 ```
 
-Open <http://127.0.0.1:5000>. Each table has independent Previous/Next controls
+Open <http://127.0.0.1:5000> for Home, which is reserved for future graphs.
+Use the navigation to open Data at `/data` or return to Home.
+The top navigation uses padded pills and highlights the current page.
+On Data, each table has independent Previous/Next controls
 with 30 rows per page, a total row count, and a page and row-range indicator
 such as “Page **2** of 2. Row 31 - 45.” with the current page number bolded
 and highlighted with a subtle background and brighter text, without a border.
