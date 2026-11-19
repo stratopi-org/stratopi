@@ -51,6 +51,8 @@ nav { display: flex; flex-wrap: wrap; gap: 10px 20px; margin-bottom: 28px; font-
 .range-error:empty { display: none; }
 .range-message { color: #a3b1c2; font-size: .9rem; }
 .chart-panel { min-height: 100px; }
+.chart-group { background: transparent; border: 0; border-radius: 0; overflow: visible; margin-bottom: 40px; }
+.chart-group-title { margin: 0 0 16px; font-size: 1.1rem; }
 .chart-plot { width: 100%; min-width: 0; }
 .chart-status { padding: 16px 24px; margin: 0; color: #a3b1c2; font-size: .85rem; }
 .chart-status:empty { display: none; }

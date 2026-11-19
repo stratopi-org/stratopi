@@ -13,7 +13,7 @@
   const summary = document.getElementById('range-summary');
   const presets = Array.from(control.querySelectorAll('[data-range]'));
   const durations = {
-    '1m': 60000, '5m': 300000, '15m': 900000, '30m': 1800000,
+    '5m': 300000, '15m': 900000, '30m': 1800000,
     '1h': 3600000, '2h': 7200000, '3h': 10800000, '6h': 21600000,
     '12h': 43200000, '24h': 86400000,
   };

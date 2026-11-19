@@ -21,7 +21,7 @@ function setup(query = '', bounds = { start: 1700000000000, end: 1700086400000 }
   for (const id of ['time-bounds', 'charts-time-range', 'range-menu', 'range-trigger',
     'range-label', 'range-form', 'range-start', 'range-end', 'range-error',
     'range-summary', 'range-timezone', 'time-bounds-url']) elements[id] = element();
-  const presets = ['1m', '5m', '15m', '30m', '1h', '2h', '3h', '6h', '12h', '24h', 'all'].map(key => {
+  const presets = ['5m', '15m', '30m', '1h', '2h', '3h', '6h', '12h', '24h', 'all'].map(key => {
     const button = element({ range: key });
     button.textContent = key === '3h' ? 'Last 3 hours' : `Last ${key}`;
     return button;
@@ -108,9 +108,9 @@ test('quick ranges end at now and persist their relative selection', () => {
   assert.ok(Math.abs(Date.now() - Date.parse(range.end)) < 1000);
   assert.equal(new URL(state.location.href).searchParams.get('range'), '6h');
   assert.equal(state.elements['range-menu'].open, false);
-  state.preset('1m');
+  state.preset('5m');
   const minuteRange = state.events.at(-1).detail;
-  assert.equal(Date.parse(minuteRange.end) - Date.parse(minuteRange.start), 60000);
+  assert.equal(Date.parse(minuteRange.end) - Date.parse(minuteRange.start), 300000);
 });
 
 test('custom dates apply only on submission and reversed dates are rejected', () => {
@@ -135,8 +135,8 @@ test('restores custom URL dates and resolves relative dates on reload', () => {
   assert.equal(setup('?start=invalid&end=invalid').elements['range-label'].textContent, 'Last 3 hours');
 });
 
-test('retired long-range presets in old URLs fall back to the 3-hour default', () => {
-  for (const range of ['7d', '30d']) {
+test('retired presets in old URLs fall back to the 3-hour default', () => {
+  for (const range of ['1m', '7d', '30d']) {
     const state = setup(`?range=${range}&start=2000-01-01&end=2000-02-01`);
     assert.equal(state.elements['range-label'].textContent, 'Last 3 hours');
     const selection = state.events[0].detail;
