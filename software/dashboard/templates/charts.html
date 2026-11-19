@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+<header class="charts-header">
+  <div><p class="eyebrow">StratoPi Dashboard</p><h1>Charts</h1></div>
+  <div class="charts-controls">
+  <fieldset class="time-picker" id="charts-time-range"{% if not time_bounds %} disabled{% endif %}>
+    <legend class="visually-hidden">Time range for Charts</legend>
+    <details id="range-menu">
+      <summary id="range-trigger"{% if not time_bounds %} tabindex="-1"{% endif %}>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        <span id="range-label">Last 3 hours</span>
+        <svg class="range-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </summary>
+      <div class="range-panel">
+        <form id="range-form" class="range-custom">
+          <h2>Absolute time range</h2>
+          <label for="range-start">From</label>
+          <input id="range-start" type="datetime-local" step="1" required>
+          <label for="range-end">To</label>
+          <input id="range-end" type="datetime-local" step="1" required>
+          <p id="range-error" class="range-error" role="alert"></p>
+          <button type="submit" class="range-apply">Apply time range</button>
+          <p class="range-timezone" id="range-timezone"></p>
+        </form>
+        <div class="range-presets" aria-label="Quick time ranges">
+          <h2>Quick ranges</h2>
+          {% for value, label in [('1m', 'Last 1 minute'), ('5m', 'Last 5 minutes'), ('15m', 'Last 15 minutes'), ('30m', 'Last 30 minutes'), ('1h', 'Last 1 hour'), ('2h', 'Last 2 hours'), ('3h', 'Last 3 hours'), ('6h', 'Last 6 hours'), ('12h', 'Last 12 hours'), ('24h', 'Last 24 hours'), ('all', 'All available data')] %}
+          <button type="button" data-range="{{ value }}">{{ label }}</button>
+          {% endfor %}
+        </div>
+      </div>
+    </details>
+  </fieldset>
+  <div class="refresh-controls">
+    <label for="charts-auto-refresh">Auto refresh
+      <select id="charts-auto-refresh"{% if not time_bounds %} disabled{% endif %}>
+        {% for seconds, label in [('0', 'Never'), ('15', 'Every 15 seconds'), ('30', 'Every 30 seconds'), ('60', 'Every 60 seconds'), ('120', 'Every 2 minutes')] %}
+        <option value="{{ seconds }}">{{ label }}</option>
+        {% endfor %}
+      </select>
+    </label>
+  </div>
+  <span id="charts-refresh-status" role="status" aria-live="polite"></span>
+  </div>
+</header>
+{% if error %}
+<p class="range-message" role="alert">{{ error }}</p>
+{% elif not time_bounds %}
+<p class="range-message">No data is available.</p>
+{% endif %}
+<p class="visually-hidden" id="range-summary" role="status"></p>
+<section class="chart-panel" data-chart-url="{{ url_for('battery_chart') }}" aria-label="battery chart">
+  <p class="chart-status" role="status">Choose a time range to load battery data.</p>
+  <div class="chart-plot" role="img" aria-label="Battery percent and temperature over time" hidden></div>
+</section>
+{% for chart, title in [('temperature', 'environmental temperature'), ('pressure', 'environmental pressure'), ('humidity', 'environmental humidity'), ('cpu-temperature', 'environmental cpu temperature')] %}
+<section class="chart-panel" data-chart-url="{{ url_for('environmental_chart', chart=chart) }}" aria-label="{{ title }} chart">
+  <p class="chart-status" role="status">Choose a time range to load environmental data.</p>
+  <div class="chart-plot" role="img" aria-label="{{ title }} over time" hidden></div>
+</section>
+{% endfor %}
+{% endblock %}
+
+{% block scripts %}
+<script id="time-bounds" type="application/json">{{ time_bounds|tojson }}</script>
+<script id="time-bounds-url" type="application/json">{{ url_for('charts_time_bounds')|tojson }}</script>
+<script src="{{ url_for('plotly_js') }}" defer></script>
+<script src="{{ url_for('static', filename='charts-auto-refresh.js') }}" defer></script>
+<script src="{{ url_for('static', filename='charts.js') }}" defer></script>
+<script src="{{ url_for('static', filename='charts-time-range.js') }}" defer></script>
+{% endblock %}

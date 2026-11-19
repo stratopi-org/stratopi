@@ -19,6 +19,49 @@ nav { display: flex; flex-wrap: wrap; gap: 10px 20px; margin-bottom: 28px; font-
 .site-nav { gap: 8px; padding-bottom: 16px; border-bottom: 1px solid #2b3747; }
 .site-nav a { padding: 12px 20px; border-radius: 8px; font-size: 1rem; }
 .site-nav a[aria-current="page"] { background: #253044; color: #f0f5ff; font-weight: 600; }
+.charts-header { align-items: center; }
+.charts-controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 12px; min-width: 0; max-width: 100%; }
+#charts-refresh-status { flex-basis: 100%; text-align: right; color: #a3b1c2; font-size: .8rem; }
+#charts-refresh-status:empty { display: none; }
+.time-picker { position: relative; border: 0; padding: 0; margin: 0; min-width: 0; max-width: 100%; }
+.time-picker summary { display: flex; align-items: center; gap: 10px; padding: 11px 14px; border: 1px solid #3b4759; border-radius: 6px; background: #161e29; cursor: pointer; font-size: .875rem; list-style: none; }
+.time-picker summary::-webkit-details-marker { display: none; }
+.time-picker summary:hover { background: #202c3b; border-color: #6282ad; }
+.time-picker summary > svg { flex: none; color: #a3b1c2; }
+#range-label { overflow-wrap: anywhere; }
+.range-chevron { margin-left: 8px; }
+.time-picker details[open] .range-chevron { transform: rotate(180deg); }
+.range-panel { position: absolute; top: calc(100% + 8px); right: 0; z-index: 50; display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(170px, 1fr); width: 620px; max-width: calc(100vw - 64px); border: 1px solid #3b4759; border-radius: 8px; background: #161e29; box-shadow: 0 16px 48px #0009; }
+.range-custom { padding: 24px; min-width: 0; }
+.range-panel h2 { margin: 0 0 20px; font-size: .85rem; font-weight: 600; }
+.range-custom label { display: block; margin: 16px 0 8px; font-size: .8rem; color: #a3b1c2; }
+.range-custom input { width: 100%; min-width: 0; padding: 10px; border: 1px solid #354357; border-radius: 4px; background: #0d1117; color: #e6edf5; font: inherit; font-size: .8rem; }
+.range-apply { width: 100%; margin-top: 20px; padding: 10px 14px; border: 1px solid #6282ad; border-radius: 4px; background: #29466a; color: #f0f5ff; cursor: pointer; font: inherit; font-size: .85rem; }
+.range-apply:hover { background: #365b87; }
+.range-timezone { margin: 16px 0 0; color: #a3b1c2; font-size: .75rem; }
+.range-presets { padding: 24px 12px 16px; border-left: 1px solid #2b3747; }
+.range-presets h2 { margin-left: 10px; }
+.range-presets button { display: block; width: 100%; padding: 8px 10px; border: 0; border-radius: 4px; background: transparent; color: #c7d3e3; text-align: left; font: inherit; font-size: .8rem; cursor: pointer; }
+.range-presets button:hover { background: #202c3b; color: #f0f5ff; }
+.range-presets button[aria-pressed="true"] { background: #253044; color: #88c7ff; }
+.time-picker :is(summary, input, button):focus-visible { outline: 2px solid #88c7ff; outline-offset: 3px; }
+.time-picker:disabled { opacity: .5; }
+.time-picker:disabled summary { pointer-events: none; }
+.range-error { color: #f38b91; font-size: .8rem; margin: 12px 0 0; }
+.range-error:empty { display: none; }
+.range-message { color: #a3b1c2; font-size: .9rem; }
+.chart-panel { min-height: 100px; }
+.chart-plot { width: 100%; min-width: 0; }
+.chart-status { padding: 16px 24px; margin: 0; color: #a3b1c2; font-size: .85rem; }
+.chart-status:empty { display: none; }
+.chart-panel[aria-busy="true"] .chart-plot { opacity: .5; }
+@media (max-width: 600px) {
+  .charts-header { align-items: stretch; }
+  .range-panel { width: calc(100vw - 32px); max-width: none; grid-template-columns: minmax(0, 1fr); }
+  .range-presets { border-left: 0; border-top: 1px solid #2b3747; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .range-presets h2 { grid-column: 1 / -1; margin-bottom: 12px; }
+}
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
 section { background: #161e29; border: 1px solid #2b3747; border-radius: 10px; margin-bottom: 28px; overflow: hidden; scroll-margin-top: 24px; }
 .table-heading { padding: 18px 22px; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
 h2 { margin: 0; font-size: 1rem; overflow-wrap: anywhere; }

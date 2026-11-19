@@ -15,7 +15,7 @@ async function copyId(trigger) {
     await navigator.clipboard.writeText(trigger.dataset.id);
     notify('id copied to clipboard.');
   } catch {
-    notify('Unable to copy the id. Select and copy it from the popover.');
+    notify('Unable to copy id. Select and copy it from the popover.');
   }
 }
 

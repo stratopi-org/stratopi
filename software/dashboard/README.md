@@ -44,11 +44,70 @@ Set `POSTGRES_URL` in `.env` to your PostgreSQL connection URL _(the same settin
 used by the other StratoPi software)_, then run:
 
 ```sh
-.venv/bin/python -m flask --app app run --host 0.0.0.0 --port 5000
+.venv/bin/python -m flask --app app run --host 0.0.0.0 --port 5500
 ```
 
-Open <http://127.0.0.1:5000> for Home, which is reserved for future graphs.
-Use the navigation to open Data at `/data` or return to Home.
+Open <http://127.0.0.1:5500> for the Charts page.
+The Charts page has a compact time picker in the upper right. Open it to select a quick
+range of 1, 5, 15, or 30 minutes, or 1, 2, 3, 6, 12, or 24 hours.
+All available data selects the earliest through latest finite `added` timestamp
+across visible user tables. It sets the shared Charts time window to the full
+recorded history. Reloading recalculates those bounds to include new records.
+The default is the last 3 hours, from now minus 3 hours to now. These dates
+also prefill the absolute From and To fields. Quick ranges end at the current
+time. Retired presets such as 7 days and 30 days fall back
+to the 3-hour default when encountered in an older URL.
+For a custom range, choose From and To dates and times, then Apply time range.
+Dates use the browser's timezone, shown inside the picker. Invalid or reversed
+ranges show a validation message. Escape or clicking outside closes the picker.
+The selected inclusive range is saved as UTC `start` and `end` URL parameters.
+Quick selections also save a `range` parameter and recalculate relative to the
+current time when the page reloads. Custom dates stay fixed across reloads.
+Charts data and graphs read `#charts-time-range`'s `data-start` and
+`data-end` and listen for the bubbling `charts:range-change` event, whose detail
+contains the same ISO timestamps.
+The Charts page has its own Auto refresh selector with Never (default), 15, 30, and
+60-second intervals and Every 2 minutes, remembered separately from the Data page. Enabling it
+refreshes immediately. The browser requests each chart's Flask JSON endpoint,
+and Flask runs read-only, time-filtered PostgreSQL queries. Plotly updates the
+charts in place. This is periodic polling, with one query per chart per cycle.
+Relative ranges advance to the current time on each cycle. Custom absolute
+ranges keep their selected dates. All available data first fetches new database
+time bounds so newly recorded data is included. The next interval begins after
+all chart requests and renders finish. Failed cycles retry at the next interval.
+A seconds-ago status updates after a successful cycle and clears on Never.
+The `battery` chart plots `public.battery.percent` and `temperature_c` against
+`added`, oldest first, on a shared X axis. Percent uses the left Y axis and
+temperature_c uses the right Y axis, each with its own scale. Blue represents percent
+and amber represents temperature in °C. Hover shows both readings at a time.
+The chart uses the browser's timezone to match the picker, with the X axis
+labeled simply `added`. Changing any time
+selection reloads every Charts chart with inclusive start/end SQL filters.
+Plotly Python builds the figure returned by `/api/charts/battery`; Plotly.js
+renders it in place. Its JavaScript bundle is served locally from the installed
+Python package. Empty selections and database errors display a status message.
+Rapid range changes cancel previous requests so stale results cannot overwrite
+the current chart. Charts fetch all matching readings, independent of Data's
+30-row pagination.
+Every chart gives each Y axis at least 10% of its data span as padding below
+the minimum and above the maximum. The calculated endpoints use Plotly's
+`autorangeoptions.include`, keeping autorange and native zoom/reset behavior.
+Constant readings use 10% of their absolute value as padding, with a 0.1-unit
+fallback for zero. Missing and non-finite values do not affect the calculation.
+Padding is recalculated for each selected time range, independently per Y axis.
+Four environmental charts use the same Charts time filter and `added` X axis.
+“environmental temperature” plots `in_temperature_c` and `ex_temperature_c` in °C.
+“environmental pressure” plots `in_pressure_hpa` and `ex_pressure_hpa` in hPa.
+“environmental humidity” plots `in_humidity_rh` and `ex_humidity_rh` in % RH.
+“environmental cpu temperature” plots `cpu_temperature_c` in °C.
+Paired readings use independent Y scales, with blue internal readings labeled
+on the left and amber external readings labeled on the right. CPU temperature
+uses one left Y axis. Missing sensor values
+remain gaps. The environmental figures are served by
+`/api/charts/environmental/<chart>` using the same inclusive date filtering.
+The picker is disabled when timestamps are unavailable or the database cannot
+be reached. Naive database timestamps use the PostgreSQL session timezone.
+Use the navigation to open Data at `/data` or return to Charts.
 The top navigation uses padded pills and highlights the current page.
 On Data, each table has independent Previous/Next controls
 with 30 rows per page, a total row count, and a page and row-range indicator
@@ -61,8 +120,9 @@ The entire pagination bar is hidden for tables with only one page, including
 empty tables. Changing one
 table's page preserves the others and returns to that table. Page selections
 are stored in the URL.
-Auto refresh offers Never (the default), Every 5 seconds, Every 15 seconds, Every 30 seconds,
-and Every 60 seconds. The browser remembers the selection across page navigation.
+Auto refresh offers Never (the default), Every 15 seconds, Every 30 seconds,
+Every 60 seconds, and Every 2 minutes. The browser remembers the selection across page navigation.
+Previously saved 5-second preferences fall back to Never on both pages.
 Automatic refresh fetches fresh table HTML and replaces
 the data in place without a full page reload. This is polling rather than a
 continuous stream. Selected table pages and scroll position are preserved;

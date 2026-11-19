@@ -19,7 +19,7 @@ function setup(saved = null, fetcher = async () => ({ ok: true, text: async () =
   const storage = { value: saved, getItem() { return this.value; }, setItem(_, value) { this.value = value; } };
   let timerId = 0;
   let now = 0;
-  const url = 'http://localhost:5000/data?page%3A%5B%22public%22%2C%22sensors%22%5D=2#table-1';
+  const url = 'http://localhost:5500/data?page%3A%5B%22public%22%2C%22sensors%22%5D=2#table-1';
   runInNewContext(readFileSync(join(__dirname, '../static/auto-refresh.js'), 'utf8'), {
     document: {
       getElementById: id => elements[id], importNode: node => node,
@@ -49,7 +49,7 @@ function setup(saved = null, fetcher = async () => ({ ok: true, text: async () =
 test('defaults to Never and supports all intervals with persisted selection', async () => {
   const state = setup();
   assert.equal(state.timers.size, 0);
-  for (const seconds of ['5', '15', '30', '60']) {
+  for (const seconds of ['15', '30', '60', '120']) {
     state.choose(seconds);
     await new Promise(setImmediate);
     assert.ok([...state.timers.values()].some(timer => timer.delay === Number(seconds) * 1000));
@@ -99,7 +99,7 @@ test('failed refresh retains data and schedules a retry', async () => {
   const state = setup('30', async () => ({ ok: false }));
   await state.tick(30000);
   assert.equal(state.calls.some(call => call[0] === 'replace'), false);
-  assert.match(state.status.textContent, /Existing data is unchanged/);
+  assert.match(state.status.textContent, /Retrying at the next interval/);
   assert.equal([...state.timers.values()][0].delay, 30000);
 });
 

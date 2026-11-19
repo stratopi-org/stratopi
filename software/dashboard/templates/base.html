@@ -9,7 +9,7 @@
 <body>
   <main>
     <nav class="site-nav" aria-label="Main navigation">
-      <a href="{{ url_for('index') }}"{% if request.endpoint == 'index' %} aria-current="page"{% endif %}>Home</a>
+      <a href="{{ url_for('charts') }}"{% if request.endpoint == 'charts' %} aria-current="page"{% endif %}>Charts</a>
       <a href="{{ url_for('data') }}"{% if request.endpoint == 'data' %} aria-current="page"{% endif %}>Data</a>
     </nav>
     {% block content %}{% endblock %}
