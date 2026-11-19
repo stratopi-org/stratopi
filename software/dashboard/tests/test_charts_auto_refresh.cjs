@@ -37,6 +37,15 @@ function setup(saved = null) {
   };
 }
 
+test('missing or invalid saved preferences default to Never without scheduling refresh', () => {
+  for (const saved of [null, '', 'invalid', '5']) {
+    const state = setup(saved);
+    assert.equal(state.select.value, '0');
+    assert.equal(state.events.length, 0);
+    assert.equal(state.timers.size, 0);
+  }
+});
+
 test('all refresh options request an immediate update and wait for completion before scheduling', () => {
   for (const seconds of ['15', '30', '60', '120']) {
     const state = setup();

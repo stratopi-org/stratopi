@@ -25,7 +25,7 @@
         </form>
         <div class="range-presets" aria-label="Quick time ranges">
           <h2>Quick ranges</h2>
-          {% for value, label in [('1m', 'Last 1 minute'), ('5m', 'Last 5 minutes'), ('15m', 'Last 15 minutes'), ('30m', 'Last 30 minutes'), ('1h', 'Last 1 hour'), ('2h', 'Last 2 hours'), ('3h', 'Last 3 hours'), ('6h', 'Last 6 hours'), ('12h', 'Last 12 hours'), ('24h', 'Last 24 hours'), ('all', 'All available data')] %}
+          {% for value, label in [('5m', 'Last 5 minutes'), ('15m', 'Last 15 minutes'), ('30m', 'Last 30 minutes'), ('1h', 'Last 1 hour'), ('2h', 'Last 2 hours'), ('3h', 'Last 3 hours'), ('6h', 'Last 6 hours'), ('12h', 'Last 12 hours'), ('24h', 'Last 24 hours'), ('all', 'All available data')] %}
           <button type="button" data-range="{{ value }}">{{ label }}</button>
           {% endfor %}
         </div>
@@ -44,22 +44,32 @@
   <span id="charts-refresh-status" role="status" aria-live="polite"></span>
   </div>
 </header>
+<nav aria-label="Chart sections">
+  <a href="#battery">battery</a>
+  <a href="#environmental">environmental</a>
+</nav>
 {% if error %}
 <p class="range-message" role="alert">{{ error }}</p>
 {% elif not time_bounds %}
 <p class="range-message">No data is available.</p>
 {% endif %}
 <p class="visually-hidden" id="range-summary" role="status"></p>
+<section class="chart-group" id="battery" aria-labelledby="battery-heading">
+<h2 class="chart-group-title" id="battery-heading">battery</h2>
 <section class="chart-panel" data-chart-url="{{ url_for('battery_chart') }}" aria-label="battery chart">
   <p class="chart-status" role="status">Choose a time range to load battery data.</p>
-  <div class="chart-plot" role="img" aria-label="Battery percent and temperature over time" hidden></div>
+  <div class="chart-plot" role="img" aria-label="battery percent and temperature over time" hidden></div>
 </section>
-{% for chart, title in [('temperature', 'environmental temperature'), ('pressure', 'environmental pressure'), ('humidity', 'environmental humidity'), ('cpu-temperature', 'environmental cpu temperature')] %}
+</section>
+<section class="chart-group" id="environmental" aria-labelledby="environmental-heading">
+<h2 class="chart-group-title" id="environmental-heading">environmental</h2>
+{% for chart, title in [('temperature', 'temperature'), ('pressure', 'pressure'), ('humidity', 'humidity'), ('cpu-temperature', 'cpu temperature')] %}
 <section class="chart-panel" data-chart-url="{{ url_for('environmental_chart', chart=chart) }}" aria-label="{{ title }} chart">
   <p class="chart-status" role="status">Choose a time range to load environmental data.</p>
   <div class="chart-plot" role="img" aria-label="{{ title }} over time" hidden></div>
 </section>
 {% endfor %}
+</section>
 {% endblock %}
 
 {% block scripts %}

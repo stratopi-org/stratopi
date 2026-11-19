@@ -20,10 +20,10 @@ class EnvironmentalChartTests(unittest.TestCase):
 
     def test_all_four_charts_use_requested_columns_dates_and_units(self):
         cases = [
-            ('temperature', 'environmental temperature', ('in_temperature_c', 'ex_temperature_c'), '°C'),
-            ('pressure', 'environmental pressure', ('in_pressure_hpa', 'ex_pressure_hpa'), 'hPa'),
-            ('humidity', 'environmental humidity', ('in_humidity_rh', 'ex_humidity_rh'), '% RH'),
-            ('cpu-temperature', 'environmental cpu temperature', ('cpu_temperature_c',), '°C'),
+            ('temperature', 'temperature', ('in_temperature_c', 'ex_temperature_c'), '°C'),
+            ('pressure', 'pressure', ('in_pressure_hpa', 'ex_pressure_hpa'), 'hPa'),
+            ('humidity', 'humidity', ('in_humidity_rh', 'ex_humidity_rh'), '% RH'),
+            ('cpu-temperature', 'cpu temperature', ('cpu_temperature_c',), '°C'),
         ]
         timestamp = datetime(2026, 11, 19, 13, tzinfo=timezone.utc)
         for chart, title, columns, unit in cases:

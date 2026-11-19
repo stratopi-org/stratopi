@@ -7,6 +7,7 @@
   let ageTimer;
   let lastRefresh = null;
 
+  select.value = '0';
   try {
     const saved = localStorage.getItem(storageKey);
     if (allowed.includes(saved)) select.value = saved;

@@ -11,22 +11,22 @@ from chart_style import add_y_padding, chart_layout
 
 ENVIRONMENTAL_CHARTS = {
     'temperature': {
-        'title': 'environmental temperature',
+        'title': 'temperature',
         'columns': ('in_temperature_c', 'ex_temperature_c'),
         'unit': '°C',
     },
     'pressure': {
-        'title': 'environmental pressure',
+        'title': 'pressure',
         'columns': ('in_pressure_hpa', 'ex_pressure_hpa'),
         'unit': 'hPa',
     },
     'humidity': {
-        'title': 'environmental humidity',
+        'title': 'humidity',
         'columns': ('in_humidity_rh', 'ex_humidity_rh'),
         'unit': '% RH',
     },
     'cpu-temperature': {
-        'title': 'environmental cpu temperature',
+        'title': 'cpu temperature',
         'columns': ('cpu_temperature_c',),
         'unit': '°C',
     },

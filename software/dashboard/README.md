@@ -48,14 +48,19 @@ used by the other StratoPi software)_, then run:
 ```
 
 Open <http://127.0.0.1:5500> for the Charts page.
+The lowercase `battery` and `environmental` header links jump to matching sections.
+The `battery` section contains the battery chart, and `environmental` contains
+all four environmental charts.
 The Charts page has a compact time picker in the upper right. Open it to select a quick
-range of 1, 5, 15, or 30 minutes, or 1, 2, 3, 6, 12, or 24 hours.
+range of 5, 15, or 30 minutes, or 1, 2, 3, 6, 12, or 24 hours.
 All available data selects the earliest through latest finite `added` timestamp
 across visible user tables. It sets the shared Charts time window to the full
 recorded history. Reloading recalculates those bounds to include new records.
-The default is the last 3 hours, from now minus 3 hours to now. These dates
-also prefill the absolute From and To fields. Quick ranges end at the current
-time. Retired presets such as 7 days and 30 days fall back
+With no saved range in the URL, Charts defaults to the last 3 hours, from now
+minus 3 hours to now. With no saved Charts auto-refresh preference, Auto refresh
+starts at Never. The selected dates also prefill the absolute From and To fields.
+Quick ranges end at the current
+time. Retired presets such as 1 minute, 7 days, and 30 days fall back
 to the 3-hour default when encountered in an older URL.
 For a custom range, choose From and To dates and times, then Apply time range.
 Dates use the browser's timezone, shown inside the picker. Invalid or reversed
@@ -96,10 +101,10 @@ Constant readings use 10% of their absolute value as padding, with a 0.1-unit
 fallback for zero. Missing and non-finite values do not affect the calculation.
 Padding is recalculated for each selected time range, independently per Y axis.
 Four environmental charts use the same Charts time filter and `added` X axis.
-“environmental temperature” plots `in_temperature_c` and `ex_temperature_c` in °C.
-“environmental pressure” plots `in_pressure_hpa` and `ex_pressure_hpa` in hPa.
-“environmental humidity” plots `in_humidity_rh` and `ex_humidity_rh` in % RH.
-“environmental cpu temperature” plots `cpu_temperature_c` in °C.
+“temperature” plots `in_temperature_c` and `ex_temperature_c` in °C.
+“pressure” plots `in_pressure_hpa` and `ex_pressure_hpa` in hPa.
+“humidity” plots `in_humidity_rh` and `ex_humidity_rh` in % RH.
+“cpu temperature” plots `cpu_temperature_c` in °C.
 Paired readings use independent Y scales, with blue internal readings labeled
 on the left and amber external readings labeled on the right. CPU temperature
 uses one left Y axis. Missing sensor values
