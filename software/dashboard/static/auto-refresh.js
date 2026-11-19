@@ -3,7 +3,7 @@
   const status = document.getElementById('refresh-status');
   const content = document.getElementById('table-data');
   const storageKey = 'stratopi.autoRefreshSeconds';
-  const allowed = ['0', '5', '15', '30', '60'];
+  const allowed = ['0', '15', '30', '60', '120'];
   let timer;
   let controller;
   let ageTimer;
@@ -71,7 +71,7 @@
       updateAge();
     } catch {
       if (controller === request) {
-        status.textContent = 'Unable to refresh. Existing data is unchanged.';
+        status.textContent = 'Unable to refresh. Retrying at the next interval.';
       }
     } finally {
       clearTimeout(timeout);

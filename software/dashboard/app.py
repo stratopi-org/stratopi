@@ -2,14 +2,18 @@
 
 import os
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urlencode
 
 import psycopg
 from dotenv import load_dotenv
-from flask import Flask, render_template, request, url_for
+from flask import Flask, jsonify, render_template, request, url_for
+from plotly.offline import get_plotlyjs
 from psycopg import sql
+
+from battery_chart import build_battery_figure, read_battery
+from environmental_charts import ENVIRONMENTAL_CHARTS, build_environmental_figure, read_environmental
 
 load_dotenv(Path(__file__).with_name('.env'))
 
@@ -17,8 +21,51 @@ load_dotenv(Path(__file__).with_name('.env'))
 PAGE_SIZE = 30
 
 
+def chart_time_range(args):
+    start = datetime.fromisoformat(args.get('start', ''))
+    end = datetime.fromisoformat(args.get('end', ''))
+    if start.tzinfo is None or end.tzinfo is None or start > end:
+        raise ValueError
+    return start.astimezone(timezone.utc), end.astimezone(timezone.utc)
+
+
 def page_key(schema, name):
     return 'page:' + json.dumps([schema, name], separators=(',', ':'))
+
+
+def read_time_bounds(database_url):
+    """Find the available time window across timestamp-based user tables."""
+    bounds = []
+    with psycopg.connect(database_url, connect_timeout=5) as connection:
+        connection.read_only = True
+        with connection.cursor() as cursor:
+            cursor.execute("SET LOCAL statement_timeout = '30s'")
+            cursor.execute("""
+                SELECT c.table_schema, c.table_name
+                FROM information_schema.columns c
+                JOIN information_schema.tables t
+                  ON t.table_schema = c.table_schema AND t.table_name = c.table_name
+                WHERE c.column_name = 'added'
+                  AND c.data_type IN ('timestamp with time zone', 'timestamp without time zone')
+                  AND t.table_type = 'BASE TABLE'
+                  AND c.table_schema <> 'information_schema'
+                  AND c.table_schema NOT LIKE 'pg_%'
+                ORDER BY c.table_schema, c.table_name
+            """)
+            names = cursor.fetchall()
+            for schema, name in names:
+                cursor.execute(sql.SQL("""
+                    SELECT EXTRACT(EPOCH FROM min(added)::timestamptz),
+                           EXTRACT(EPOCH FROM max(added)::timestamptz)
+                    FROM {} WHERE isfinite(added)
+                """).format(sql.Identifier(schema, name)))
+                earliest, latest = cursor.fetchone()
+                if earliest is not None:
+                    bounds.append((int(earliest * 1000), int(latest * 1000)))
+    if not bounds:
+        return None
+    return {'start': min(start for start, end in bounds),
+            'end': max(end for start, end in bounds)}
 
 
 def read_tables(database_url, pages=None):
@@ -79,6 +126,58 @@ def create_app():
     app = Flask(__name__)
     app.config['POSTGRES_URL'] = os.environ.get('POSTGRES_URL')
 
+    @app.get('/assets/plotly.min.js')
+    def plotly_js():
+        return app.response_class(get_plotlyjs(), mimetype='application/javascript')
+
+    @app.get('/api/charts/battery')
+    def battery_chart():
+        try:
+            start, end = chart_time_range(request.args)
+        except ValueError:
+            return jsonify(error='Provide a valid start and end time with timezones, in chronological order.'), 400
+        database_url = app.config['POSTGRES_URL']
+        if not database_url:
+            return jsonify(error='Configure POSTGRES_URL to load battery data.'), 503
+        try:
+            rows = read_battery(database_url, start, end)
+        except psycopg.Error:
+            app.logger.error('Unable to read battery chart data.')
+            return jsonify(error='Unable to load battery data. Check the database connection and permissions.'), 503
+        figure = build_battery_figure(rows, start, end)
+        return app.response_class(figure.to_json(), mimetype='application/json')
+
+    @app.get('/api/charts/time-bounds')
+    def charts_time_bounds():
+        database_url = app.config['POSTGRES_URL']
+        if not database_url:
+            return jsonify(error='Configure POSTGRES_URL to load the time range.'), 503
+        try:
+            return jsonify(read_time_bounds(database_url))
+        except psycopg.Error:
+            app.logger.error('Unable to refresh the available PostgreSQL time range.')
+            return jsonify(error='Unable to refresh the available time range.'), 503
+
+    @app.get('/api/charts/environmental/<chart>')
+    def environmental_chart(chart):
+        specification = ENVIRONMENTAL_CHARTS.get(chart)
+        if specification is None:
+            return jsonify(error='Unknown environmental chart.'), 404
+        try:
+            start, end = chart_time_range(request.args)
+        except ValueError:
+            return jsonify(error='Provide a valid start and end time with timezones, in chronological order.'), 400
+        database_url = app.config['POSTGRES_URL']
+        if not database_url:
+            return jsonify(error='Configure POSTGRES_URL to load environmental data.'), 503
+        try:
+            rows = read_environmental(database_url, start, end, specification['columns'])
+        except psycopg.Error:
+            app.logger.error('Unable to read environmental chart data.')
+            return jsonify(error='Unable to load environmental data. Check the database connection and permissions.'), 503
+        figure = build_environmental_figure(rows, start, end, specification)
+        return app.response_class(figure.to_json(), mimetype='application/json')
+
     @app.template_filter('direction_angle')
     def direction_angle(value):
         if not isinstance(value, str):
@@ -105,8 +204,19 @@ def create_app():
         return value
 
     @app.get('/')
-    def index():
-        return render_template('index.html')
+    def charts():
+        bounds = None
+        error = None
+        database_url = app.config['POSTGRES_URL']
+        if not database_url:
+            error = 'Set POSTGRES_URL in .env to load the available time range.'
+        else:
+            try:
+                bounds = read_time_bounds(database_url)
+            except psycopg.Error:
+                app.logger.error('Unable to read the available PostgreSQL time range.')
+                error = 'Unable to load the time range. Check the database connection and permissions.'
+        return render_template('charts.html', time_bounds=bounds, error=error)
 
     @app.get('/data')
     def data():
@@ -149,4 +259,4 @@ def create_app():
 app = create_app()
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=5000)
+    app.run(host='127.0.0.1', port=5500)

@@ -8,7 +8,7 @@ from html.parser import HTMLParser
 from urllib.parse import parse_qs, urlsplit
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from app import create_app, read_tables, page_key
+from app import create_app, read_tables, read_time_bounds, page_key
 import psycopg
 
 
@@ -36,19 +36,56 @@ class DashboardTests(unittest.TestCase):
         self.assertNotIn('<script>', html)
         self.assertEqual(response.headers['Cache-Control'], 'no-store')
 
-    def test_home_renders_navigation_without_querying_the_database(self):
-        with patch('app.read_tables') as read:
+    def test_charts_renders_range_control_and_navigation_without_loading_rows(self):
+        with patch('app.read_tables') as read, patch('app.read_time_bounds', return_value=None):
             response = self.client.get('/')
         read.assert_not_called()
         self.assertEqual(response.status_code, 200)
         html = response.get_data(as_text=True)
-        self.assertIn('href="/" aria-current="page">Home</a>', html)
+        self.assertIn('href="/" aria-current="page">Charts</a>', html)
         self.assertIn('href="/data">Data</a>', html)
+        for filename in ['charts.js', 'charts-auto-refresh.js', 'charts-time-range.js']:
+            self.assertIn(f'/static/{filename}', html)
+            with self.client.get(f'/static/{filename}') as script_response:
+                self.assertEqual(script_response.status_code, 200)
         self.assertNotIn('id="table-data"', html)
+        self.assertIn('id="charts-time-range" disabled', html)
+        self.assertIn('No data is available.', html)
+
+    def test_time_bounds_combine_tables_and_skip_empty_tables(self):
+        connection = MagicMock()
+        cursor = connection.cursor.return_value.__enter__.return_value
+        cursor.fetchall.return_value = [('public', 'first'), ('odd schema', 'a"table'), ('public', 'empty')]
+        cursor.fetchone.side_effect = [(100, 200), (50, 300), (None, None)]
+        with patch('app.psycopg.connect') as connect:
+            connect.return_value.__enter__.return_value = connection
+            bounds = read_time_bounds('postgresql://test')
+        self.assertEqual(bounds, {'start': 50000, 'end': 300000})
+        self.assertTrue(connection.read_only)
+        self.assertIn('"odd schema"."a""table"', cursor.execute.call_args_list[-2].args[0].as_string())
+
+    def test_charts_database_error_keeps_navigation_and_disables_sliders(self):
+        with patch('app.read_time_bounds', side_effect=psycopg.OperationalError('secret')):
+            response = self.client.get('/')
+        html = response.get_data(as_text=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('id="charts-time-range" disabled', html)
+        self.assertNotIn('secret', html)
 
     def test_missing_configuration(self):
         self.app.config['POSTGRES_URL'] = None
         self.assertEqual(self.client.get('/data').status_code, 503)
+
+    def test_charts_time_bounds_refresh_endpoint(self):
+        with patch('app.read_time_bounds', return_value={'start': 1000, 'end': 2000}):
+            response = self.client.get('/api/charts/time-bounds')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.get_json(), {'start': 1000, 'end': 2000})
+        self.assertEqual(response.headers['Cache-Control'], 'no-store')
+        with patch('app.read_time_bounds', side_effect=psycopg.OperationalError('secret')):
+            response = self.client.get('/api/charts/time-bounds')
+        self.assertEqual(response.status_code, 503)
+        self.assertNotIn('secret', response.get_data(as_text=True))
 
     def test_coordinates_link_uses_latitude_then_longitude(self):
         tables = [dict(schema='public', name='location', columns=['coordinates', 'other'],
