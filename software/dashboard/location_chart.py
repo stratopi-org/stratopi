@@ -33,7 +33,9 @@ def add_vertical_speed_arrows(figure, rows, start, end):
     if timestamps[0] == timestamps[-1] or start == end:
         targets = [timestamps[0]]
     else:
-        targets = [start + (end - start) * ((index + 0.5) / 12) for index in range(12)]
+        interval_count = 18
+        targets = [start + (end - start) * ((index + 0.5) / interval_count)
+                   for index in range(interval_count)]
     for target in targets:
         if target < timestamps[0] or target > timestamps[-1]:
             continue
