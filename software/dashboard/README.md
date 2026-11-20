@@ -124,6 +124,11 @@ Altitude markers show green up arrows for positive `vertical_speed_mpm`
 (ascending), red down arrows for negative values (descending), and neutral
 dots for zero or missing values. Arrows use the sign of each reading's vertical
 speed, rather than the change in vertical speed between successive readings.
+Arrow density adapts to the selected date/time window. The window is split
+into 12 intervals, with at most one arrow per interval highlighting the greatest
+absolute vertical speed. Other readings use small neutral dots. All altitude
+and tooltip readings remain available, and narrower time ranges reveal more
+detailed arrow placement.
 The picker is disabled when timestamps are unavailable or the database cannot
 be reached. Naive database timestamps use the PostgreSQL session timezone.
 Use the navigation to open Data at `/data` or return to Charts.

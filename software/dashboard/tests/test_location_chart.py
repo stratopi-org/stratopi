@@ -1,6 +1,6 @@
 import sys
 import unittest
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from decimal import Decimal
 from pathlib import Path
 from unittest.mock import MagicMock, patch
@@ -9,7 +9,7 @@ import psycopg
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from app import create_app
-from location_chart import read_location
+from location_chart import build_location_figure, read_location
 
 
 class LocationChartTests(unittest.TestCase):
@@ -58,14 +58,35 @@ class LocationChartTests(unittest.TestCase):
 
     def test_ascent_descent_zero_and_missing_speed_use_matching_markers(self):
         timestamp = datetime(2026, 11, 19, 13, tzinfo=timezone.utc)
-        rows = [(timestamp, 140, speed, 0, 0, 'N')
-                for speed in [Decimal('3.1'), Decimal('-2.5'), Decimal('0'), None]]
+        rows = [(timestamp + timedelta(minutes=index * 20), 140, speed, 0, 0, 'N')
+                for index, speed in enumerate([Decimal('3.1'), Decimal('-2.5'), Decimal('0'), None])]
         with patch('app.read_location', return_value=rows):
             response = self.client.get('/api/charts/location/altitude', query_string=self.params)
         marker = response.get_json()['data'][0]['marker']
         self.assertEqual(marker['symbol'], ['arrow-up', 'arrow-down', 'circle', 'circle'])
         self.assertEqual(marker['color'], ['#86dba0', '#f38b91', '#a3b1c2', '#a3b1c2'])
         self.assertEqual(marker['size'], [10, 10, 4, 4])
+
+    def test_arrow_density_tracks_selected_time_span_without_dropping_data(self):
+        start = datetime(2026, 11, 19, 12, tzinfo=timezone.utc)
+        rows = [(start + timedelta(seconds=index), 140 + index, index + 1, 0, 0, 'N')
+                for index in range(600)]
+        wide = build_location_figure(rows, start, start + timedelta(minutes=10))
+        self.assertEqual(list(wide.data[0].marker.symbol).count('arrow-up'), 12)
+        self.assertEqual(len(wide.data[0].x), 600)
+        self.assertEqual(len(wide.data[0].customdata), 600)
+        # The same 10 minutes of readings occupy fewer intervals in a 3-hour view.
+        broader = build_location_figure(rows, start, start + timedelta(hours=3))
+        self.assertEqual(list(broader.data[0].marker.symbol).count('arrow-up'), 1)
+        self.assertEqual(len(broader.data[0].y), 600)
+
+    def test_each_interval_highlights_its_strongest_vertical_speed(self):
+        start = datetime(2026, 11, 19, 12, tzinfo=timezone.utc)
+        rows = [(start + timedelta(seconds=index), 140, speed, 0, 0, 'N')
+                for index, speed in enumerate([1, -5, 2, 0, None])]
+        figure = build_location_figure(rows, start, start + timedelta(hours=3))
+        self.assertEqual(list(figure.data[0].marker.symbol),
+                         ['circle', 'arrow-down', 'circle', 'circle', 'circle'])
 
     def test_query_uses_the_pool_and_filters_and_sorts_by_added(self):
         start = datetime(2026, 11, 19, 12, tzinfo=timezone.utc)
