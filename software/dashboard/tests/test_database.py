@@ -14,6 +14,7 @@ import database
 from app import create_app, read_tables, read_time_bounds
 from battery_chart import read_battery
 from environmental_charts import read_environmental
+from location_chart import read_location
 
 
 class DatabasePoolTests(unittest.TestCase):
@@ -60,7 +61,7 @@ class DatabasePoolTests(unittest.TestCase):
         app.config.update(TESTING=True, POSTGRES_URL='postgresql://test')
         params = {'start': '2026-11-19T12:00:00Z', 'end': '2026-11-19T15:00:00Z'}
         for route in ['/data', '/api/charts/time-bounds', '/api/charts/battery',
-                      '/api/charts/environmental/temperature']:
+                      '/api/charts/environmental/temperature', '/api/charts/location/altitude']:
             with self.subTest(route=route), patch('database.get_pool', side_effect=PoolTimeout('secret')):
                 response = app.test_client().get(route, query_string=params)
                 self.assertEqual(response.status_code, 503)
@@ -76,7 +77,7 @@ class LiveDatabasePoolTests(unittest.TestCase):
     def tearDown(self):
         database.close_pools()
 
-    def test_all_four_readers_reuse_the_same_bounded_pool(self):
+    def test_all_readers_reuse_the_same_bounded_pool(self):
         pool = database.get_pool(self.url)
         now = datetime.now(timezone.utc)
         for _ in range(2):
@@ -84,6 +85,7 @@ class LiveDatabasePoolTests(unittest.TestCase):
             read_tables(self.url)
             read_battery(self.url, now, now)
             read_environmental(self.url, now, now, ('cpu_temperature_c',))
+            read_location(self.url, now, now)
         self.assertIs(database.get_pool(self.url), pool)
         self.assertLessEqual(pool.get_stats()['connections_num'], 2)
 

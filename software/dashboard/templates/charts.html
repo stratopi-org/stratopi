@@ -47,6 +47,7 @@
 <nav aria-label="Chart sections">
   <a href="#battery">battery</a>
   <a href="#environmental">environmental</a>
+  <a href="#location">location</a>
 </nav>
 {% if error %}
 <p class="range-message" role="alert">{{ error }}</p>
@@ -69,6 +70,13 @@
   <div class="chart-plot" role="img" aria-label="{{ title }} over time" hidden></div>
 </section>
 {% endfor %}
+</section>
+<section class="chart-group" id="location" aria-labelledby="location-heading">
+<h2 class="chart-group-title" id="location-heading">location</h2>
+<section class="chart-panel" data-chart-url="{{ url_for('location_chart') }}" aria-label="altitude chart">
+  <p class="chart-status" role="status">Choose a time range to load location data.</p>
+  <div class="chart-plot" role="img" aria-label="Location altitude over time" hidden></div>
+</section>
 </section>
 {% endblock %}
 

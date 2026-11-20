@@ -9,6 +9,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from battery_chart import build_battery_figure
 from chart_style import add_y_padding
 from environmental_charts import ENVIRONMENTAL_CHARTS, build_environmental_figure
+from location_chart import build_location_figure
 
 
 class ChartPaddingTests(unittest.TestCase):
@@ -43,6 +44,7 @@ class ChartPaddingTests(unittest.TestCase):
     def test_all_charts_chart_builders_apply_padding_without_changing_time_range(self):
         timestamp = datetime(2026, 11, 19, 12, tzinfo=timezone.utc)
         figures = [build_battery_figure([(timestamp, 80, 20), (timestamp, 90, 30)], timestamp, timestamp)]
+        figures.append(build_location_figure([(timestamp, 140, None, 0, 0, 'N')], timestamp, timestamp))
         for specification in ENVIRONMENTAL_CHARTS.values():
             rows = [(timestamp, *([20] * len(specification['columns']))),
                     (timestamp, *([30] * len(specification['columns'])))]
