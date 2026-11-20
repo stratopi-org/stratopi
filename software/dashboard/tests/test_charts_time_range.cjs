@@ -63,6 +63,15 @@ test('defaults to the last 3 hours and prefills the absolute range', () => {
   assert.equal(new Date(state.elements['range-end'].value) - new Date(state.elements['range-start'].value), 10800000);
 });
 
+test('an explicit URL range restores 2 hours independently of browser storage', () => {
+  const state = setup('?range=2h');
+  const range = state.events[0].detail;
+  assert.equal(Date.parse(range.end) - Date.parse(range.start), 7200000);
+  const clean = setup();
+  assert.equal(clean.elements['range-label'].textContent, 'Last 3 hours');
+  assert.equal(Date.parse(clean.events[0].detail.end) - Date.parse(clean.events[0].detail.start), 10800000);
+});
+
 test('auto refresh advances relative ranges and keeps custom dates fixed', async () => {
   const state = setup();
   const first = state.events.at(-1).detail;

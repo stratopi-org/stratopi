@@ -59,6 +59,10 @@ recorded history. Reloading recalculates those bounds to include new records.
 With no saved range in the URL, Charts defaults to the last 3 hours, from now
 minus 3 hours to now. With no saved Charts auto-refresh preference, Auto refresh
 starts at Never. The selected dates also prefill the absolute From and To fields.
+Range selections are restored from the URL independently of local storage.
+Clearing local storage resets the auto-refresh preference. Open Charts at `/`
+without query parameters to restore the default Last 3 hours range.
+The picker initially displays “Time range” until the URL selection is resolved.
 Quick ranges end at the current
 time. Retired presets such as 1 minute, 7 days, and 30 days fall back
 to the 3-hour default when encountered in an older URL.
