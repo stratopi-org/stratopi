@@ -69,7 +69,7 @@ class BatteryChartTests(unittest.TestCase):
         connection = MagicMock()
         cursor = connection.cursor.return_value.__enter__.return_value
         cursor.fetchall.return_value = []
-        with patch('battery_chart.psycopg.connect') as connect:
+        with patch('battery_chart.read_connection') as connect:
             connect.return_value.__enter__.return_value = connection
             self.assertEqual(read_battery('postgresql://test', start, end), [])
         self.assertTrue(connection.read_only)

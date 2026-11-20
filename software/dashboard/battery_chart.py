@@ -3,13 +3,13 @@
 from datetime import timezone
 
 import plotly.graph_objects as go
-import psycopg
 
 from chart_style import add_y_padding, chart_layout
+from database import read_connection
 
 
 def read_battery(database_url, start, end):
-    with psycopg.connect(database_url, connect_timeout=5) as connection:
+    with read_connection(database_url) as connection:
         connection.read_only = True
         with connection.cursor() as cursor:
             cursor.execute("SET LOCAL statement_timeout = '30s'")

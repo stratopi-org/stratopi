@@ -13,6 +13,7 @@ from plotly.offline import get_plotlyjs
 from psycopg import sql
 
 from battery_chart import build_battery_figure, read_battery
+from database import read_connection
 from environmental_charts import ENVIRONMENTAL_CHARTS, build_environmental_figure, read_environmental
 
 load_dotenv(Path(__file__).with_name('.env'))
@@ -36,7 +37,7 @@ def page_key(schema, name):
 def read_time_bounds(database_url):
     """Find the available time window across timestamp-based user tables."""
     bounds = []
-    with psycopg.connect(database_url, connect_timeout=5) as connection:
+    with read_connection(database_url) as connection:
         connection.read_only = True
         with connection.cursor() as cursor:
             cursor.execute("SET LOCAL statement_timeout = '30s'")
@@ -71,7 +72,7 @@ def read_time_bounds(database_url):
 def read_tables(database_url, pages=None):
     pages = pages or {}
     tables = []
-    with psycopg.connect(database_url, connect_timeout=5) as connection:
+    with read_connection(database_url) as connection:
         connection.read_only = True
         connection.isolation_level = psycopg.IsolationLevel.REPEATABLE_READ
         with connection.cursor() as cursor:

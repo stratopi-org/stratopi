@@ -74,7 +74,7 @@ class EnvironmentalChartTests(unittest.TestCase):
         connection = MagicMock()
         cursor = connection.cursor.return_value.__enter__.return_value
         cursor.fetchall.return_value = []
-        with patch('environmental_charts.psycopg.connect') as connect:
+        with patch('environmental_charts.read_connection') as connect:
             connect.return_value.__enter__.return_value = connection
             read_environmental('postgresql://test', start, end, ('in_pressure_hpa', 'ex_pressure_hpa'))
         query, params = cursor.execute.call_args.args
