@@ -129,6 +129,25 @@ actual reading's vertical speed. Positions outside the available readings and
 zero or missing vertical speeds have no arrow. A single timestamp gets at most
 one arrow. Actual readings remain neutral dots with their original tooltip
 values. Narrower date ranges provide finer arrow spacing.
+An interactive Google Map below altitude shows every valid `location.coordinates`
+reading in the same selected `added` time range. PostgreSQL POINT coordinates
+are read as longitude then latitude. Each reading is a point, including separate
+records at identical coordinates. Selecting a point shows its timestamp and
+sensor details. Invalid or missing coordinates are excluded.
+The map shares chart auto-refresh and request cancellation. A changed time
+selection fits the map to the returned locations. Auto-refresh preserves the
+current pan/zoom, and Fit locations restores the view of all filtered points.
+The map instance is reused across refreshes, and unchanged points are retained.
+
+To enable the map, add `GOOGLE_MAPS_API_KEY=your_key` to `dashboard/.env` and
+restart the dashboard. Use a Google Cloud project with billing and the Maps
+JavaScript API enabled. This browser API key is intentionally sent to the
+frontend, so restrict it to your dashboard's website URLs and the Maps JavaScript
+API in Google Cloud. No map ID is required for the Google Maps data layer.
+Map tiles load from Google and require internet access. Without a configured
+key, the map panel shows setup instructions and the charts remain available.
+Location data is served by `/api/charts/location/map` through the shared database
+pool with the same inclusive start/end filter as altitude.
 The picker is disabled when timestamps are unavailable or the database cannot
 be reached. Naive database timestamps use the PostgreSQL session timezone.
 Use the navigation to open Data at `/data` or return to Charts.

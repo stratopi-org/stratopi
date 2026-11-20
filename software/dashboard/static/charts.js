@@ -57,7 +57,9 @@
     const timeout = setTimeout(() => request.abort(), 45000);
     document.dispatchEvent(new CustomEvent('charts:loading'));
     try {
-      const results = await Promise.all(charts.map(chart => updateChart(chart, event.detail, request)));
+      const updates = charts.map(chart => updateChart(chart, event.detail, request));
+      if (window.DashboardLocationMap) updates.push(window.DashboardLocationMap.update(event.detail, request.signal));
+      const results = await Promise.all(updates);
       if (activeRequest === request) {
         document.dispatchEvent(new CustomEvent('charts:refreshed', {
           detail: { success: results.every(Boolean) },

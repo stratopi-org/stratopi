@@ -77,6 +77,18 @@
   <p class="chart-status" role="status">Choose a time range to load location data.</p>
   <div class="chart-plot" role="img" aria-label="Location altitude over time" hidden></div>
 </section>
+<section class="location-map-panel" id="location-map-panel" data-map-url="{{ url_for('location_map') }}" aria-labelledby="location-map-heading">
+  <div class="map-heading">
+    <h3 id="location-map-heading">map</h3>
+    <button class="map-fit" id="location-map-fit" type="button" disabled>Fit locations</button>
+  </div>
+  {% if config.GOOGLE_MAPS_API_KEY %}
+  <p class="map-status" id="location-map-status" role="status">Loading Google Maps…</p>
+  {% else %}
+  <p class="map-status" id="location-map-status" role="status">Set GOOGLE_MAPS_API_KEY in dashboard/.env and restart the dashboard to enable Google Maps.</p>
+  {% endif %}
+  <div id="location-map" class="location-map" aria-label="Locations in the selected time range" hidden></div>
+</section>
 </section>
 {% endblock %}
 
@@ -85,6 +97,8 @@
 <script id="time-bounds-url" type="application/json">{{ url_for('charts_time_bounds')|tojson }}</script>
 <script src="{{ url_for('plotly_js') }}" defer></script>
 <script src="{{ url_for('static', filename='charts-auto-refresh.js') }}" defer></script>
+<script id="google-maps-config" type="application/json">{{ {'apiKey': config.GOOGLE_MAPS_API_KEY}|tojson }}</script>
+<script src="{{ url_for('static', filename='location-map.js') }}" defer></script>
 <script src="{{ url_for('static', filename='charts.js') }}" defer></script>
 <script src="{{ url_for('static', filename='charts-time-range.js') }}" defer></script>
 {% endblock %}

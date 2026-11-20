@@ -63,6 +63,7 @@
       button.setAttribute('aria-pressed', String(button.dataset.range === selected));
     }
     const range = { start: new Date(start).toISOString(), end: new Date(end).toISOString() };
+    range.viewKey = selected || `${range.start}/${range.end}`;
     control.dataset.start = range.start;
     control.dataset.end = range.end;
     summary.textContent = exactRange;
