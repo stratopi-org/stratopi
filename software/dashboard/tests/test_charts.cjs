@@ -39,6 +39,7 @@ function setup(fetcher, chartCount = 1) {
 function figure(count = 1) {
   return { data: [{ x: ['2026-11-19T12:00:00Z'], y: [80] }],
     layout: { xaxis: { range: ['2026-11-19T12:00:00Z', '2026-11-19T15:00:00Z'], title: {} },
+      annotations: [{ xref: 'x', x: '2026-11-19T13:00:00Z', y: 80, text: '↑' }],
       meta: { row_count: count } } };
 }
 
@@ -50,6 +51,9 @@ test('shared range events query the backend and render timestamps in browser tim
   assert.equal(url.searchParams.get('end'), '2026-11-19T15:00:00Z');
   assert.equal(state.calls.filter(call => call[0] === 'render').length, 1);
   assert.ok(state.calls.find(call => call[0] === 'render')[1][0].x[0] instanceof Date);
+  const arrowTime = state.calls.find(call => call[0] === 'render')[2].annotations[0].x;
+  assert.ok(arrowTime instanceof Date);
+  assert.equal(arrowTime.toISOString(), '2026-11-19T13:00:00.000Z');
   assert.equal(state.plot.hidden, false);
 });
 

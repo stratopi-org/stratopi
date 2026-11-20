@@ -34,7 +34,7 @@ class LocationChartTests(unittest.TestCase):
         self.assertEqual(trace['x'], [first.isoformat(), second.isoformat()])
         self.assertEqual(trace['y'], [140.2, 150.2])
         self.assertEqual(trace['customdata'], [[-3.1, 5.2, 225.0, 'SW'], ['NULL', 0.0, 0.0, 'N']])
-        self.assertEqual(trace['marker']['symbol'], ['arrow-down', 'circle'])
+        self.assertEqual(trace['marker']['symbol'], 'circle')
         for field in ['vertical_speed_mpm', 'speed_kn', 'course_d', 'direction']:
             self.assertIn(field, trace['hovertemplate'])
         self.assertTrue(figure['layout']['yaxis']['autorange'])
@@ -62,31 +62,46 @@ class LocationChartTests(unittest.TestCase):
                 for index, speed in enumerate([Decimal('3.1'), Decimal('-2.5'), Decimal('0'), None])]
         with patch('app.read_location', return_value=rows):
             response = self.client.get('/api/charts/location/altitude', query_string=self.params)
-        marker = response.get_json()['data'][0]['marker']
-        self.assertEqual(marker['symbol'], ['arrow-up', 'arrow-down', 'circle', 'circle'])
-        self.assertEqual(marker['color'], ['#86dba0', '#f38b91', '#a3b1c2', '#a3b1c2'])
-        self.assertEqual(marker['size'], [10, 10, 4, 4])
+        figure = response.get_json()
+        arrows = figure['layout']['annotations']
+        self.assertEqual([arrow['text'] for arrow in arrows], ['↑', '↓'])
+        self.assertEqual([arrow['font']['color'] for arrow in arrows], ['#86dba0', '#f38b91'])
+        self.assertEqual(figure['data'][0]['marker']['symbol'], 'circle')
 
     def test_arrow_density_tracks_selected_time_span_without_dropping_data(self):
         start = datetime(2026, 11, 19, 12, tzinfo=timezone.utc)
         rows = [(start + timedelta(seconds=index), 140 + index, index + 1, 0, 0, 'N')
                 for index in range(600)]
         wide = build_location_figure(rows, start, start + timedelta(minutes=10))
-        self.assertEqual(list(wide.data[0].marker.symbol).count('arrow-up'), 12)
+        self.assertEqual(len(wide.layout.annotations), 12)
         self.assertEqual(len(wide.data[0].x), 600)
         self.assertEqual(len(wide.data[0].customdata), 600)
         # The same 10 minutes of readings occupy fewer intervals in a 3-hour view.
         broader = build_location_figure(rows, start, start + timedelta(hours=3))
-        self.assertEqual(list(broader.data[0].marker.symbol).count('arrow-up'), 1)
+        self.assertEqual(len(broader.layout.annotations), 1)
         self.assertEqual(len(broader.data[0].y), 600)
 
-    def test_each_interval_highlights_its_strongest_vertical_speed(self):
+    def test_arrows_have_equal_added_spacing_with_irregular_sensor_readings(self):
         start = datetime(2026, 11, 19, 12, tzinfo=timezone.utc)
-        rows = [(start + timedelta(seconds=index), 140, speed, 0, 0, 'N')
-                for index, speed in enumerate([1, -5, 2, 0, None])]
-        figure = build_location_figure(rows, start, start + timedelta(hours=3))
-        self.assertEqual(list(figure.data[0].marker.symbol),
-                         ['circle', 'arrow-down', 'circle', 'circle', 'circle'])
+        rows = [(start + timedelta(seconds=seconds), altitude, speed, 0, 0, 'N')
+                for seconds, altitude, speed in [(0, 140, 1), (100, 150, -5), (600, 160, 2)]]
+        figure = build_location_figure(rows, start, start + timedelta(minutes=10))
+        arrows = figure.layout.annotations
+        times = [datetime.fromisoformat(arrow.x) for arrow in arrows]
+        self.assertEqual(len(times), 12)
+        self.assertEqual(times[0], start + timedelta(seconds=25))
+        self.assertTrue(all((right - left).total_seconds() == 50
+                            for left, right in zip(times, times[1:])))
+        self.assertEqual(arrows[0].y, 142.5)
+        self.assertEqual(arrows[0].text, '↑')
+        self.assertEqual(arrows[1].text, '↓')
+        self.assertEqual(len(figure.data[0].x), 3)
+
+    def test_single_reading_zero_and_missing_speed(self):
+        start = datetime(2026, 11, 19, 12, tzinfo=timezone.utc)
+        for speed, count in [(1, 1), (0, 0), (None, 0)]:
+            figure = build_location_figure([(start, 140, speed, 0, 0, 'N')], start, start)
+            self.assertEqual(len(figure.layout.annotations), count)
 
     def test_query_uses_the_pool_and_filters_and_sorts_by_added(self):
         start = datetime(2026, 11, 19, 12, tzinfo=timezone.utc)
