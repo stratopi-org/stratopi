@@ -48,7 +48,7 @@ used by the other StratoPi software)_, then run:
 ```
 
 Open <http://127.0.0.1:5500> for the Charts page.
-The lowercase `battery` and `environmental` header links jump to matching sections.
+The lowercase `battery`, `environmental`, and `location` header links jump to matching sections.
 The `battery` section contains the battery chart, and `environmental` contains
 all four environmental charts.
 The Charts page has a compact time picker in the upper right. Open it to select a quick
@@ -114,6 +114,16 @@ on the left and amber external readings labeled on the right. CPU temperature
 uses one left Y axis. Missing sensor values
 remain gaps. The environmental figures are served by
 `/api/charts/environmental/<chart>` using the same inclusive date filtering.
+The `location` section contains an `altitude` chart plotting `location.altitude_m`
+against `added`. Hover details include `vertical_speed_mpm` (m/min), `speed_kn`
+(knots), `course_d` (degrees), and `direction` for that same reading. Missing
+hover values display NULL. It uses the shared time picker, automatic refresh,
+Y-axis padding, and database pool. The figure is served by
+`/api/charts/location/altitude` with inclusive start/end filtering.
+Altitude markers show green up arrows for positive `vertical_speed_mpm`
+(ascending), red down arrows for negative values (descending), and neutral
+dots for zero or missing values. Arrows use the sign of each reading's vertical
+speed, rather than the change in vertical speed between successive readings.
 The picker is disabled when timestamps are unavailable or the database cannot
 be reached. Naive database timestamps use the PostgreSQL session timezone.
 Use the navigation to open Data at `/data` or return to Charts.

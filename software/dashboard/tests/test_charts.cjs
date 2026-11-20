@@ -53,17 +53,17 @@ test('shared range events query the backend and render timestamps in browser tim
   assert.equal(state.plot.hidden, false);
 });
 
-test('one shared range event reloads all five chart panels with the same dates', async () => {
-  const state = setup(async () => ({ ok: true, json: async () => figure() }), 5);
+test('one shared range event reloads all six chart panels with the same dates', async () => {
+  const state = setup(async () => ({ ok: true, json: async () => figure() }), 6);
   await state.change('2026-11-19T12:00:00Z', '2026-11-19T15:00:00Z');
   const requests = state.calls.filter(call => call[0] === 'fetch');
-  assert.equal(requests.length, 5);
-  assert.equal(new Set(requests.map(call => call[1].pathname)).size, 5);
+  assert.equal(requests.length, 6);
+  assert.equal(new Set(requests.map(call => call[1].pathname)).size, 6);
   for (const request of requests) {
     assert.equal(request[1].searchParams.get('start'), '2026-11-19T12:00:00Z');
     assert.equal(request[1].searchParams.get('end'), '2026-11-19T15:00:00Z');
   }
-  assert.equal(state.calls.filter(call => call[0] === 'render').length, 5);
+  assert.equal(state.calls.filter(call => call[0] === 'render').length, 6);
 });
 
 test('a stale response cannot overwrite the newer time range', async () => {
