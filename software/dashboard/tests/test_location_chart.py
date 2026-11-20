@@ -64,8 +64,8 @@ class LocationChartTests(unittest.TestCase):
             response = self.client.get('/api/charts/location/altitude', query_string=self.params)
         figure = response.get_json()
         arrows = figure['layout']['annotations']
-        self.assertEqual([arrow['text'] for arrow in arrows], ['↑', '↓'])
-        self.assertEqual([arrow['font']['color'] for arrow in arrows], ['#86dba0', '#f38b91'])
+        self.assertEqual([arrow['text'] for arrow in arrows], ['↑', '↓', '↓'])
+        self.assertEqual([arrow['font']['color'] for arrow in arrows], ['#86dba0', '#f38b91', '#f38b91'])
         self.assertEqual(figure['data'][0]['marker']['symbol'], 'circle')
 
     def test_arrow_density_tracks_selected_time_span_without_dropping_data(self):
@@ -73,7 +73,7 @@ class LocationChartTests(unittest.TestCase):
         rows = [(start + timedelta(seconds=index), 140 + index, index + 1, 0, 0, 'N')
                 for index in range(600)]
         wide = build_location_figure(rows, start, start + timedelta(minutes=10))
-        self.assertEqual(len(wide.layout.annotations), 12)
+        self.assertEqual(len(wide.layout.annotations), 18)
         self.assertEqual(len(wide.data[0].x), 600)
         self.assertEqual(len(wide.data[0].customdata), 600)
         # The same 10 minutes of readings occupy fewer intervals in a 3-hour view.
@@ -88,13 +88,13 @@ class LocationChartTests(unittest.TestCase):
         figure = build_location_figure(rows, start, start + timedelta(minutes=10))
         arrows = figure.layout.annotations
         times = [datetime.fromisoformat(arrow.x) for arrow in arrows]
-        self.assertEqual(len(times), 12)
-        self.assertEqual(times[0], start + timedelta(seconds=25))
-        self.assertTrue(all((right - left).total_seconds() == 50
-                            for left, right in zip(times, times[1:])))
-        self.assertEqual(arrows[0].y, 142.5)
+        self.assertEqual(len(times), 18)
+        self.assertEqual(times[0], start + timedelta(seconds=600 / 36))
+        for left, right in zip(times, times[1:]):
+            self.assertAlmostEqual((right - left).total_seconds(), 600 / 18, places=5)
+        self.assertAlmostEqual(arrows[0].y, 140 + (600 / 36) / 10, places=5)
         self.assertEqual(arrows[0].text, '↑')
-        self.assertEqual(arrows[1].text, '↓')
+        self.assertEqual(arrows[2].text, '↓')
         self.assertEqual(len(figure.data[0].x), 3)
 
     def test_single_reading_zero_and_missing_speed(self):

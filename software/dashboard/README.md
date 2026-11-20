@@ -122,7 +122,8 @@ Y-axis padding, and database pool. The figure is served by
 `/api/charts/location/altitude` with inclusive start/end filtering.
 Green up arrows indicate positive `vertical_speed_mpm` (ascending), and red
 down arrows indicate negative values (descending). Arrows sit at the centers
-of 12 equal `added` time intervals across the selected range. Their altitude
+of 18 equal `added` time intervals across the selected range (every 10 minutes
+for a 3-hour view). Their altitude
 positions are interpolated along the line, and their directions use the nearest
 actual reading's vertical speed. Positions outside the available readings and
 zero or missing vertical speeds have no arrow. A single timestamp gets at most
