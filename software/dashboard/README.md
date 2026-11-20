@@ -120,15 +120,14 @@ against `added`. Hover details include `vertical_speed_mpm` (m/min), `speed_kn`
 hover values display NULL. It uses the shared time picker, automatic refresh,
 Y-axis padding, and database pool. The figure is served by
 `/api/charts/location/altitude` with inclusive start/end filtering.
-Altitude markers show green up arrows for positive `vertical_speed_mpm`
-(ascending), red down arrows for negative values (descending), and neutral
-dots for zero or missing values. Arrows use the sign of each reading's vertical
-speed, rather than the change in vertical speed between successive readings.
-Arrow density adapts to the selected date/time window. The window is split
-into 12 intervals, with at most one arrow per interval highlighting the greatest
-absolute vertical speed. Other readings use small neutral dots. All altitude
-and tooltip readings remain available, and narrower time ranges reveal more
-detailed arrow placement.
+Green up arrows indicate positive `vertical_speed_mpm` (ascending), and red
+down arrows indicate negative values (descending). Arrows sit at the centers
+of 12 equal `added` time intervals across the selected range. Their altitude
+positions are interpolated along the line, and their directions use the nearest
+actual reading's vertical speed. Positions outside the available readings and
+zero or missing vertical speeds have no arrow. A single timestamp gets at most
+one arrow. Actual readings remain neutral dots with their original tooltip
+values. Narrower date ranges provide finer arrow spacing.
 The picker is disabled when timestamps are unavailable or the database cannot
 be reached. Naive database timestamps use the PostgreSQL session timezone.
 Use the navigation to open Data at `/data` or return to Charts.

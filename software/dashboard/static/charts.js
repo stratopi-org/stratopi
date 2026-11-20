@@ -24,6 +24,9 @@
       // Plotly Date objects use browser-local time, matching the time picker.
       for (const trace of figure.data) trace.x = trace.x.map(value => new Date(value));
       figure.layout.xaxis.range = figure.layout.xaxis.range.map(value => new Date(value));
+      for (const annotation of figure.layout.annotations || []) {
+        if (annotation.xref === 'x') annotation.x = new Date(annotation.x);
+      }
       figure.layout.xaxis.title.text = 'added';
       chart.renderQueue = chart.renderQueue.catch(() => {}).then(async () => {
         if (request.signal.aborted) return;
