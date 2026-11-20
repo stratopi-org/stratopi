@@ -57,7 +57,7 @@ class DashboardTests(unittest.TestCase):
         cursor = connection.cursor.return_value.__enter__.return_value
         cursor.fetchall.return_value = [('public', 'first'), ('odd schema', 'a"table'), ('public', 'empty')]
         cursor.fetchone.side_effect = [(100, 200), (50, 300), (None, None)]
-        with patch('app.psycopg.connect') as connect:
+        with patch('app.read_connection') as connect:
             connect.return_value.__enter__.return_value = connection
             bounds = read_time_bounds('postgresql://test')
         self.assertEqual(bounds, {'start': 50000, 'end': 300000})
@@ -149,7 +149,7 @@ class DashboardTests(unittest.TestCase):
         cursor.fetchall.side_effect = [[('odd schema', 'a"table')], [('added',)], [(42,)]]
         cursor.fetchone.return_value = (1,)
         cursor.description = [SimpleNamespace(name='value')]
-        with patch('app.psycopg.connect') as connect:
+        with patch('app.read_connection') as connect:
             connect.return_value.__enter__.return_value = connection
             tables = read_tables('postgresql://test')
         self.assertTrue(connection.read_only)
@@ -171,7 +171,7 @@ class DashboardTests(unittest.TestCase):
                 cursor.fetchall.side_effect = [[('public', 'sensors')], [], []]
                 cursor.fetchone.return_value = (total,)
                 cursor.description = [SimpleNamespace(name='id')]
-                with patch('app.psycopg.connect') as connect:
+                with patch('app.read_connection') as connect:
                     connect.return_value.__enter__.return_value = connection
                     table = read_tables('postgresql://test',
                                         {page_key('public', 'sensors'): requested})[0]

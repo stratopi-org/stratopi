@@ -142,6 +142,21 @@ resets the elapsed-time label after that fresh request succeeds.
 An exported `POSTGRES_URL` takes precedence over `.env`.
 
 Queries run in a read-only transaction with a 30-second statement timeout.
+All dashboard database reads share a lazy Psycopg connection pool, including
+charts, time bounds, and the Data page. Each server process keeps at least one
+connection ready after first use and opens at most two. Requests wait up to five
+seconds for a connection, then use the existing database-unavailable response
+if the pool is exhausted. Connection attempts also have a five-second timeout.
+The extra connection is released after 60 idle seconds. Connections are checked
+before borrowing, and broken connections are replaced by the pool.
+Successful reads commit, failed reads roll back, and returned connections reset
+their read-only, autocommit, isolation, and deferrable settings. The Data page's
+repeatable-read isolation remains scoped to its own transaction.
+Pools close during normal process exit. For prefork servers, let workers open
+pools on first use, and avoid opening them in the master before forking.
+Each additional server worker has its own pool, so two workers can hold up to
+four PostgreSQL connections. After updating, install requirements and restart
+the dashboard process to activate pooling.
 Use a database account with SELECT access to the intended schemas/tables.
 System schemas are excluded; empty tables still show their column headers.
 Rows are ordered by `added ASC` (oldest first), with PostgreSQL's physical row
@@ -160,6 +175,12 @@ This initial app binds locally and has no authentication.
 .venv/bin/python -m unittest discover -s tests
 node --test tests/*.cjs
 ```
+
+Optional read-only pool integration checks use a PostgreSQL database with the
+dashboard tables. Set `DASHBOARD_TEST_POSTGRES_URL` to the test database URL and
+run `.venv/bin/python -m unittest discover -s tests -p test_database.py`.
+These checks verify connection reuse, transaction cleanup, and the two-connection
+limit without modifying table data.
 
 ## Development conventions
 
