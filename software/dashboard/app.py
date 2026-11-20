@@ -16,6 +16,7 @@ from battery_chart import build_battery_figure, read_battery
 from database import read_connection
 from environmental_charts import ENVIRONMENTAL_CHARTS, build_environmental_figure, read_environmental
 from location_chart import build_location_figure, read_location
+from location_map import read_location_points
 
 load_dotenv(Path(__file__).with_name('.env'))
 
@@ -127,6 +128,7 @@ def read_tables(database_url, pages=None):
 def create_app():
     app = Flask(__name__)
     app.config['POSTGRES_URL'] = os.environ.get('POSTGRES_URL')
+    app.config['GOOGLE_MAPS_API_KEY'] = os.environ.get('GOOGLE_MAPS_API_KEY', '')
 
     @app.get('/assets/plotly.min.js')
     def plotly_js():
@@ -176,6 +178,21 @@ def create_app():
             return jsonify(error='Unable to load location data. Check the database connection and permissions.'), 503
         figure = build_location_figure(rows, start, end)
         return app.response_class(figure.to_json(), mimetype='application/json')
+
+    @app.get('/api/charts/location/map')
+    def location_map():
+        try:
+            start, end = chart_time_range(request.args)
+        except ValueError:
+            return jsonify(error='Provide a valid start and end time with timezones, in chronological order.'), 400
+        database_url = app.config['POSTGRES_URL']
+        if not database_url:
+            return jsonify(error='Configure POSTGRES_URL to load location data.'), 503
+        try:
+            return jsonify(read_location_points(database_url, start, end))
+        except psycopg.Error:
+            app.logger.error('Unable to read location map data.')
+            return jsonify(error='Unable to load location map data. Check the database connection and permissions.'), 503
 
     @app.get('/api/charts/environmental/<chart>')
     def environmental_chart(chart):

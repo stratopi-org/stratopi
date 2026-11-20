@@ -4,7 +4,7 @@ const { readFileSync } = require('node:fs');
 const { join } = require('node:path');
 const { runInNewContext } = require('node:vm');
 
-function setup(fetcher, chartCount = 1) {
+function setup(fetcher, chartCount = 1, mapUpdater = null) {
   const calls = [];
   const listeners = {};
   const plot = { hidden: true };
@@ -25,7 +25,7 @@ function setup(fetcher, chartCount = 1) {
     document: { querySelectorAll: () => panels,
       dispatchEvent: event => calls.push(['event', event.type, event.detail]),
       addEventListener: (key, callback) => { (listeners[key] ||= []).push(callback); } },
-    window: { location: { origin: 'http://localhost:5500' } },
+    window: { location: { origin: 'http://localhost:5500' }, DashboardLocationMap: mapUpdater },
     fetch: (url, options) => { calls.push(['fetch', url, options]); return fetcher(url, options); },
     Plotly: { react: async (_, data, layout) => { calls.push(['render', data, layout]); } },
     URL, Date, Intl, AbortController, setTimeout, clearTimeout,
@@ -83,6 +83,24 @@ test('a stale response cannot overwrite the newer time range', async () => {
   await first;
   assert.equal(state.calls.filter(call => call[0] === 'render').length, 1);
   assert.equal(state.calls.find(call => call[0] === 'fetch')[2].signal.aborted, true);
+});
+
+test('the shared refresh batch waits for the map before reporting completion', async () => {
+  let finishMap;
+  const received = [];
+  const mapUpdater = { update: (range, signal) => {
+    received.push({ range, signal });
+    return new Promise(resolve => { finishMap = resolve; });
+  } };
+  const state = setup(async () => ({ ok: true, json: async () => figure() }), 6, mapUpdater);
+  const refresh = state.change('2026-11-19T12:00:00Z', '2026-11-19T15:00:00Z');
+  await new Promise(setImmediate);
+  assert.equal(received.length, 1);
+  assert.equal(received[0].range.start, '2026-11-19T12:00:00Z');
+  assert.equal(state.calls.some(call => call[0] === 'event' && call[1] === 'charts:refreshed'), false);
+  finishMap(true);
+  await refresh;
+  assert.equal(state.calls.find(call => call[0] === 'event' && call[1] === 'charts:refreshed')[2].success, true);
 });
 
 test('empty ranges and backend errors display clear status messages', async () => {
