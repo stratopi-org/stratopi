@@ -128,7 +128,7 @@ retry commands automatically or treat silence as success.
 
 For the planned Nashville deployment (three apps reporting every 30 seconds for
 up to six hours), target 915 MHz: HF channel 65 (850 + 65 MHz). A candidate
-flight configuration to evaluate is SF12, 500 kHz bandwidth, coding rate 4/6, stream
+flight configuration to evaluate is SF10, 500 kHz bandwidth, coding rate 4/6, stream
 mode, a shared network ID of 42, address 479, LBT enabled, and RSSI output disabled.
 The file now requests 22 dBm (about 158 mW), the module maximum; confirm that
 power and antenna are permitted by the exact dongle's US authorization. This is
@@ -198,22 +198,21 @@ been applied to physical hardware by this development session.
 
 ## Flight profile rationale: 100,000 feet
 
-The active flight profile changes three settings from the nearby-test profile:
+The active flight profile uses the following settings after hardware troubleshooting:
 
-- `AT+SF=10` -> `AT+SF=12`: prioritizes weak-signal sensitivity. At a fixed
-  bandwidth the symbols take four times as long; complete-message airtime also
-  depends on payload size. Longer transmissions use more energy and increase
-  collision exposure. SF12 is a range-focused starting point; reduce it if field
-  tests show ample margin or airtime becomes a problem.
+- `AT+SF=10`: retain the setting that restored messaging after SF12 failed in
+  hardware tests. The root cause of the SF12 failure is unconfirmed. SF10 has
+  shorter airtime and lower energy per message than SF12, but less weak-signal
+  sensitivity. Flight range remains unverified.
 - `AT+CR=1` -> `AT+CR=2`: changes coding rate from 4/5 to 4/6, adding redundancy
   for error correction. Payload coding overhead increases by about 20%; total
   packet overhead increases less because preamble/header costs differ. This can
   help with some errors, but does not recover every faded or collided packet.
   Higher 4/7 or 4/8 settings cost still more airtime, so they are not selected
   without packet-loss measurements showing a benefit.
-- `AT+PWR=10` -> `AT+PWR=22`: raises RF output from 10 mW to about 158 mW,
-  a 12 dB increase. This adds substantial link margin but increases transmit
-  current and battery use. It does not mean 15.8 times the range or 15.8 times
+- `AT+PWR=18` -> `AT+PWR=22`: restores maximum RF output from about 63 mW to
+  about 158 mW, a 4 dB increase. This adds link margin but increases transmit
+  current and battery use. It does not mean 2.5 times the range or 2.5 times
   total electrical consumption. Verify the power supply under transmit load.
 
 These are engineering tradeoffs based on the
@@ -241,10 +240,11 @@ Settings retained and why:
 
 For scale, a calculated 100-byte LoRa payload with explicit header, CRC,
 8-symbol preamble and no low-data-rate optimization takes about 0.26 seconds
-at SF10/BW500/4-5 versus 1.00 second at SF12/BW500/4-6. Those assumptions are
+at the old SF10/BW500/4-5 setting versus 0.30 second at the current
+SF10/BW500/4-6 setting. Those assumptions are
 illustrative: the dongle's actual preamble, framing overhead and packetization
 must be measured. Three such transmissions per 30 seconds would occupy about
-10% of the shared channel before retries or LBT delays. Keep telemetry compact,
+3% of the shared channel before retries or LBT delays. Keep telemetry compact,
 stagger independent transmitting hosts, and test actual payloads. The current
 hello-world transmitter still defaults to five seconds; use `--interval 30` for
 the proposed reporting cadence. The AT file does not schedule application sends.
@@ -286,10 +286,12 @@ near-ground observer. Local obstructions are therefore particularly important.
 An illustrative free-space calculation at 915 MHz and 502 km gives about
 145.7 dB path loss. With 22 dBm transmit power, 0 dBi effective antenna gain
 at each end, and 2 dB combined additional loss, received power is roughly
--125.7 dBm. Semtech lists typical SF12/BW500 sensitivity around -129 dBm in
-boosted receive mode, excluding the RF switch loss (datasheet Table 3-8). That
-is only about 3 dB of illustrative margin, not enough to promise a robust
-flight link. The dongle's receive mode, implementation losses, actual antenna
+-125.7 dBm. The earlier SF12 calculation used Semtech's typical -129 dBm
+boosted-mode sensitivity at BW500 (excluding RF switch loss), leaving only
+about 3 dB of illustrative margin. That optimistic SF12 calculation is not a
+link budget for the current SF10 setting, which has lower sensitivity. The
+current SF10 profile does not establish a robust 500 km link. The dongle's
+receive mode, implementation losses, actual antenna
 patterns, polarization and interference are not characterized here. Ground
 antenna gain and tracking/placement could improve the link substantially,
 but must be checked against authorized antenna/power combinations. The
