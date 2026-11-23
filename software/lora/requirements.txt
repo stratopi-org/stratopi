@@ -1,2 +1,4 @@
 pyserial==3.5
 python-dotenv==1.2.4
+msgpack==1.2.4
+cobs==1.2.2

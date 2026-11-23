@@ -1,11 +1,14 @@
 # LoRa hello world
 
-Two standalone Python apps for a pair of Waveshare **USB-TO-LoRa-HF** dongles:
+Two Python apps for a pair of Waveshare **USB-TO-LoRa-HF** dongles, sharing
+`protocol.py` for binary serialization and framing:
 
 - `receiver.py`: the ground app; listens and prints received messages.
 - `transmitter.py`: sends `hello world` with the current date and time immediately,
-  then every five seconds. Each message uses the transmitting host's local time
-  in `%Y-%m-%dT%H:%M:%S` format, for example `hello world 2026-11-23T14:05:09`.
+  then every five seconds. MessagePack carries the text and an integer Unix
+  timestamp. Console output displays local time in `%Y-%m-%dT%H:%M:%S` format,
+  for example `hello world 2026-11-23T14:05:09`. The receiver uses its own local
+  timezone to display the transmitted instant.
 
 ## Hardware setup
 
@@ -68,8 +71,8 @@ On the transmitting computer:
 ```
 
 If both dongles are attached to one computer, select a different port for each.
-The receiver prints each complete newline-delimited message, retaining partial
-messages across serial read timeouts. Press Ctrl-C to stop either app.
+The receiver decodes complete binary frames, retaining partial frames across
+serial read timeouts. Press Ctrl-C to stop either app.
 
 Optional transmitter controls:
 
@@ -146,8 +149,8 @@ is not a verified US fixed-channel operating profile.
 The supplied `commands.at` contains this candidate configuration. Run it on
 each dongle separately, with the appropriate `PORT` on each host.
 
-Keep RSSI output disabled because the current receiver expects newline-delimited
-UTF-8 messages. A network ID separates networks; it does not provide encryption
+Keep RSSI output disabled because the current receiver expects framed binary
+messages without extra radio metadata. A network ID separates networks; it does not provide encryption
 or authentication. The apps run on separate hosts. When multiple hosts transmit
 on the same channel, stagger their 30-second reporting cycles (for example,
 offsets of 0, 10, and 20 seconds for three transmitters). LBT helps reduce
@@ -233,7 +236,7 @@ Settings retained and why:
 - `LBT=1`: retain listen-before-talk to help with busy-channel collisions. It
   can add up to two seconds of delay, after which this firmware can transmit
   anyway; it is not a delivery guarantee or scheduled access mechanism.
-- `RSSI=0`: retain compatibility with the UTF-8 receiver. Enabling it adds binary
+- `RSSI=0`: retain compatibility with the framed MessagePack receiver. Enabling it adds extra
   bytes to received data; signal-strength logging needs receiver changes first.
 - CRC remains enabled by the dongle firmware. No CRC command is needed. USB
   baud/parity and encryption configuration remain unchanged.
@@ -308,3 +311,45 @@ An additional hardware limit matters at this altitude: Waveshare specifies
 is not rated for stratospheric cold. Keep the radio within its specified range
 using a tested payload thermal design; AT tuning cannot compensate for it.
 See [Waveshare's product specifications](https://www.waveshare.com/product/usb-to-lora.htm).
+
+## Binary wire format
+
+Both apps now use [MessagePack](https://github.com/msgpack/msgpack-python), which
+encodes numbers as binary values and supports future structured telemetry without
+a separate schema compiler. Version 1 is a compact array in this fixed order:
+`[1, Unix timestamp in whole UTC seconds, message text]`. Arrays avoid sending
+repeated field names. Text remains UTF-8 inside MessagePack; serialization is not
+compression, and arbitrary text is not automatically smaller.
+
+`protocol.py` packs the array, appends a four-byte big-endian CRC32 of the packed
+payload, and COBS-encodes the result. Zero bytes delimit each frame on both sides.
+COBS prevents payload bytes (including zeros/newlines) from being mistaken for
+frame boundaries. The leading delimiter lets a receiver recover after joining
+midstream or losing the preceding frame's trailing delimiter.
+
+The receiver handles fragmented/coalesced serial reads. It discards invalid COBS,
+CRC, MessagePack or schema data and continues with later frames. Oversized frames
+are discarded until the next delimiter, with bounded memory. A complete wire
+frame is capped at 240 bytes and text at 200 UTF-8 bytes. The hello-world frame is
+26 bytes at present-day timestamps, versus the previous 32-byte text line, a
+19% reduction including the new framing/checksum. These are USB stream bytes;
+the dongles add their own over-the-air overhead and may packetize independently.
+
+CRC32 detects accidental damage; it is not authentication, encryption, replay
+protection, or a delivery acknowledgment. Those features are not added here.
+
+Update both hosts together and reinstall dependencies before restarting:
+
+```sh
+.venv/bin/python -m pip install -r requirements.txt
+```
+
+The binary protocol is incompatible with the old newline-text apps. No AT
+changes are needed: transparent stream mode and `RSSI=0` stay in use. The
+receiver's formatted text is for humans; binary frames travel over the radio.
+
+Run hardware-independent regression tests from `software/lora`:
+
+```sh
+.venv/bin/python -m unittest discover -s . -p 'test_*.py'
+```

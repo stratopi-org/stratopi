@@ -1,12 +1,15 @@
-"""Listen for newline-delimited messages through a Waveshare USB-TO-LoRa-HF."""
+"""Receive framed MessagePack messages through a Waveshare USB-TO-LoRa-HF."""
 
 import argparse
+from datetime import datetime
 import os
 from pathlib import Path
 import sys
 
 import serial
 from dotenv import load_dotenv
+
+from protocol import FrameReader, decode_message
 
 
 def main() -> int:
@@ -21,12 +24,16 @@ def main() -> int:
     try:
         with serial.Serial(port, args.baud, timeout=1) as radio:
             print(f"listening on {port} at {args.baud} baud. Press Ctrl-C to stop.", flush=True)
-            pending = bytearray()
+            reader = FrameReader()
             while True:
-                pending.extend(radio.read_until(b"\n"))
-                if pending.endswith(b"\n"):
-                    print(pending.decode("utf-8", errors="replace").rstrip("\r\n"), flush=True)
-                    pending.clear()
+                for frame in reader.feed(radio.read(min(radio.in_waiting or 1, 256))):
+                    try:
+                        timestamp, message = decode_message(frame)
+                        added = datetime.fromtimestamp(timestamp).strftime("%Y-%m-%dT%H:%M:%S")
+                    except (ValueError, OverflowError, OSError) as error:
+                        print(f"Discarded invalid message: {error}", file=sys.stderr, flush=True)
+                        continue
+                    print(f"{message} {added}", flush=True)
     except KeyboardInterrupt:
         return 0
     except (serial.SerialException, OSError, ValueError) as error:
