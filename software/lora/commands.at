@@ -1,0 +1,37 @@
+# Waveshare USB-TO-LoRa-HF candidate StratoPi configuration.
+# Applied to the dongle selected by PORT in .env. Run on each host separately.
+# Commands run from top to bottom. Blank lines and # comments are ignored.
+# These active setters CHANGE settings. Comment them out for inspection only.
+# All lines are validated before opening the serial port.
+
+# Enter command mode, display firmware and supported commands.
++++
+AT+VER
+AT+HELP
+
+# 915 MHz, SF10, 500 kHz bandwidth, coding rate 4/5.
+AT+TXCH=65
+AT+RXCH=65
+AT+SF=10
+AT+BW=2
+AT+CR=1
+
+# 10 dBm for initial nearby tests; shared stream-mode configuration.
+AT+PWR=10
+AT+MODE=1
+AT+NETID=42
+AT+ADDR=0
+AT+LBT=1
+AT+RSSI=0
+
+# CRC is already enabled in the firmware; no CRC command is needed.
+# Setters must return OK/+OK. Errors, timeouts, and echo-only replies fail.
+# Optional readback tests: enable ONLY if AT+HELP confirms this query syntax.
+# These print the returned value, but do not compare it with the requested value.
+# AT+TXCH?
+# AT+RXCH?
+# AT+SF?
+# AT+BW?
+
+# Save accepted changes and return to transparent mode.
+AT+EXIT
