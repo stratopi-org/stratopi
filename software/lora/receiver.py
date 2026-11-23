@@ -2,15 +2,18 @@
 
 import argparse
 import os
+from pathlib import Path
 import sys
 
 import serial
+from dotenv import load_dotenv
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--baud", type=int, default=115200, help="Serial baud rate (default: 115200)")
     args = parser.parse_args()
+    load_dotenv(Path(__file__).resolve().with_name(".env"))
     port = os.environ.get("PORT", "").strip()
     if not port:
         parser.error("PORT environment variable is required (e.g. PORT=/dev/ttyACM0)")

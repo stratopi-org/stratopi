@@ -43,8 +43,15 @@ each dongle at a time.
 ## Run
 
 Both apps require the `PORT` environment variable to identify the USB serial
-device. They exit with an error if it is missing or empty. Set `PORT` in the `.env` file.
+device. They exit with an error if it is missing or empty. Set `PORT` in the `.env` file:
 
+```dotenv
+PORT="/dev/ttyACM0"
+```
+
+Both apps automatically load `lora/.env` at startup, even when launched from a
+different directory. Existing environment variables take precedence over `.env`
+values. Restart the app after editing `.env` to load the new values.
 
 On the ground computer, start the receiver first:
 
