@@ -3,35 +3,47 @@
 # Commands run from top to bottom. Blank lines and # comments are ignored.
 # These active setters CHANGE settings. Comment them out for inspection only.
 # All lines are validated before opening the serial port.
+# Firmware Ver1.2 supports the queries below. Each setter is followed by a
+# readback that must match. The script pauses one second between commands.
 
-# Enter command mode, display firmware and supported commands.
+# Enter command mode; AT+VER must follow immediately to confirm entry.
 +++
 AT+VER
 AT+HELP
 
+# Record current channel and spreading factor before changing settings.
+AT+TXCH?
+AT+RXCH?
+AT+SF?
+
 # 915 MHz, SF10, 500 kHz bandwidth, coding rate 4/5.
 AT+TXCH=65
+AT+TXCH?
 AT+RXCH=65
+AT+RXCH?
 AT+SF=10
+AT+SF?
 AT+BW=2
+AT+BW?
 AT+CR=1
+AT+CR?
 
 # 10 dBm for initial nearby tests; shared stream-mode configuration.
 AT+PWR=10
+AT+PWR?
 AT+MODE=1
+AT+MODE?
 AT+NETID=42
-AT+ADDR=0
+AT+NETID?
+AT+ADDR=479
+AT+ADDR?
 AT+LBT=1
+AT+LBT?
 AT+RSSI=0
+AT+RSSI?
 
 # CRC is already enabled in the firmware; no CRC command is needed.
-# Setters must return OK/+OK. Errors, timeouts, and echo-only replies fail.
-# Optional readback tests: enable ONLY if AT+HELP confirms this query syntax.
-# These print the returned value, but do not compare it with the requested value.
-# AT+TXCH?
-# AT+RXCH?
-# AT+SF?
-# AT+BW?
-
+# Setters must return OK/+OK. Errors, timeouts, and echo-only AT replies fail.
+# The +++ entry command may return only its echo; AT+VER confirms entry next.
 # Save accepted changes and return to transparent mode.
 AT+EXIT

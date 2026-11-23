@@ -103,21 +103,33 @@ comment out the `AT+NAME=value` lines, leaving `+++`, `AT+VER`, `AT+HELP`, and
 to the script, so launching from a different directory works.
 
 The whole file is validated before the serial port opens. It must begin with
-`+++` and end with `AT+EXIT`, each appearing exactly once. Unsupported commands
+`+++`, followed immediately by `AT+VER`, and end with `AT+EXIT`, with entry/exit
+each appearing exactly once. Unsupported commands
 and out-of-range values fail validation. USB baud/parity changes, firmware
 updates, factory resets, and encryption changes are not supported by this script.
 
 Each command and response is printed. Setters must return `OK` or `+OK`; all
-commands must return more than an echo, without ERROR/ERR/FAIL. Each successful
-response check prints PASS. These checks verify acknowledgments, not an actual
-radio transmission or persistence after power cycling. Optional query examples
-in the file are commented out because readback syntax depends on firmware;
-if enabled, query values are displayed but not automatically compared.
+ordinary AT commands must return more than an echo, without ERROR/ERR/FAIL.
+The dongle may echo only `+++` on entry; the script accepts that and checks the
+following `AT+VER` response before sending any settings. Each successful
+response check prints PASS. Your Ver1.2 firmware's help confirms `AT+NAME?`
+readback support. The supplied file reads the initial TXCH/RXCH/SF values and
+queries every setting immediately after writing it. Queries must return OK and
+one numeric value (plain or labeled with the setting name); a value that differs
+from the preceding setter fails the run. Unrecognized formats also fail with
+the raw response displayed so they can be diagnosed.
+
+The script pauses one second between commands to give firmware time to finish
+reconfiguring after an acknowledgment. This is a timing precaution, not a
+confirmed explanation of the observed silence after RXCH. These checks verify
+responses and readback values, not actual radio reception or persistence after
+power cycling. A failure stops further setters and attempts EXIT; it does not
+retry commands automatically or treat silence as success.
 
 For the planned Nashville deployment (three apps reporting every 30 seconds for
 up to six hours), target 915 MHz: HF channel 65 (850 + 65 MHz). A candidate
 configuration to evaluate is SF10, 500 kHz bandwidth, coding rate 4/5, stream
-mode, a shared network ID of 42, address 0, LBT enabled, and RSSI output disabled.
+mode, a shared network ID of 42, address 479, LBT enabled, and RSSI output disabled.
 Start nearby testing at 10 dBm; choose field power from the dongle's US approval
 and range tests. SF10 is an engineering starting point, not a validated flight
 profile. Payload lengths and flight distance still determine airtime and range.
@@ -154,6 +166,13 @@ an atomic update or rollback. Inspect the transcript before retrying. Successful
 acknowledgments do not replace a radio link test. Protocol behavior has been
 checked with simulated serial responses; physical dongle configuration still
 needs verification.
+
+For setters, the script waits up to five seconds for an acknowledgment even if
+the command echo arrives immediately. An echo followed by a quiet interval does
+not count as completion. Timeout diagnostics distinguish no response, echo-only
+responses, and explicit firmware errors. If a run fails, retain the full output
+from `+++` onward so the firmware response can be diagnosed; silence is not
+treated as success.
 
 ## Recovery and radio testing
 
