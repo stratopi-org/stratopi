@@ -35,7 +35,7 @@ AT+CR?
 
 # 10 -> 22 dBm (about 158 mW): +12 dB power; higher battery demand.
 # This is the module maximum, not a claim of approval for every antenna/setup.
-AT+PWR=22
+AT+PWR=18
 AT+PWR?
 AT+MODE=1
 AT+MODE?
