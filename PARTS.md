@@ -16,7 +16,7 @@
 - ### Cellular communication / GPS / LoRa
 
 [Waveshare SIM7600A-H 4G HAT Board](https://www.amazon.com/gp/product/B07PLTP3M6). Provides GPS support which facilitates locating the payload after descent and communications capability using 4G cellular networking.<br />
-[Waveshare 2PCS USB to LoRa Data Transfer Module](https://www.amazon.com/dp/B0DTKDXMN2). Provides [LoRa](https://en.wikipedia.org/wiki/LoRa) data transfers.
+[Waveshare 2PCS USB to LoRa Data Transfer Module](https://www.amazon.com/dp/B0DTKDXMN2). Provides [LoRa](https://en.wikipedia.org/wiki/LoRa) data transfers.<br />
 [Simbase SIM card and connectivity](https://www.simbase.com/). Provides cellular connectivity for IOT devices using multiple mobile operators. Cellular data is *VERY* expensive _($0.01 per MB)_ with Simbase so optimizations and clever solutions need to be implemented in the communications application.
 
 - ### Auxiliary location
