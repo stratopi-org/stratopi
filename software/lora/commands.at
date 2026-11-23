@@ -1,4 +1,7 @@
-# Waveshare USB-TO-LoRa-HF candidate StratoPi configuration.
+# Waveshare USB-TO-LoRa-HF candidate StratoPi flight configuration (100,000 ft).
+# Design assumption: up to 500 km drift; this is not a wind prediction.
+# Range-focused engineering starting point, not a validated flight link.
+# Use permitted power/antenna settings for the exact dongle's US authorization.
 # Applied to the dongle selected by PORT in .env. Run on each host separately.
 # Commands run from top to bottom. Blank lines and # comments are ignored.
 # These active setters CHANGE settings. Comment them out for inspection only.
@@ -16,20 +19,23 @@ AT+TXCH?
 AT+RXCH?
 AT+SF?
 
-# 915 MHz, SF10, 500 kHz bandwidth, coding rate 4/5.
+# Keep 915 MHz and 500 kHz bandwidth for the existing US fixed-channel plan.
 AT+TXCH=65
 AT+TXCH?
 AT+RXCH=65
 AT+RXCH?
-AT+SF=10
+# SF10 -> SF12: better weak-signal sensitivity; longer airtime and less capacity.
+AT+SF=12
 AT+SF?
 AT+BW=2
 AT+BW?
-AT+CR=1
+# CR1 (4/5) -> CR2 (4/6): more error-correction redundancy; extra airtime.
+AT+CR=2
 AT+CR?
 
-# 10 dBm for initial nearby tests; shared stream-mode configuration.
-AT+PWR=10
+# 10 -> 22 dBm (about 158 mW): +12 dB power; higher battery demand.
+# This is the module maximum, not a claim of approval for every antenna/setup.
+AT+PWR=22
 AT+PWR?
 AT+MODE=1
 AT+MODE?
@@ -37,8 +43,10 @@ AT+NETID=42
 AT+NETID?
 AT+ADDR=479
 AT+ADDR?
+# Keep LBT enabled to reduce collisions; it can defer transmission, not ensure delivery.
 AT+LBT=1
 AT+LBT?
+# Keep RSSI bytes off until the text receiver can parse them.
 AT+RSSI=0
 AT+RSSI?
 

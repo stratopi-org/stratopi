@@ -128,11 +128,12 @@ retry commands automatically or treat silence as success.
 
 For the planned Nashville deployment (three apps reporting every 30 seconds for
 up to six hours), target 915 MHz: HF channel 65 (850 + 65 MHz). A candidate
-configuration to evaluate is SF10, 500 kHz bandwidth, coding rate 4/5, stream
+flight configuration to evaluate is SF12, 500 kHz bandwidth, coding rate 4/6, stream
 mode, a shared network ID of 42, address 479, LBT enabled, and RSSI output disabled.
-Start nearby testing at 10 dBm; choose field power from the dongle's US approval
-and range tests. SF10 is an engineering starting point, not a validated flight
-profile. Payload lengths and flight distance still determine airtime and range.
+The file now requests 22 dBm (about 158 mW), the module maximum; confirm that
+power and antenna are permitted by the exact dongle's US authorization. This is
+an engineering starting point, not a validated flight profile or guaranteed
+range. Payload lengths and flight distance still determine airtime and range.
 See [Semtech's sensitivity/airtime explanation](https://www.semtech.com/design-support/faq/faq-lora).
 
 US fixed-frequency digital operation under
@@ -194,3 +195,114 @@ After configuring both ends:
 
 Serial protocol tests use simulated dongles; the supplied configuration has not
 been applied to physical hardware by this development session.
+
+## Flight profile rationale: 100,000 feet
+
+The active flight profile changes three settings from the nearby-test profile:
+
+- `AT+SF=10` -> `AT+SF=12`: prioritizes weak-signal sensitivity. At a fixed
+  bandwidth the symbols take four times as long; complete-message airtime also
+  depends on payload size. Longer transmissions use more energy and increase
+  collision exposure. SF12 is a range-focused starting point; reduce it if field
+  tests show ample margin or airtime becomes a problem.
+- `AT+CR=1` -> `AT+CR=2`: changes coding rate from 4/5 to 4/6, adding redundancy
+  for error correction. Payload coding overhead increases by about 20%; total
+  packet overhead increases less because preamble/header costs differ. This can
+  help with some errors, but does not recover every faded or collided packet.
+  Higher 4/7 or 4/8 settings cost still more airtime, so they are not selected
+  without packet-loss measurements showing a benefit.
+- `AT+PWR=10` -> `AT+PWR=22`: raises RF output from 10 mW to about 158 mW,
+  a 12 dB increase. This adds substantial link margin but increases transmit
+  current and battery use. It does not mean 15.8 times the range or 15.8 times
+  total electrical consumption. Verify the power supply under transmit load.
+
+These are engineering tradeoffs based on the
+[Semtech SX1261/2 datasheet](https://cdn.sparkfun.com/assets/6/b/5/1/4/SX1262_datasheet.pdf)
+and the [Waveshare AT reference](https://www.waveshare.com/wiki/USB-TO-LoRa-xF).
+
+Settings retained and why:
+
+- `TXCH=65`, `RXCH=65`: keep a shared 915 MHz center frequency. A different
+  channel can help measured local interference, but there is no universally
+  best channel and no spectrum measurement here.
+- `BW=2`: retain 500 kHz for the existing US fixed-frequency plan. Narrower
+  bandwidth can improve sensitivity but lengthens airtime; the current choice
+  is not proof of FCC authorization for the dongle/antenna combination.
+- `MODE=1`: retain transparent stream mode for the existing Python message format.
+- `NETID=42`, `ADDR=479`: retain nondefault traffic filters and interoperability.
+  Neither authenticates the sender.
+- `LBT=1`: retain listen-before-talk to help with busy-channel collisions. It
+  can add up to two seconds of delay, after which this firmware can transmit
+  anyway; it is not a delivery guarantee or scheduled access mechanism.
+- `RSSI=0`: retain compatibility with the UTF-8 receiver. Enabling it adds binary
+  bytes to received data; signal-strength logging needs receiver changes first.
+- CRC remains enabled by the dongle firmware. No CRC command is needed. USB
+  baud/parity and encryption configuration remain unchanged.
+
+For scale, a calculated 100-byte LoRa payload with explicit header, CRC,
+8-symbol preamble and no low-data-rate optimization takes about 0.26 seconds
+at SF10/BW500/4-5 versus 1.00 second at SF12/BW500/4-6. Those assumptions are
+illustrative: the dongle's actual preamble, framing overhead and packetization
+must be measured. Three such transmissions per 30 seconds would occupy about
+10% of the shared channel before retries or LBT delays. Keep telemetry compact,
+stagger independent transmitting hosts, and test actual payloads. The current
+hello-world transmitter still defaults to five seconds; use `--interval 30` for
+the proposed reporting cadence. The AT file does not schedule application sends.
+
+## Drift and radio-distance planning
+
+100,000 feet is 30.48 km of altitude. Altitude alone does not determine landing
+position. Wind direction and speed vary with height and time; ascent rate,
+burst altitude, descent profile and any float time all matter.
+
+The project design assumption is now **up to 500 km (311 miles) horizontal drift**,
+as requested. This is a planning target, not a forecast or a guaranteed maximum.
+No launch date/time or ascent/descent profile is available yet.
+
+As context, [NOAA's radiosonde factsheet](https://www.weather.gov/upperair/factsheet)
+reports that flights exceeding two hours can drift more than 300 km (about
+180 miles). Evaluate shorter 100–300 km separations as well as the requested
+500 km target; none is a Nashville forecast or a predicted landing radius.
+A six-hour flight can go farther.
+For illustration only, a constant net horizontal velocity of 10–20 m/s over
+three hours yields 108–216 km (67–134 miles); over six hours, 216–432 km
+(134–268 miles). Actual displacement is the vector sum of changing winds,
+not surface wind speed multiplied by total flight time.
+
+Use the [SondeHub/CUSF predictor](https://predict.sondehub.org/) with the launch
+coordinates/time, 30,480 m target altitude, expected ascent and descent rates,
+and current wind forecasts. Repeat near launch and compare scenarios with
+uncertain ascent/descent rates. A latex burst-flight prediction is not a model
+of a six-hour controlled float flight.
+
+Calculated geometric horizon at 30.48 km above the ground and a 2 m receiver
+antenna is approximately 628 km (390 miles), using spherical Earth radius
+6,371 km and no atmospheric refraction. This is a visibility limit, not a radio
+range guarantee. At 200 km horizontal separation, the slant path is about
+202 km. At the requested 500 km separation, spherical-Earth geometry gives
+about 502 km slant range and only 1.2 degrees elevation to the balloon for a
+near-ground observer. Local obstructions are therefore particularly important.
+
+An illustrative free-space calculation at 915 MHz and 502 km gives about
+145.7 dB path loss. With 22 dBm transmit power, 0 dBi effective antenna gain
+at each end, and 2 dB combined additional loss, received power is roughly
+-125.7 dBm. Semtech lists typical SF12/BW500 sensitivity around -129 dBm in
+boosted receive mode, excluding the RF switch loss (datasheet Table 3-8). That
+is only about 3 dB of illustrative margin, not enough to promise a robust
+flight link. The dongle's receive mode, implementation losses, actual antenna
+patterns, polarization and interference are not characterized here. Ground
+antenna gain and tracking/placement could improve the link substantially,
+but must be checked against authorized antenna/power combinations. The
+maximum AT settings alone do not establish a reliable 500 km system.
+
+Antenna orientation, payload rotation, cable loss, interference and
+receiver placement can dominate the link. As the payload descends, its horizon
+shrinks; terrain and buildings can block reception, especially after landing.
+Use a mobile recovery receiver rather than assuming a launch-site receiver
+will retain contact throughout recovery.
+
+An additional hardware limit matters at this altitude: Waveshare specifies
+0–85 C for the TCXO dongle and 0–50 C for the XTAL variant. An exposed dongle
+is not rated for stratospheric cold. Keep the radio within its specified range
+using a tested payload thermal design; AT tuning cannot compensate for it.
+See [Waveshare's product specifications](https://www.waveshare.com/product/usb-to-lora.htm).
