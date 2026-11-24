@@ -34,7 +34,7 @@ def main() -> int:
                     except (ValueError, OverflowError, OSError) as error:
                         print(f"Discarded invalid message: {error}", file=sys.stderr, flush=True)
                         continue
-                    print(f"[{added}] Received: {json.dumps(message)}", flush=True)
+                    print(f"[{added}] (received) {json.dumps(message)}", flush=True)
     except KeyboardInterrupt:
         return 0
     except (serial.SerialException, OSError, ValueError) as error:

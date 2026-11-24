@@ -24,9 +24,9 @@ AT+TXCH=65
 AT+TXCH?
 AT+RXCH=65
 AT+RXCH?
-# Keep SF10: messages worked at SF10 but failed at SF12 in hardware tests.
+# Keep SF11: messages worked at SF11 but failed at SF12 in hardware tests.
 # Shorter airtime than SF12, at the cost of reduced weak-signal sensitivity.
-AT+SF=10
+AT+SF=11
 AT+SF?
 AT+BW=2
 AT+BW?
