@@ -1,14 +1,16 @@
-# LoRa hello world
+# LoRa telemetry
 
 Two Python apps for a pair of Waveshare **USB-TO-LoRa-HF** dongles, sharing
 `protocol.py` for binary serialization and framing:
 
 - `receiver.py`: the ground app; listens and prints received messages.
-- `transmitter.py`: sends `hello world` with the current date and time immediately,
-  then every five seconds. MessagePack carries the text and an integer Unix
-  timestamp. Console output displays local time in `%Y-%m-%dT%H:%M:%S` format,
-  for example `hello world 2026-11-23T14:05:09`. The receiver uses its own local
-  timezone to display the transmitted instant.
+- `transmitter.py`: sends the static location dictionary in `LOCATION_PAYLOAD`
+  immediately, then every five seconds. A separate current send timestamp is
+  included in the binary envelope. Both apps log that timestamp in local time as
+  `%Y-%m-%dT%H:%M:%S` alongside the full payload rendered as JSON. The receiver
+  uses its own local timezone to display the transmitted instant. The sample
+  payload's `date`, `time`, and timezone-aware `added` remain unchanged. This
+  dictionary is sample data only; the protocol does not require location fields.
 
 ## Hardware setup
 
@@ -27,7 +29,7 @@ configuration instructions and exit command mode before running these apps.
 
 This is a point-to-point LoRa serial link, with no pairing handshake or delivery
 acknowledgments. The transmitter's output confirms a write to its USB dongle;
-seeing `hello world` on the receiver confirms reception.
+seeing the matching location payload on the receiver confirms reception.
 
 ## Install on both computers
 
@@ -156,7 +158,7 @@ on the same channel, stagger their 30-second reporting cycles (for example,
 offsets of 0, 10, and 20 seconds for three transmitters). LBT helps reduce
 collisions but does not guarantee delivery. Three reports every 30 seconds
 amount to 2,160 reports per six-hour run. Scheduling offsets are not implemented
-by the current hello-world apps.
+by the current sample apps.
 
 Supported settings are `SF` (7–12), `BW` (0–2), `CR` (1–4), `PWR` (10–22),
 `NETID` (0–255), `LBT` (0–1), `MODE` (1–3), `TXCH`/`RXCH` (0–80),
@@ -191,7 +193,7 @@ After configuring both ends:
 
 1. Start `.venv/bin/python receiver.py` on the receiving host.
 2. Run `.venv/bin/python transmitter.py --once` on the transmitting host.
-3. Confirm `hello world` appears on the receiver. Sender output alone does not
+3. Confirm the full location payload appears on the receiver. Sender output alone does not
    confirm reception.
 4. Power-cycle both dongles and repeat to check settings persistence, then test
    sustained reports and range using the planned antennas and payload sizes.
@@ -249,7 +251,7 @@ illustrative: the dongle's actual preamble, framing overhead and packetization
 must be measured. Three such transmissions per 30 seconds would occupy about
 3% of the shared channel before retries or LBT delays. Keep telemetry compact,
 stagger independent transmitting hosts, and test actual payloads. The current
-hello-world transmitter still defaults to five seconds; use `--interval 30` for
+sample location transmitter still defaults to five seconds; use `--interval 30` for
 the proposed reporting cadence. The AT file does not schedule application sends.
 
 ## Drift and radio-distance planning
@@ -314,12 +316,23 @@ See [Waveshare's product specifications](https://www.waveshare.com/product/usb-t
 
 ## Binary wire format
 
-Both apps now use [MessagePack](https://github.com/msgpack/msgpack-python), which
-encodes numbers as binary values and supports future structured telemetry without
-a separate schema compiler. Version 1 is a compact array in this fixed order:
-`[1, Unix timestamp in whole UTC seconds, message text]`. Arrays avoid sending
-repeated field names. Text remains UTF-8 inside MessagePack; serialization is not
-compression, and arbitrary text is not automatically smaller.
+Both apps use [MessagePack](https://github.com/msgpack/msgpack-python). Version 3
+is `[3, send timestamp in whole UTC seconds, JSON payload]`. The payload can be
+an object with any string field names, a nested array, a string, a finite number,
+a boolean, or null. There is no required location schema, UUID, coordinate range,
+field order, or channel metadata. Objects keep their field names, dates/UUIDs
+remain strings, and floats retain double precision. The transmitter's static
+location dictionary is just a representative sample; live ingestion is not
+implemented yet. JSON is rendered only in the console; the radio carries binary
+MessagePack.
+
+Validation is limited to the transport envelope, JSON-compatible types and
+resource bounds. Integers must fit MessagePack's signed/unsigned 64-bit range;
+objects require string keys. Binary blobs, custom extension objects, nonfinite
+numbers, and nesting deeper than 16 levels are rejected. Total encoded frame
+size is bounded to 768 bytes, so larger or deeply nested messages fail clearly
+rather than consuming unbounded receiver memory. The sender does not infer
+or compress a schema from sample data.
 
 `protocol.py` packs the array, appends a four-byte big-endian CRC32 of the packed
 payload, and COBS-encodes the result. Zero bytes delimit each frame on both sides.
@@ -328,12 +341,19 @@ frame boundaries. The leading delimiter lets a receiver recover after joining
 midstream or losing the preceding frame's trailing delimiter.
 
 The receiver handles fragmented/coalesced serial reads. It discards invalid COBS,
-CRC, MessagePack or schema data and continues with later frames. Oversized frames
+CRC, MessagePack or envelope data and continues with later frames. Oversized frames
 are discarded until the next delimiter, with bounded memory. A complete wire
-frame is capped at 240 bytes and text at 200 UTF-8 bytes. The hello-world frame is
-26 bytes at present-day timestamps, versus the previous 32-byte text line, a
-19% reduction including the new framing/checksum. These are USB stream bytes;
-the dongles add their own over-the-air overhead and may packetize independently.
+frame is capped at **768 bytes**. The static location sample is **283 bytes**,
+including send timestamp, CRC32, COBS, and delimiters (276 bytes before framing
+and checksum). Retaining field names costs more than the discarded location-only
+positional schema; MessagePack is not compression and savings depend on content.
+
+These are USB stream bytes. The dongle's documented 240-byte radio-packet limit
+is separate: transparent mode automatically packetizes longer streams. Its
+960-byte buffer is finite, so the 768-byte application limit is not a guarantee
+of lossless delivery at arbitrary sending rates. Test actual payload sizes and
+cadence. Missing or interleaved radio fragments can invalidate a whole application
+frame; CRC32 rejects it, with no application retransmission or delivery guarantee.
 
 CRC32 detects accidental damage; it is not authentication, encryption, replay
 protection, or a delivery acknowledgment. Those features are not added here.
@@ -344,7 +364,8 @@ Update both hosts together and reinstall dependencies before restarting:
 .venv/bin/python -m pip install -r requirements.txt
 ```
 
-The binary protocol is incompatible with the old newline-text apps. No AT
+Version 3 is incompatible with earlier wire formats, including version 2's
+location-specific positional schema and version 1's hello-world messages. Deploy both updated apps and `protocol.py` together. No AT
 changes are needed: transparent stream mode and `RSSI=0` stay in use. The
 receiver's formatted text is for humans; binary frames travel over the radio.
 

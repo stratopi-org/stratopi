@@ -17,70 +17,91 @@ import receiver
 import transmitter
 
 TIMESTAMP = 1795457109
+LOCATION = transmitter.LOCATION_PAYLOAD
 
 
 class ProtocolTests(unittest.TestCase):
     def test_round_trip_and_size(self):
-        wire = encode_message("hello world", TIMESTAMP)
-        self.assertEqual(len(wire), 26)
+        wire = encode_message(LOCATION, TIMESTAMP)
+        self.assertEqual(len(wire), 283)
         self.assertEqual(wire[:1], b"\x00")
         self.assertEqual(wire[-1:], b"\x00")
         self.assertNotIn(0, wire[1:-1])
-        self.assertEqual(decode_message(wire[1:-1]), (TIMESTAMP, "hello world"))
+        self.assertEqual(decode_message(wire[1:-1]), (TIMESTAMP, LOCATION))
 
-    def test_binary_characters_and_unicode(self):
-        for text in ("", "hello\x00\nworld", "café 🎈"):
-            wire = encode_message(text, TIMESTAMP)
-            self.assertEqual(decode_message(wire[1:-1]), (TIMESTAMP, text))
+    def test_varying_json_payloads(self):
+        payloads = [
+            {}, {"percent": 75, "temperature_c": 20.5},
+            {"new_field": [None, True, False, {"text": "café 🎈\x00\n"}]},
+            [1, "text", None], "hello", None, False, 123, -1.5,
+            {"id": "not-a-uuid", "latitude": "not-location-data", "_meta": {"channel": "other"}},
+        ]
+        for payload in payloads:
+            with self.subTest(payload=payload):
+                wire = encode_message(payload, TIMESTAMP)
+                self.assertEqual(decode_message(wire[1:-1]), (TIMESTAMP, payload))
 
     def test_every_split_and_multiple_frames(self):
-        wire = encode_message("hello world", TIMESTAMP)
+        wire = encode_message(LOCATION, TIMESTAMP)
         for split in range(len(wire) + 1):
             reader = FrameReader()
             frames = list(reader.feed(wire[:split])) + list(reader.feed(wire[split:]))
             self.assertEqual(len(frames), 1)
-            self.assertEqual(decode_message(frames[0]), (TIMESTAMP, "hello world"))
+            self.assertEqual(decode_message(frames[0]), (TIMESTAMP, LOCATION))
         self.assertEqual(len(list(FrameReader().feed(wire * 3))), 3)
 
     def test_corruption_is_rejected_then_recovers(self):
-        wire = encode_message("hello world", TIMESTAMP)
+        wire = encode_message(LOCATION, TIMESTAMP)
         data = bytearray(cobs.decode(wire[1:-1]))
         data[-1] ^= 1
         damaged = cobs.encode(bytes(data))
         with self.assertRaisesRegex(ValueError, "CRC32"):
             decode_message(damaged)
         frames = list(FrameReader().feed(b"\x00" + damaged + b"\x00" + wire))
-        self.assertEqual(decode_message(frames[-1]), (TIMESTAMP, "hello world"))
+        self.assertEqual(decode_message(frames[-1]), (TIMESTAMP, LOCATION))
         for invalid in (b"", b"\x05ab", cobs.encode(b"abc")):
             with self.assertRaises(ValueError):
                 decode_message(invalid)
 
     def test_start_midstream_and_missing_delimiter(self):
-        wire = encode_message("hello world", TIMESTAMP)
+        wire = encode_message(LOCATION, TIMESTAMP)
         frames = list(FrameReader().feed(wire[8:] + wire))
-        self.assertEqual(decode_message(frames[-1]), (TIMESTAMP, "hello world"))
+        self.assertEqual(decode_message(frames[-1]), (TIMESTAMP, LOCATION))
         frames = list(FrameReader().feed(wire[:-1] + wire))
         self.assertEqual(len(frames), 2)
 
     def test_bounds_and_oversize_resynchronization(self):
         with self.assertRaises(ValueError):
-            encode_message("é" * 101, TIMESTAMP)
-        wire = encode_message("x" * 200, TIMESTAMP)
-        self.assertLessEqual(len(wire), 240)
+            encode_message({"text": "x" * 1000}, TIMESTAMP)
+        with self.assertRaisesRegex(ValueError, "768-byte"):
+            encode_message({"a": "x" * 400, "b": "x" * 400}, TIMESTAMP)
+        wire = encode_message(LOCATION, TIMESTAMP)
+        self.assertGreater(len(wire), 240)
+        self.assertLessEqual(len(wire), 768)
         reader = FrameReader()
         self.assertEqual(list(reader.feed(b"x" * 10000)), [])
         self.assertLessEqual(len(reader.pending), MAX_FRAME_BYTES)
         frames = list(reader.feed(wire))
         self.assertEqual(len(frames), 1)
-        self.assertEqual(decode_message(frames[0]), (TIMESTAMP, "x" * 200))
+        self.assertEqual(decode_message(frames[0]), (TIMESTAMP, LOCATION))
 
-    def test_invalid_schemas_with_valid_crc(self):
-        for message in ([2, TIMESTAMP, "x"], [1, True, "x"], [True, TIMESTAMP, "x"],
-                        [1, -1, "x"], [1, TIMESTAMP, 3], [1, TIMESTAMP], {}):
-            payload = msgpack.packb(message, use_bin_type=True)
-            frame = cobs.encode(payload + struct.pack(">I", zlib.crc32(payload)))
+    def test_invalid_envelopes_and_non_json_types(self):
+        nested = None
+        for _ in range(20):
+            nested = [nested]
+        cases = ([2, TIMESTAMP, {}], [3, True, {}], [True, TIMESTAMP, {}],
+                 [3, -1, {}], [3, TIMESTAMP], {},
+                 [3, TIMESTAMP, {1: "non-string key"}], [3, TIMESTAMP, b"binary"],
+                 [3, TIMESTAMP, float("nan")], [3, TIMESTAMP, float("inf")],
+                 [3, TIMESTAMP, nested])
+        for message in cases:
+            packed = msgpack.packb(message, use_bin_type=True)
+            frame = cobs.encode(packed + struct.pack(">I", zlib.crc32(packed)))
             with self.subTest(message=message), self.assertRaises(ValueError):
                 decode_message(frame)
+        for payload in ({1: "key"}, b"bytes", (1, 2), float("inf"), 2**64, nested):
+            with self.subTest(payload=payload), self.assertRaises(ValueError):
+                encode_message(payload, TIMESTAMP)
 
     def test_apps_use_binary_and_display_formatted_timestamp(self):
         radio = MagicMock()
@@ -92,12 +113,16 @@ class ProtocolTests(unittest.TestCase):
             clock.now.return_value = now
             self.assertEqual(transmitter.main(), 0)
         wire = radio.write.call_args.args[0]
-        self.assertEqual(decode_message(wire[1:-1]), (TIMESTAMP, "hello world"))
+        self.assertEqual(decode_message(wire[1:-1]), (TIMESTAMP, LOCATION))
         radio.in_waiting = 0
         radio.read.side_effect = [b"\x00\x05ab\x00", wire[:8], wire[8:], KeyboardInterrupt]
         with patch.dict(os.environ, {"PORT": "/dev/test"}), patch("sys.argv", ["receiver.py"]), patch.object(receiver, "load_dotenv"), patch.object(receiver.serial, "Serial", return_value=opened), redirect_stdout(output), redirect_stderr(io.StringIO()) as errors:
             self.assertEqual(receiver.main(), 0)
-        self.assertIn(f"hello world {now:%Y-%m-%dT%H:%M:%S}", output.getvalue())
+        self.assertIn(f"[{now:%Y-%m-%dT%H:%M:%S}] Sent to dongle:", output.getvalue())
+        self.assertIn(f"[{now:%Y-%m-%dT%H:%M:%S}] Received:", output.getvalue())
+        import json
+        received_line = next(line for line in output.getvalue().splitlines() if "] Received: " in line)
+        self.assertEqual(json.loads(received_line.split("] Received: ", 1)[1]), LOCATION)
         self.assertIn("Discarded invalid message", errors.getvalue())
 
 

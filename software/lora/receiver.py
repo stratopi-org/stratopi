@@ -2,6 +2,7 @@
 
 import argparse
 from datetime import datetime
+import json
 import os
 from pathlib import Path
 import sys
@@ -33,7 +34,7 @@ def main() -> int:
                     except (ValueError, OverflowError, OSError) as error:
                         print(f"Discarded invalid message: {error}", file=sys.stderr, flush=True)
                         continue
-                    print(f"{message} {added}", flush=True)
+                    print(f"[{added}] Received: {json.dumps(message)}", flush=True)
     except KeyboardInterrupt:
         return 0
     except (serial.SerialException, OSError, ValueError) as error:
