@@ -7,6 +7,7 @@ import os
 import struct
 import unittest
 from unittest.mock import MagicMock, patch
+from uuid import UUID
 import zlib
 
 from cobs import cobs
@@ -17,7 +18,7 @@ import receiver
 import transmitter
 
 TIMESTAMP = 1795457109
-LOCATION = transmitter.LOCATION_PAYLOAD
+LOCATION = {"id": "3e9d33a2-efe3-46a8-94c8-e85237f2932d", **transmitter.LOCATION_PAYLOAD}
 
 
 class ProtocolTests(unittest.TestCase):
@@ -113,17 +114,31 @@ class ProtocolTests(unittest.TestCase):
             clock.now.return_value = now
             self.assertEqual(transmitter.main(), 0)
         wire = radio.write.call_args.args[0]
-        self.assertEqual(decode_message(wire[1:-1]), (TIMESTAMP, LOCATION))
+        timestamp, sent_payload = decode_message(wire[1:-1])
+        self.assertEqual(timestamp, TIMESTAMP)
+        self.assertEqual(UUID(sent_payload["id"]).version, 4)
+        self.assertEqual({key: value for key, value in sent_payload.items() if key != "id"}, transmitter.LOCATION_PAYLOAD)
         radio.in_waiting = 0
         radio.read.side_effect = [b"\x00\x05ab\x00", wire[:8], wire[8:], KeyboardInterrupt]
         with patch.dict(os.environ, {"PORT": "/dev/test"}), patch("sys.argv", ["receiver.py"]), patch.object(receiver, "load_dotenv"), patch.object(receiver.serial, "Serial", return_value=opened), redirect_stdout(output), redirect_stderr(io.StringIO()) as errors:
             self.assertEqual(receiver.main(), 0)
-        self.assertIn(f"[{now:%Y-%m-%dT%H:%M:%S}] Sent to dongle:", output.getvalue())
-        self.assertIn(f"[{now:%Y-%m-%dT%H:%M:%S}] Received:", output.getvalue())
+        self.assertIn(f"[{now:%Y-%m-%dT%H:%M:%S}] (sent)", output.getvalue())
+        self.assertIn(f"[{now:%Y-%m-%dT%H:%M:%S}] (received)", output.getvalue())
         import json
-        received_line = next(line for line in output.getvalue().splitlines() if "] Received: " in line)
-        self.assertEqual(json.loads(received_line.split("] Received: ", 1)[1]), LOCATION)
+        received_line = next(line for line in output.getvalue().splitlines() if "] (received) " in line)
+        self.assertEqual(json.loads(received_line.split("] (received) ", 1)[1]), sent_payload)
         self.assertIn("Discarded invalid message", errors.getvalue())
+
+    def test_fresh_random_uuid_for_each_send(self):
+        opened = MagicMock()
+        radio = opened.__enter__.return_value
+        with patch.dict(os.environ, {"PORT": "/dev/test"}), patch("sys.argv", ["transmitter.py"]), patch.object(transmitter, "load_dotenv"), patch.object(transmitter.serial, "Serial", return_value=opened), patch.object(transmitter.time, "sleep", side_effect=[None, KeyboardInterrupt]), redirect_stdout(io.StringIO()):
+            self.assertEqual(transmitter.main(), 0)
+        payloads = [decode_message(call.args[0][1:-1])[1] for call in radio.write.call_args_list]
+        self.assertEqual(len(payloads), 2)
+        self.assertNotEqual(payloads[0]["id"], payloads[1]["id"])
+        self.assertTrue(all(UUID(payload["id"]).version == 4 for payload in payloads))
+        self.assertNotIn("id", transmitter.LOCATION_PAYLOAD)
 
 
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
-"""Send a static location payload as framed MessagePack over LoRa."""
+"""Send a sample location payload with a fresh random UUID over LoRa."""
 
 import argparse
 from datetime import datetime
@@ -8,6 +8,7 @@ import os
 from pathlib import Path
 import sys
 import time
+from uuid import uuid4
 
 import serial
 from dotenv import load_dotenv
@@ -15,7 +16,6 @@ from dotenv import load_dotenv
 from protocol import encode_message
 
 LOCATION_PAYLOAD = {
-    "id": "3e9d33a2-efe3-46a8-94c8-e85237f2932d",
     "date": "2026-11-20",
     "time": "00:54:57",
     "altitude_m": 126.7,
@@ -49,9 +49,10 @@ def main() -> int:
             while True:
                 now = datetime.now()
                 timestamp = int(now.timestamp())
-                radio.write(encode_message(LOCATION_PAYLOAD, timestamp))
+                payload = {"id": str(uuid4()), **LOCATION_PAYLOAD}
+                radio.write(encode_message(payload, timestamp))
                 radio.flush()
-                print(f"[{now:%Y-%m-%dT%H:%M:%S}] (sent) {json.dumps(LOCATION_PAYLOAD)}", flush=True)
+                print(f"[{now:%Y-%m-%dT%H:%M:%S}] (sent) {json.dumps(payload)}", flush=True)
                 if args.once:
                     return 0
                 time.sleep(args.interval)

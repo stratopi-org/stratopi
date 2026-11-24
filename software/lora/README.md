@@ -4,8 +4,10 @@ Two Python apps for a pair of Waveshare **USB-TO-LoRa-HF** dongles, sharing
 `protocol.py` for binary serialization and framing:
 
 - `receiver.py`: the ground app; listens and prints received messages.
-- `transmitter.py`: sends the static location dictionary in `LOCATION_PAYLOAD`
-  immediately, then every five seconds. A separate current send timestamp is
+- `transmitter.py`: sends the sample location dictionary in `LOCATION_PAYLOAD`
+  with a fresh random UUID (`uuid.uuid4()`) in `id` for every transmission,
+  immediately, then every five seconds. Match IDs in the `(sent)` and `(received)`
+  logs to identify individual messages. A separate current send timestamp is
   included in the binary envelope. Both apps log that timestamp in local time as
   `%Y-%m-%dT%H:%M:%S` alongside the full payload rendered as JSON. The receiver
   uses its own local timezone to display the transmitted instant. The sample
@@ -321,8 +323,8 @@ is `[3, send timestamp in whole UTC seconds, JSON payload]`. The payload can be
 an object with any string field names, a nested array, a string, a finite number,
 a boolean, or null. There is no required location schema, UUID, coordinate range,
 field order, or channel metadata. Objects keep their field names, dates/UUIDs
-remain strings, and floats retain double precision. The transmitter's static
-location dictionary is just a representative sample; live ingestion is not
+remain strings, and floats retain double precision. The transmitter's location
+dictionary is just a representative sample with a newly generated ID each send; live ingestion is not
 implemented yet. JSON is rendered only in the console; the radio carries binary
 MessagePack.
 
